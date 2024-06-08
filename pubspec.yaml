@@ -16,6 +16,7 @@ dependencies:
   cupertino_icons: ^1.0.6
   carousel_slider: ^4.2.1
   flutter_svg: ^2.0.10+1
+  google_fonts: ^6.2.1
 
 dev_dependencies:
   flutter_test:
@@ -28,4 +29,15 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/images/dummy_images/
+    - assets/images/categories/
+    - assets/images/featured_items/
+    - assets/images/top_rated_shops/
+    - assets/images/more_products/
+    - assets/images/popular_shops/
+    - assets/images/sale_offers/
+    - assets/images/trending_now/
+    - assets/images/top_picks/
+    - assets/images/products_may_like/
+
+
   
