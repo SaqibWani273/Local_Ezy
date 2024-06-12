@@ -6,6 +6,10 @@ TextTheme myTextTheme = TextTheme(
     fontSize: 32.0,
     fontWeight: FontWeight.bold,
   ),
+  bodyMedium: TextStyle(
+    fontSize: 18.0,
+    // fontWeight: FontWeight.w300,
+  ),
   bodySmall: TextStyle(
     fontSize: 18.0,
     fontWeight: FontWeight.bold,

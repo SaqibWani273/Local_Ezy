@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:mca_project/constants/top_categories_images.dart';
+import 'package:mca_project/constants/data.dart';
+import 'package:mca_project/view/categories/categories_screen.dart';
 
 class TopCategoriesWidget extends StatelessWidget {
-  const TopCategoriesWidget({super.key});
+  // final
+  // VoidCallback viewAllCategories;
+  const TopCategoriesWidget({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -48,9 +53,10 @@ class TopCategoriesWidget extends StatelessWidget {
                 crossAxisSpacing: 10,
                 childAspectRatio: 1.0),
             physics: NeverScrollableScrollPhysics(),
-            children: topCategoriesImages
+            children: categories
+                .where((category) => category.isTopCategory)
                 .map((e) => Image.asset(
-                      e,
+                      e.image,
                       fit: BoxFit.fill,
                     ))
                 .toList(),

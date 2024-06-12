@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mca_project/theme/theme.dart';
+import 'package:mca_project/view/home_page.dart';
 
 import 'view/dashboard/dashoard.dart';
 
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
       title: 'MCA Project',
       theme: AppTheme,
       debugShowCheckedModeBanner: false,
-      home: const Dashboard(),
+      home: const HomePage(),
     );
   }
 }

@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:mca_project/view/product_details/product_details_screen.dart';
 
 import '../../../models/product_model.dart';
 import '../../../models/shop_model.dart';
@@ -34,6 +35,7 @@ class MediumSlidingImagesWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final deviceWidth = MediaQuery.of(context).size.width;
     final shopsOrProducts = products ?? shops;
     return Container(
       margin: EdgeInsets.symmetric(vertical: 16.0),
@@ -84,7 +86,11 @@ class MediumSlidingImagesWidget extends StatelessWidget {
                                     e: e, hasSubtitle: hasSubtitle!)),
                             Expanded(
                               child: Container(
-                                margin: EdgeInsets.only(bottom: 16.0),
+                                margin: EdgeInsets.only(
+                                  bottom: 16.0,
+                                  left: deviceWidth > 500 ? 8.0 : 16.0,
+                                  right: deviceWidth > 500 ? 8.0 : 16.0,
+                                ),
                                 child: ElevatedButton(
                                   onPressed: () {},
                                   child: Text(
@@ -105,7 +111,8 @@ class MediumSlidingImagesWidget extends StatelessWidget {
                                           8.0), // Add rounded corners
                                     ),
                                     padding: EdgeInsets.symmetric(
-                                      horizontal: 8.0,
+                                      horizontal:
+                                          deviceWidth > 500 ? 8.0 : 16.0,
                                     ), // Adjust padding as needed
                                   ),
                                 ),
@@ -132,71 +139,110 @@ class ImageWithTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final deviceWidth = MediaQuery.of(context).size.width;
     return SizedBox(
       width: double.infinity,
-      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Expanded(
-          flex: 3,
-          child: Image.asset(
-            e is ProductModel ? e.image : (e as ShopModel).image,
-            width: double.infinity,
-            fit: BoxFit.fill,
-            frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
-              if (frame == null) {
-                return Container(
-                  color: Colors.grey.withOpacity(0.5),
-                );
-              }
-              return child;
-            },
-          ),
-        ),
-        SizedBox(
-          height: 20,
-        ),
-        Expanded(
-          child: SizedBox(
-            height: 30,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Text(
-                    e is ProductModel ? e.name : (e as ShopModel).name,
-                    style: Theme.of(context)
-                        .textTheme
-                        .headlineMedium!
-                        .copyWith(fontSize: 18.0),
-                  ),
+      child: InkWell(
+        onTap: () {
+          if (e is ProductModel) {
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => ProductDetailsScreen(
+                product: e,
+              ),
+            ));
+          } else {}
+        },
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Expanded(
+            flex: 3,
+            child: ClipRRect(
+              borderRadius: BorderRadius.all(Radius.circular(12.0)),
+              child: Hero(
+                tag: e is ProductModel ? e.id : (e as ShopModel).name,
+                child: Image.asset(
+                  e is ProductModel ? e.image : (e as ShopModel).image,
+                  width: double.infinity,
+                  fit: BoxFit.fill,
+                  frameBuilder:
+                      (context, child, frame, wasSynchronouslyLoaded) {
+                    if (frame == null) {
+                      return Container(
+                        color: Colors.grey.withOpacity(0.5),
+                      );
+                    }
+                    return child;
+                  },
                 ),
-                if (hasSubtitle && e is ShopModel)
-                  Text("${e.rating} stars",
-                      style: Theme.of(context).textTheme.bodySmall!),
-                if (hasSubtitle && e is ProductModel)
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Expanded(
+            child: SizedBox(
+              height: 30,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Row(
-                      children: [
-                        Text("₹ ${e.price}",
-                            style: Theme.of(context).textTheme.bodySmall!),
-                        Spacer(),
-                        if (e.previousPrice != null)
-                          Text("₹ ${e.previousPrice}",
+                    child: Text(
+                      e is ProductModel ? e.name : (e as ShopModel).name,
+                      style: Theme.of(context)
+                          .textTheme
+                          .headlineMedium!
+                          .copyWith(
+                              fontSize: deviceWidth > 400 ? 18.0 : 12.0,
+                              overflow: TextOverflow.ellipsis),
+                    ),
+                  ),
+                  if (hasSubtitle && e is ShopModel)
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Text("${e.rating} stars",
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodySmall!
+                              .copyWith(
+                                  fontSize: deviceWidth > 400 ? 18.0 : 12.0,
+                                  overflow: TextOverflow.ellipsis)),
+                    ),
+                  if (hasSubtitle && e is ProductModel)
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text("₹ ${e.price}",
                               style: Theme.of(context)
                                   .textTheme
                                   .bodySmall!
                                   .copyWith(
-                                      decoration: TextDecoration.lineThrough)),
-                      ],
-                    ),
-                  )
-              ],
+                                      fontSize: deviceWidth > 400 ? 18.0 : 12.0,
+                                      overflow: TextOverflow.ellipsis)),
+                          Spacer(),
+                          if (e.previousPrice != null)
+                            Text("₹ ${e.previousPrice}",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodySmall!
+                                    .copyWith(
+                                        fontSize:
+                                            deviceWidth > 400 ? 18.0 : 12.0,
+                                        overflow: TextOverflow.ellipsis,
+                                        decoration:
+                                            TextDecoration.lineThrough)),
+                        ],
+                      ),
+                    )
+                ],
+              ),
             ),
           ),
-        ),
-      ]),
+        ]),
+      ),
     );
   }
 }
