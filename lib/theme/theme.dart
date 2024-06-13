@@ -18,5 +18,6 @@ TextTheme myTextTheme = TextTheme(
 );
 
 ThemeData AppTheme = ThemeData(
-    textTheme: GoogleFonts.robotoTextTheme(myTextTheme)
-        .copyWith(headlineMedium: GoogleFonts.lexend()));
+    textTheme: GoogleFonts.robotoTextTheme(myTextTheme).copyWith(
+        headlineMedium: GoogleFonts.lexend(),
+        bodyMedium: GoogleFonts.lexend()));

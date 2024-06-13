@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:mca_project/models/product_model.dart';
+import 'package:mca_project/view/dashboard/widgets/large_sliding_images_widget.dart';
 
 class ProductDetailsScreen extends StatelessWidget {
   final ProductModel product;
@@ -16,15 +17,16 @@ class ProductDetailsScreen extends StatelessWidget {
         slivers: [
           SliverToBoxAdapter(
             child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
                 Padding(
                   padding: EdgeInsets.only(
-                      top: 24.0, left: 8.0, right: 8.0, bottom: 8.0),
+                      top: 48.0, left: 8.0, right: 8.0, bottom: 8.0),
                   child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         IconButton(
-                          onPressed: () => Navigator.of(context).pop(),
+                          onPressed: () => Navigator.pop(context),
                           icon: Icon(
                             Icons.arrow_back_sharp,
                             size: 30,
@@ -38,17 +40,16 @@ class ProductDetailsScreen extends StatelessWidget {
                             ))
                       ]),
                 ),
-                Stack(
-                  children: [
-                    Hero(
-                        tag: product.id,
-                        child: Image.asset(
-                          width: double.infinity,
-                          height: deviceHeight * 0.4,
-                          product.image,
-                          fit: BoxFit.fill,
-                        )),
-                  ],
+                Hero(
+                  tag: product.id,
+                  child: SizedBox(
+                    //my custom widget using CourselSlider
+                    child: ImagesWidget(
+                      slidingImages: product.images,
+                      indicatorColor: Colors.grey.shade700,
+                      indicatorWidth: 8.0,
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -129,36 +130,7 @@ class ProductDetailsScreen extends StatelessWidget {
             ])),
           )
         ],
-      )
-          //      ListView(
-          //   children: [
-          //     Stack(
-          //       children: [
-          //         Hero(
-          //             tag: product.id,
-          //             child: Image.asset(
-          //               width: double.infinity,
-          //               height: deviceHeight * 0.4,
-          //               product.image,
-          //               fit: BoxFit.fill,
-          //             )),
-          //       ],
-          //     ),
-          //     SizedBox(
-          //       height: 20,
-          //     ),
-          //     Text(
-          //       product.name,
-          //       style: Theme.of(context).textTheme.headlineMedium,
-          //     ),
-          //     SizedBox(
-          //       height: 20,
-          //     ),
-          //     Text(product.description),
-          //     Text(product.price.toString()),
-          //   ],
-          // ),
-          ),
+      )),
     );
   }
 }

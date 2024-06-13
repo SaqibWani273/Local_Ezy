@@ -107,6 +107,14 @@ class Dashboard extends StatelessWidget {
       // SlidingImagesWidget(),
       LargeSlidingImagesWidget(
         slidingImages: bannerImages,
+        button: ElevatedButton(
+          style: ButtonStyle(
+            elevation: MaterialStateProperty.all(20.0),
+            backgroundColor: MaterialStateProperty.all(Colors.blue),
+          ),
+          onPressed: () {},
+          child: Text("Shop Now", style: TextStyle(color: Colors.white)),
+        ),
       ),
 
       const TopCategoriesWidget(),

@@ -160,7 +160,7 @@ class ImageWithTitle extends StatelessWidget {
               child: Hero(
                 tag: e is ProductModel ? e.id : (e as ShopModel).name,
                 child: Image.asset(
-                  e is ProductModel ? e.image : (e as ShopModel).image,
+                  e is ProductModel ? e.images.first : (e as ShopModel).image,
                   width: double.infinity,
                   fit: BoxFit.fill,
                   frameBuilder:

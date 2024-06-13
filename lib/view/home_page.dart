@@ -1,5 +1,6 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:mca_project/view/common_widgets/drawer_widget.dart';
 
 import '../constants/bottom_navbar_items.dart';
 
@@ -12,6 +13,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int currentIndex = 2;
+  int currentDrawerItemIndex = 0;
   void changeIndex(int index) {
     setState(() {
       currentIndex = index;
@@ -42,7 +44,9 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
-      drawer: Drawer(),
+      drawer: DrawerWidget(
+        currentIndex: currentDrawerItemIndex,
+      ),
       body: mainScreens[currentIndex],
       bottomNavigationBar: CurvedNavigationBar(
         index: 2,
