@@ -1,6 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:mca_project/models/category_model.dart';
+import 'package:mca_project/data/models/category_model.dart';
 
 class CategoryScreen extends StatelessWidget {
   final Category category;

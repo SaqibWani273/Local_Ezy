@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-TextTheme myTextTheme = TextTheme(
+TextTheme myTextTheme = const TextTheme(
   headlineMedium: TextStyle(
     fontSize: 32.0,
     fontWeight: FontWeight.bold,

@@ -1,11 +1,9 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:mca_project/view/product_details/product_details_screen.dart';
+import 'package:mca_project/presentation/features/product/view/product_details_screen.dart';
 
-import '../../../models/product_model.dart';
-import '../../../models/shop_model.dart';
+import '../../../../../data/models/product_model.dart';
+import '../../../../../data/models/shop_model.dart';
 
 class MediumSlidingImagesWidget extends StatelessWidget {
   //one of the two parameters is required, products or shops
@@ -38,7 +36,7 @@ class MediumSlidingImagesWidget extends StatelessWidget {
     final deviceWidth = MediaQuery.of(context).size.width;
     final shopsOrProducts = products ?? shops;
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 16.0),
+      margin: const EdgeInsets.symmetric(vertical: 16.0),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -53,7 +51,7 @@ class MediumSlidingImagesWidget extends StatelessWidget {
             ],
           ),
         ),
-        SizedBox(
+        const SizedBox(
           height: 10,
         ),
         CarouselSlider(
@@ -71,12 +69,12 @@ class MediumSlidingImagesWidget extends StatelessWidget {
               .map(
                 (e) => hasContainer!
                     ? Container(
-                        margin: EdgeInsets.symmetric(horizontal: 8.0),
+                        margin: const EdgeInsets.symmetric(horizontal: 8.0),
                         // height: MediaQuery.of(context).size.height * 0.01,
                         decoration: BoxDecoration(
                             color: Colors.grey.withOpacity(0.1),
                             borderRadius:
-                                BorderRadius.all(Radius.circular(8.0))),
+                                const BorderRadius.all(Radius.circular(8.0))),
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
@@ -93,19 +91,12 @@ class MediumSlidingImagesWidget extends StatelessWidget {
                                 ),
                                 child: ElevatedButton(
                                   onPressed: () {},
-                                  child: Text(
-                                    'Shop Now',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .headlineMedium!
-                                        .copyWith(fontSize: 14.0),
-                                  ),
                                   style: ElevatedButton.styleFrom(
                                     // backgroundColor: Colors.green.withOpacity(0.01),
                                     foregroundColor: Colors.green,
                                     backgroundColor:
                                         Colors.white.withOpacity(0.6),
-                                    minimumSize: Size.fromWidth(150),
+                                    minimumSize: const Size.fromWidth(150),
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(
                                           8.0), // Add rounded corners
@@ -114,6 +105,13 @@ class MediumSlidingImagesWidget extends StatelessWidget {
                                       horizontal:
                                           deviceWidth > 500 ? 8.0 : 16.0,
                                     ), // Adjust padding as needed
+                                  ),
+                                  child: Text(
+                                    'Shop Now',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headlineMedium!
+                                        .copyWith(fontSize: 14.0),
                                   ),
                                 ),
                               ),
@@ -156,7 +154,7 @@ class ImageWithTitle extends StatelessWidget {
           Expanded(
             flex: 3,
             child: ClipRRect(
-              borderRadius: BorderRadius.all(Radius.circular(12.0)),
+              borderRadius: const BorderRadius.all(Radius.circular(12.0)),
               child: Hero(
                 tag: e is ProductModel ? e.id : (e as ShopModel).name,
                 child: Image.asset(
@@ -176,7 +174,7 @@ class ImageWithTitle extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           Expanded(
@@ -222,7 +220,7 @@ class ImageWithTitle extends StatelessWidget {
                                   .copyWith(
                                       fontSize: deviceWidth > 400 ? 18.0 : 12.0,
                                       overflow: TextOverflow.ellipsis)),
-                          Spacer(),
+                          const Spacer(),
                           if (e.previousPrice != null)
                             Text("₹ ${e.previousPrice}",
                                 style: Theme.of(context)

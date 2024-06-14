@@ -1,10 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:mca_project/view/categories/category_screen.dart';
-import 'package:mca_project/view/common_widgets/my_text_field_widget.dart';
+import 'package:mca_project/presentation/features/categories/view/category_screen.dart';
+import 'package:mca_project/presentation/common/widgets/my_text_field_widget.dart';
 
-import '../../constants/data.dart';
+import '../../../../utils/constants/data.dart';
 
 class CategoriesScreen extends StatelessWidget {
   const CategoriesScreen({super.key});
@@ -16,7 +14,7 @@ class CategoriesScreen extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          MyTextFieldWidget(
+          const MyTextFieldWidget(
             hintText: 'Search For Categories',
             prefixIcon: Icon(
               Icons.search,
@@ -25,7 +23,7 @@ class CategoriesScreen extends StatelessWidget {
           //create a common gridview widget later
           Expanded(
             child: GridView(
-              padding: EdgeInsets.only(bottom: 24.0),
+              padding: const EdgeInsets.only(bottom: 24.0),
               shrinkWrap: true,
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
@@ -41,7 +39,7 @@ class CategoriesScreen extends StatelessWidget {
                           builder: (context) => CategoryScreen(category: e),
                         )),
                         child: Container(
-                            padding: EdgeInsets.all(8.0),
+                            padding: const EdgeInsets.all(8.0),
                             decoration: BoxDecoration(
                               color: Colors.grey.shade200,
                               borderRadius: BorderRadius.circular(10.0),
@@ -54,7 +52,7 @@ class CategoriesScreen extends StatelessWidget {
                                     fit: BoxFit.fill,
                                   ),
                                 ),
-                                SizedBox(height: 10),
+                                const SizedBox(height: 10),
                                 Text(e.name,
                                     style: Theme.of(context)
                                         .textTheme

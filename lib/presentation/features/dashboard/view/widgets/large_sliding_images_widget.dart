@@ -117,7 +117,7 @@ class _ImagesWidgetState extends State<ImagesWidget> {
                 return Container(
                   width: widget.indicatorWidth,
                   height: widget.indicatorWidth,
-                  margin: EdgeInsets.symmetric(horizontal: 4.0),
+                  margin: const EdgeInsets.symmetric(horizontal: 4.0),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(30),
 

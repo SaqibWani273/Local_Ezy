@@ -1,9 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:mca_project/constants/data.dart';
-import 'package:mca_project/constants/theme_const.dart';
-import 'package:mca_project/view/categories/categories_screen.dart';
+import 'package:mca_project/utils/constants/data.dart';
+import 'package:mca_project/utils/constants/theme_const.dart';
 
 class TopCategoriesWidget extends StatelessWidget {
   // final
@@ -17,7 +14,7 @@ class TopCategoriesWidget extends StatelessWidget {
     var deviceWidth = MediaQuery.of(context).size.width;
     var deviceHeight = MediaQuery.of(context).size.height;
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 8.0),
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
       // height: 80,
       child: Column(
         children: [
@@ -47,7 +44,7 @@ class TopCategoriesWidget extends StatelessWidget {
               ],
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           GridView(
@@ -57,11 +54,11 @@ class TopCategoriesWidget extends StatelessWidget {
                 mainAxisSpacing: 15,
                 crossAxisSpacing: 15,
                 childAspectRatio: 16 / 12),
-            physics: NeverScrollableScrollPhysics(),
+            physics: const NeverScrollableScrollPhysics(),
             children: categories
                 .where((category) => category.isTopCategory)
                 .map((e) => Container(
-                      padding: EdgeInsets.only(top: 16.0),
+                      padding: const EdgeInsets.only(top: 16.0),
                       decoration: BoxDecoration(
                         color: Colors.grey.shade300,
                         borderRadius: BorderRadius.circular(8.0),
@@ -74,7 +71,7 @@ class TopCategoriesWidget extends StatelessWidget {
                             fit: BoxFit.fill,
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
                         Expanded(

@@ -13,47 +13,47 @@ class MenuItem {
 }
 
 List<MenuItem> menuItems = [
-  MenuItem(
+  const MenuItem(
     title: 'Home',
     selectedIcon: Icons.home,
     unSelectedIcon: Icons.home_outlined,
   ),
-  MenuItem(
+  const MenuItem(
     title: 'Favourites',
     selectedIcon: Icons.favorite,
     unSelectedIcon: Icons.favorite_border_outlined,
   ),
-  MenuItem(
+  const MenuItem(
     title: 'Special Offers',
     selectedIcon: Icons.card_giftcard_rounded,
     unSelectedIcon: Icons.card_giftcard_outlined,
   ),
-  MenuItem(
+  const MenuItem(
     title: 'Categories',
     selectedIcon: Icons.category_outlined,
     unSelectedIcon: Icons.category_outlined,
   ),
-  MenuItem(
+  const MenuItem(
     title: 'Shop',
     selectedIcon: Icons.shop_2_outlined,
     unSelectedIcon: Icons.shop_2_outlined,
   ),
-  MenuItem(
+  const MenuItem(
     title: 'Your Orders',
     selectedIcon: Icons.list,
     unSelectedIcon: Icons.list_alt_outlined,
   ),
-  MenuItem(
+  const MenuItem(
     title: 'Cart',
     selectedIcon: Icons.shopping_cart_outlined,
     unSelectedIcon: Icons.shopping_cart_outlined,
   ),
-  MenuItem(
+  const MenuItem(
     title: 'Profile',
     selectedIcon: Icons.account_circle_rounded,
     unSelectedIcon: Icons.account_circle_outlined,
   ),
-  MenuItem(
+  const MenuItem(
     title: 'Help & Support',
     selectedIcon: Icons.help_outline_rounded,
     unSelectedIcon: Icons.help_outline_outlined,

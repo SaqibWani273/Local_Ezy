@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:mca_project/theme/theme.dart';
-import 'package:mca_project/view/home_page.dart';
+import 'package:mca_project/presentation/common/theme/theme.dart';
+import 'package:mca_project/presentation/features/home_page.dart';
 
-import 'view/dashboard/dashoard.dart';
 
 void main() {
   runApp(const MyApp());

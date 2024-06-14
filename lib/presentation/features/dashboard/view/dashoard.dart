@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:mca_project/view/common_widgets/my_text_field_widget.dart';
+import 'package:mca_project/presentation/common/widgets/my_text_field_widget.dart';
 
-import '../../constants/data.dart';
-import '../../constants/images.dart';
-import '../../constants/theme_const.dart';
-import '../../models/category_model.dart';
-import '../categories/category_screen.dart';
+import '../../../../utils/constants/data.dart';
+import '../../../../utils/constants/images.dart';
+import '../../../../utils/constants/theme_const.dart';
+import '../../categories/view/category_screen.dart';
 import 'widgets/large_sliding_images_widget.dart';
 import 'widgets/medium_sliding_images_widget.dart';
 import 'widgets/top_categories_widget.dart';
@@ -18,9 +17,9 @@ class Dashboard extends StatelessWidget {
     final deviceHeight = MediaQuery.of(context).size.height;
     final deviceWidth = MediaQuery.of(context).size.width;
     return ListView(children: [
-      MyTextFieldWidget(
+      const MyTextFieldWidget(
         hintText: 'Search for everything,styles and brands',
-        prefixIcon: const Icon(Icons.search),
+        prefixIcon: Icon(Icons.search),
         suffixIcon: SizedBox(
           width: 80,
           child: Row(
@@ -113,7 +112,7 @@ class Dashboard extends StatelessWidget {
             backgroundColor: MaterialStateProperty.all(Colors.blue),
           ),
           onPressed: () {},
-          child: Text("Shop Now", style: TextStyle(color: Colors.white)),
+          child: const Text("Shop Now", style: TextStyle(color: Colors.white)),
         ),
       ),
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mca_project/constants/drawer_data.dart';
-import 'package:mca_project/constants/theme_const.dart';
+import 'package:mca_project/utils/constants/drawer_data.dart';
+import 'package:mca_project/utils/constants/theme_const.dart';
 
 class DrawerWidget extends StatelessWidget {
   final int currentIndex;
@@ -15,7 +15,7 @@ class DrawerWidget extends StatelessWidget {
         // Remove padding from top
         padding: EdgeInsets.zero,
         children: [
-          DrawerHeader(
+          const DrawerHeader(
             decoration: BoxDecoration(
               color: Colors.blue,
             ),
@@ -31,8 +31,8 @@ class DrawerWidget extends StatelessWidget {
               .asMap()
               .entries
               .map((item) => Container(
-                    margin: EdgeInsets.symmetric(horizontal: 8.0),
-                    padding: EdgeInsets.only(left: 8.0, right: 8.0),
+                    margin: const EdgeInsets.symmetric(horizontal: 8.0),
+                    padding: const EdgeInsets.only(left: 8.0, right: 8.0),
                     decoration: BoxDecoration(
                       color: currentIndex == item.key
                           ? Colors.grey.shade300
@@ -67,7 +67,7 @@ class DrawerWidget extends StatelessWidget {
                       },
                     ),
                   ))
-              .toList(),
+              ,
         ],
       ),
     );

@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:mca_project/view/categories/categories_screen.dart';
-import 'package:mca_project/view/dashboard/dashoard.dart';
+import 'package:mca_project/presentation/features/categories/view/categories_screen.dart';
+import 'package:mca_project/presentation/features/dashboard/view/dashoard.dart';
 
 class BottomNavbarItem {
   final String label;
@@ -44,9 +44,9 @@ List<BottomNavbarItem> bottomNavbarItems = [
 ];
 
 List<Widget> mainScreens = [
-  CategoriesScreen(),
+  const CategoriesScreen(),
   Container(),
-  Dashboard(),
+  const Dashboard(),
   Container(),
   Container(),
 ];

@@ -1,8 +1,8 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:mca_project/view/common_widgets/drawer_widget.dart';
+import 'package:mca_project/presentation/common/widgets/drawer_widget.dart';
 
-import '../constants/bottom_navbar_items.dart';
+import '../../utils/constants/bottom_navbar_items.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -29,16 +29,16 @@ class _HomePageState extends State<HomePage> {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('ShopLocal'),
+            const Text('ShopLocal'),
             Row(
               children: [
                 IconButton(
-                    onPressed: () {}, icon: Icon(Icons.notifications_outlined)),
+                    onPressed: () {}, icon: const Icon(Icons.notifications_outlined)),
                 IconButton(
                     onPressed: () {},
-                    icon: Icon(Icons.favorite_outline_outlined)),
+                    icon: const Icon(Icons.favorite_outline_outlined)),
                 IconButton(
-                    onPressed: () {}, icon: Icon(Icons.shopping_cart_outlined)),
+                    onPressed: () {}, icon: const Icon(Icons.shopping_cart_outlined)),
               ],
             )
           ],

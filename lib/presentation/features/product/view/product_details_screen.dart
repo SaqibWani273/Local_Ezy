@@ -1,8 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:mca_project/models/product_model.dart';
-import 'package:mca_project/view/dashboard/widgets/large_sliding_images_widget.dart';
+import 'package:mca_project/data/models/product_model.dart';
+import 'package:mca_project/presentation/features/dashboard/view/widgets/large_sliding_images_widget.dart';
 
 class ProductDetailsScreen extends StatelessWidget {
   final ProductModel product;
@@ -20,21 +18,21 @@ class ProductDetailsScreen extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Padding(
-                  padding: EdgeInsets.only(
+                  padding: const EdgeInsets.only(
                       top: 48.0, left: 8.0, right: 8.0, bottom: 8.0),
                   child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         IconButton(
                           onPressed: () => Navigator.pop(context),
-                          icon: Icon(
+                          icon: const Icon(
                             Icons.arrow_back_sharp,
                             size: 30,
                           ),
                         ),
                         IconButton(
                             onPressed: () {},
-                            icon: Icon(
+                            icon: const Icon(
                               Icons.shopping_cart,
                               size: 30,
                             ))
@@ -55,74 +53,74 @@ class ProductDetailsScreen extends StatelessWidget {
             ),
           ),
           SliverPadding(
-            padding: EdgeInsets.symmetric(horizontal: 16.0),
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
             sliver: SliverList(
                 delegate: SliverChildListDelegate([
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Text(
                 product.name,
                 style: Theme.of(context).textTheme.headlineMedium,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Text(
                 product.description,
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Text(
                 "₹ ${product.price}",
                 style: Theme.of(context).textTheme.headlineMedium,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Text(
                 product.name,
                 style: Theme.of(context).textTheme.headlineMedium,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Text(product.description),
               Text(product.price.toString()),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Text(
                 product.name,
                 style: Theme.of(context).textTheme.headlineMedium,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Text(product.description),
               Text(product.price.toString()),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Text(
                 product.name,
                 style: Theme.of(context).textTheme.headlineMedium,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Text(product.description),
               Text(product.price.toString()),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Text(
                 product.name,
                 style: Theme.of(context).textTheme.headlineMedium,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Text(product.description),
