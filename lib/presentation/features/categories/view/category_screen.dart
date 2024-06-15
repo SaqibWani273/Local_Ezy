@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mca_project/data/models/category_model.dart';
+import '/data/models/category_model.dart';
 
 class CategoryScreen extends StatelessWidget {
   final Category category;

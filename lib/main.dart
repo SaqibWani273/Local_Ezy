@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mca_project/presentation/common/theme/theme.dart';
-import 'package:mca_project/presentation/features/home_page.dart';
-
+import '/presentation/common/theme/theme.dart';
+import '/presentation/features/home_page.dart';
 
 void main() {
   runApp(const MyApp());

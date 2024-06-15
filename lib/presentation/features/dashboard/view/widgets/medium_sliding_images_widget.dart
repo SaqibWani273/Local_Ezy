@@ -1,13 +1,13 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:mca_project/presentation/features/product/view/product_details_screen.dart';
+import '/presentation/features/product/view/product_details_screen.dart';
 
-import '../../../../../data/models/product_model.dart';
+import '../../../../../data/models/product/product_model.dart';
 import '../../../../../data/models/shop_model.dart';
 
 class MediumSlidingImagesWidget extends StatelessWidget {
   //one of the two parameters is required, products or shops
-  final List<ProductModel>? products;
+  final List<Product>? products;
   final List<ShopModel>? shops;
   final double aspectRatio;
   final String title;
@@ -142,7 +142,7 @@ class ImageWithTitle extends StatelessWidget {
       width: double.infinity,
       child: InkWell(
         onTap: () {
-          if (e is ProductModel) {
+          if (e is Product) {
             Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => ProductDetailsScreen(
                 product: e,
@@ -156,9 +156,9 @@ class ImageWithTitle extends StatelessWidget {
             child: ClipRRect(
               borderRadius: const BorderRadius.all(Radius.circular(12.0)),
               child: Hero(
-                tag: e is ProductModel ? e.id : (e as ShopModel).name,
+                tag: e is Product ? e.id : (e as ShopModel).name,
                 child: Image.asset(
-                  e is ProductModel ? e.images.first : (e as ShopModel).image,
+                  e is Product ? e.images.first : (e as ShopModel).image,
                   width: double.infinity,
                   fit: BoxFit.fill,
                   frameBuilder:
@@ -187,7 +187,7 @@ class ImageWithTitle extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
                     child: Text(
-                      e is ProductModel ? e.name : (e as ShopModel).name,
+                      e is Product ? e.name : (e as ShopModel).name,
                       style: Theme.of(context)
                           .textTheme
                           .headlineMedium!
@@ -207,13 +207,13 @@ class ImageWithTitle extends StatelessWidget {
                                   fontSize: deviceWidth > 400 ? 18.0 : 12.0,
                                   overflow: TextOverflow.ellipsis)),
                     ),
-                  if (hasSubtitle && e is ProductModel)
+                  if (hasSubtitle && e is Product)
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Text("₹ ${e.price}",
+                          Text("₹ ${e.price - (e as Product).discountedPrice} ",
                               style: Theme.of(context)
                                   .textTheme
                                   .bodySmall!
@@ -221,8 +221,9 @@ class ImageWithTitle extends StatelessWidget {
                                       fontSize: deviceWidth > 400 ? 18.0 : 12.0,
                                       overflow: TextOverflow.ellipsis)),
                           const Spacer(),
-                          if (e.previousPrice != null)
-                            Text("₹ ${e.previousPrice}",
+                          if (e.discountInPercentage != null)
+                            Text(
+                                "₹ ${e.price + (e as Product).discountedPrice} ",
                                 style: Theme.of(context)
                                     .textTheme
                                     .bodySmall!

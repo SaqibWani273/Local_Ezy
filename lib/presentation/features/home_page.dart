@@ -1,6 +1,6 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:mca_project/presentation/common/widgets/drawer_widget.dart';
+import '/presentation/common/widgets/drawer_widget.dart';
 
 import '../../utils/constants/bottom_navbar_items.dart';
 
@@ -33,12 +33,14 @@ class _HomePageState extends State<HomePage> {
             Row(
               children: [
                 IconButton(
-                    onPressed: () {}, icon: const Icon(Icons.notifications_outlined)),
+                    onPressed: () {},
+                    icon: const Icon(Icons.notifications_outlined)),
                 IconButton(
                     onPressed: () {},
                     icon: const Icon(Icons.favorite_outline_outlined)),
                 IconButton(
-                    onPressed: () {}, icon: const Icon(Icons.shopping_cart_outlined)),
+                    onPressed: () {},
+                    icon: const Icon(Icons.shopping_cart_outlined)),
               ],
             )
           ],

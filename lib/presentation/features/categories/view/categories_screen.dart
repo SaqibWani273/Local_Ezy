@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mca_project/presentation/features/categories/view/category_screen.dart';
-import 'package:mca_project/presentation/common/widgets/my_text_field_widget.dart';
+import '/presentation/features/categories/view/category_screen.dart';
+import '/presentation/common/widgets/my_text_field_widget.dart';
 
 import '../../../../utils/constants/data.dart';
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mca_project/utils/constants/data.dart';
-import 'package:mca_project/utils/constants/theme_const.dart';
+import '/utils/constants/data.dart';
+import '/utils/constants/theme_const.dart';
 
 class TopCategoriesWidget extends StatelessWidget {
   // final

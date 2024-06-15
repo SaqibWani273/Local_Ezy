@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mca_project/utils/constants/drawer_data.dart';
-import 'package:mca_project/utils/constants/theme_const.dart';
+import '/utils/constants/drawer_data.dart';
+import '/utils/constants/theme_const.dart';
 
 class DrawerWidget extends StatelessWidget {
   final int currentIndex;
@@ -27,47 +27,42 @@ class DrawerWidget extends StatelessWidget {
               ),
             ),
           ),
-          ...menuItems
-              .asMap()
-              .entries
-              .map((item) => Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 8.0),
-                    padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-                    decoration: BoxDecoration(
-                      color: currentIndex == item.key
-                          ? Colors.grey.shade300
-                          : Colors.transparent,
-                      borderRadius: BorderRadius.circular(48.0),
+          ...menuItems.asMap().entries.map((item) => Container(
+                margin: const EdgeInsets.symmetric(horizontal: 8.0),
+                padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                decoration: BoxDecoration(
+                  color: currentIndex == item.key
+                      ? Colors.grey.shade300
+                      : Colors.transparent,
+                  borderRadius: BorderRadius.circular(48.0),
+                ),
+                child: ListTile(
+                  title: Padding(
+                    padding: EdgeInsets.only(left: deviceWidth * 0.07),
+                    child: Text(
+                      item.value.title,
+                      style: overfLowTextStyle(
+                          deviceWidth: deviceWidth,
+                          deviceHeight: deviceHeight,
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium!
+                              .copyWith(
+                                  fontWeight: FontWeight.w500, fontSize: 20.0)),
                     ),
-                    child: ListTile(
-                      title: Padding(
-                        padding: EdgeInsets.only(left: deviceWidth * 0.07),
-                        child: Text(
-                          item.value.title,
-                          style: overfLowTextStyle(
-                              deviceWidth: deviceWidth,
-                              deviceHeight: deviceHeight,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium!
-                                  .copyWith(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 20.0)),
-                        ),
-                      ),
-                      leading: Icon(currentIndex == item.key
-                          ? item.value.selectedIcon
-                          : item.value.unSelectedIcon),
-                      onTap: () {
-                        // Navigate to corresponding page
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(builder: (context) => getNavigationPage(item.title)),
-                        // );
-                      },
-                    ),
-                  ))
-              ,
+                  ),
+                  leading: Icon(currentIndex == item.key
+                      ? item.value.selectedIcon
+                      : item.value.unSelectedIcon),
+                  onTap: () {
+                    // Navigate to corresponding page
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(builder: (context) => getNavigationPage(item.title)),
+                    // );
+                  },
+                ),
+              )),
         ],
       ),
     );
