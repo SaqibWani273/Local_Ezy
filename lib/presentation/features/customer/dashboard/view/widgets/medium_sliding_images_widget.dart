@@ -1,9 +1,9 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import '/presentation/features/product/view/product_details_screen.dart';
+import '../../../product/view/product_details_screen.dart';
 
-import '../../../../../data/models/product/product_model.dart';
-import '../../../../../data/models/shop_model.dart';
+import '../../../../../../data/models/product/product_model.dart';
+import '../../../../../../data/models/shop_model.dart';
 
 class MediumSlidingImagesWidget extends StatelessWidget {
   //one of the two parameters is required, products or shops

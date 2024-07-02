@@ -1,16 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mca_project/presentation/features/customer/authentication/view_model/customer_auth_bloc.dart';
 import '/presentation/common/widgets/my_text_field_widget.dart';
 
-import '../../../../utils/constants/data.dart';
-import '../../../../utils/constants/images.dart';
-import '../../../../utils/constants/theme_const.dart';
+import '../../../../../utils/constants/data.dart';
+import '../../../../../utils/constants/images.dart';
+import '../../../../../utils/constants/theme_const.dart';
 import '../../categories/view/category_screen.dart';
 import 'widgets/large_sliding_images_widget.dart';
 import 'widgets/medium_sliding_images_widget.dart';
 import 'widgets/top_categories_widget.dart';
 
-class Dashboard extends StatelessWidget {
+class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
+
+  @override
+  State<Dashboard> createState() => _DashboardState();
+}
+
+class _DashboardState extends State<Dashboard> {
+  @override
+  void initState() {
+    //to load Customer data from db using auht token from secure storage
+    context.read<CustomerAuthBloc>().add(CustomerAuthVerificationEvent());
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

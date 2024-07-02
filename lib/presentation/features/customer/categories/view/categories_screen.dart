@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '/presentation/features/categories/view/category_screen.dart';
+import 'category_screen.dart';
 import '/presentation/common/widgets/my_text_field_widget.dart';
 
-import '../../../../utils/constants/data.dart';
+import '../../../../../utils/constants/data.dart';
 
 class CategoriesScreen extends StatelessWidget {
   const CategoriesScreen({super.key});

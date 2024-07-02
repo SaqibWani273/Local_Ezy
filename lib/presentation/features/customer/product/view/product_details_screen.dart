@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mca_project/utils/functions/date_formatting.dart';
 import '/data/models/product/product_model.dart';
-import '/presentation/features/dashboard/view/widgets/large_sliding_images_widget.dart';
+import '../../dashboard/view/widgets/large_sliding_images_widget.dart';
 
 class ProductDetailsScreen extends StatelessWidget {
   final Product product;

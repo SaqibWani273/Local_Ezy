@@ -19,6 +19,9 @@ dependencies:
   google_fonts: ^6.2.1
   curved_navigation_bar: ^1.0.5
   intl: ^0.19.0
+  flutter_bloc: ^8.1.6
+  http: ^1.2.1
+  flutter_secure_storage: ^9.2.2
 
 dev_dependencies:
   flutter_test:
@@ -40,6 +43,7 @@ flutter:
     - assets/images/trending_now/
     - assets/images/top_picks/
     - assets/images/products_may_like/
+    - assets/images/
 
 
   

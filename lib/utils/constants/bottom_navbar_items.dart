@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '/presentation/features/categories/view/categories_screen.dart';
-import '/presentation/features/dashboard/view/dashoard.dart';
+import 'package:mca_project/presentation/features/customer/profile/customer_profile.dart';
+import '../../presentation/features/customer/categories/view/categories_screen.dart';
+import '../../presentation/features/customer/dashboard/view/dashoard.dart';
 
 class BottomNavbarItem {
   final String label;
@@ -48,5 +49,5 @@ List<Widget> mainScreens = [
   Container(),
   const Dashboard(),
   Container(),
-  Container(),
+  CustomerProfile(),
 ];
