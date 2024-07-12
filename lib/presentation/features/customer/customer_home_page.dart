@@ -1,17 +1,17 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import '/presentation/common/widgets/drawer_widget.dart';
+import '../../common/widgets/drawer_widget.dart';
 
-import '../../../utils/constants/bottom_navbar_items.dart';
+import '../../../constants/bottom_navbar_items.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class CustomerHomePage extends StatefulWidget {
+  const CustomerHomePage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<CustomerHomePage> createState() => _CustomerHomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _CustomerHomePageState extends State<CustomerHomePage> {
   int currentIndex = 2;
   int currentDrawerItemIndex = 0;
   void changeIndex(int index) {
@@ -48,6 +48,7 @@ class _HomePageState extends State<HomePage> {
       ),
       drawer: DrawerWidget(
         currentIndex: currentDrawerItemIndex,
+        homePageContext: context,
       ),
       body: mainScreens[currentIndex],
       bottomNavigationBar: CurvedNavigationBar(

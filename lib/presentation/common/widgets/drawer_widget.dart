@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
-import '/utils/constants/drawer_data.dart';
-import '/utils/constants/theme_const.dart';
+import 'package:mca_project/utils/handle_drawer_item_tap.dart';
+import '../../../constants/drawer_data.dart';
+import '../../../theme/overflow_text_style.dart';
 
 class DrawerWidget extends StatelessWidget {
   final int currentIndex;
-  const DrawerWidget({super.key, required this.currentIndex});
+  final BuildContext homePageContext;
+  const DrawerWidget(
+      {super.key, required this.currentIndex, required this.homePageContext});
 
   @override
   Widget build(BuildContext context) {
@@ -55,11 +58,11 @@ class DrawerWidget extends StatelessWidget {
                       ? item.value.selectedIcon
                       : item.value.unSelectedIcon),
                   onTap: () {
-                    // Navigate to corresponding page
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(builder: (context) => getNavigationPage(item.title)),
-                    // );
+                    handleDrawerItemTap(
+                      enumValue: item.value.enumValue,
+                      context: context,
+                      homepageContext: homePageContext,
+                    );
                   },
                 ),
               )),

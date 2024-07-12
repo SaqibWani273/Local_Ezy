@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mca_project/data/constants/image_constants.dart';
+import 'package:mca_project/constants/image_constants.dart';
 import 'package:mca_project/data/models/customer.dart';
 import 'package:mca_project/data/repositories/customer/customer_profile_repository.dart';
 import 'package:mca_project/presentation/features/customer/authentication/view/customer_login.dart';
@@ -36,11 +36,11 @@ class CustomerProfile extends StatelessWidget {
                   const SizedBox(height: 20.0),
 
                   Text(
-                    customer!.email,
+                    customer!.user.email,
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   Text(
-                    customer!.name,
+                    customer.user.username,
                     style: Theme.of(context).textTheme.headlineMedium,
                   ),
                   SizedBox(

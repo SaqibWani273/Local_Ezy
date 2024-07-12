@@ -1,16 +1,35 @@
-# mca_project
 
-A new Flutter project.
+Folder structure for now
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+ecommerce_app/
+├── lib/
+│   ├── main.dart
+│   ├── app/
+│   │   ├── app.dart
+│   │   ├── router.dart
+│   ├── models/
+│   │   ├── user.dart
+│   │   ├── product.dart
+│   ├── services/
+│   │   ├── api_service.dart
+│   │   ├── auth_service.dart
+│   ├── viewmodels/
+│   │   ├── customer_viewmodel.dart
+│   │   ├── shop_viewmodel.dart
+│   │   ├── admin_viewmodel.dart
+│   ├── views/
+│   │   ├── customer/
+│   │   │   ├── customer_dashboard.dart
+│   │   │   ├── customer_login.dart
+│   │   ├── shop/
+│   │   │   ├── shop_dashboard.dart
+│   │   │   ├── shop_login.dart
+│   │   ├── admin/
+│   │   │   ├── admin_dashboard.dart
+│   │   │   ├── admin_login.dart
+│   ├── widgets/
+│   │   ├── common_widget.dart
+│   ├── utils/
+│   │   ├── constants.dart
+│   │   ├── helpers.dart
+└── test/

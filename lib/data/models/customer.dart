@@ -1,48 +1,34 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
-import 'dart:ffi';
 
-class Customer {
-  final int id;
-  final String name;
-  final String email;
-  final String password;
+import 'basic_user_model.dart';
+
+//UserModel is used to check user-type during app startup
+abstract class UserModel {}
+
+class Customer extends UserModel {
+  BasicUserModel user;
   Customer({
-    required this.id,
-    required this.name,
-    required this.email,
-    required this.password,
+    required this.user,
   });
 
   Customer copyWith({
-    int? id,
-    String? name,
-    String? email,
-    String? password,
+    BasicUserModel? user,
   }) {
     return Customer(
-      id: id ?? this.id,
-      name: name ?? this.name,
-      email: email ?? this.email,
-      password: password ?? this.password,
+      user: user ?? this.user,
     );
   }
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'id': id,
-      'name': name,
-      'email': email,
-      'password': password,
+      'user': user.toMap(),
     };
   }
 
   factory Customer.fromMap(Map<String, dynamic> map) {
     return Customer(
-      id: map['id'],
-      name: map['username'] as String,
-      email: map['email'] as String,
-      password: map['password'] as String,
+      user: BasicUserModel.fromMap(map['myUser'] as Map<String, dynamic>),
     );
   }
 
@@ -51,23 +37,16 @@ class Customer {
   factory Customer.fromJson(String source) =>
       Customer.fromMap(json.decode(source) as Map<String, dynamic>);
 
-  @override
-  String toString() {
-    return 'Customer(id: $id, name: $name, email: $email, password: $password)';
-  }
+  // @override
+  // String toString() => 'Customer(user: $user)';
 
-  @override
-  bool operator ==(covariant Customer other) {
-    if (identical(this, other)) return true;
+  // @override
+  // bool operator ==(covariant Customer other) {
+  //   if (identical(this, other)) return true;
 
-    return other.id == id &&
-        other.name == name &&
-        other.email == email &&
-        other.password == password;
-  }
+  //   return other.user == user;
+  // }
 
-  @override
-  int get hashCode {
-    return id.hashCode ^ name.hashCode ^ email.hashCode ^ password.hashCode;
-  }
+  // @override
+  // int get hashCode => user.hashCode;
 }

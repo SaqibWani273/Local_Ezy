@@ -1,17 +1,3 @@
-import '/data/models/product/product_model.dart';
-
-class Category {
-  String name;
-  String image;
-  bool isTopCategory;
-  List<Product> products;
-  Category(
-      {required this.name,
-      required this.image,
-      required this.isTopCategory,
-      required this.products});
-}
-
 /// Category of products within the application.
 enum CategoryType {
   /// Clothing, apparel, and fashion accessories.

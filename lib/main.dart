@@ -1,23 +1,56 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:mca_project/data/models/shop_model.dart';
 import 'package:mca_project/data/repositories/customer/customer_profile_repository.dart';
+import 'package:mca_project/data/repositories/shop/shop_data_repository.dart';
+import 'package:mca_project/presentation/common/screens/no_internet_screen.dart';
 import 'package:mca_project/presentation/features/customer/authentication/view_model/customer_auth_bloc.dart';
-import '/presentation/common/theme/theme.dart';
-import 'presentation/features/customer/home_page.dart';
+import 'package:mca_project/presentation/features/shop/shop_home_page.dart';
+import 'package:mca_project/utils/main_async_tasks.dart';
+import 'data/models/customer.dart';
+import 'presentation/features/shop/shop_authentication/view_model/shop_auth_bloc.dart';
+import 'theme/theme.dart';
+import 'data/repositories/customer/customer_data_repository.dart';
+import 'presentation/features/customer/customer_home_page.dart';
+import 'presentation/features/customer/dashboard/view_model/customer_data_bloc.dart';
 
-void main() {
-  runApp(const MyApp());
+Future<void> main() async {
+  WidgetsBinding wb = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: wb);
+  //do async tasks like user-authentication
+  UserModel? userModel = await mainAsyncTasks();
+  runApp(MyApp(
+    userModel: userModel,
+  ));
+  FlutterNativeSplash.remove();
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final UserModel? userModel;
+  const MyApp({super.key, required this.userModel});
 
   @override
   Widget build(BuildContext context) {
+    Customer? customer;
+    ShopModel? shopModel;
+    if (userModel is Customer || userModel == null) {
+      customer = userModel as Customer?;
+    } else if (userModel is ShopModel) {
+      shopModel = userModel as ShopModel;
+    }
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider(
-          create: (context) => CustomerProfileRepository(),
+          create: (context) => CustomerProfileRepository(customer: customer),
+        ),
+        RepositoryProvider(
+          create: (context) => CustomerDataRepository(),
+        ),
+        RepositoryProvider(
+          create: (context) => ShopDataRepository(shopModel: shopModel),
         ),
       ],
       child: MultiBlocProvider(
@@ -28,12 +61,26 @@ class MyApp extends StatelessWidget {
                         RepositoryProvider.of<CustomerProfileRepository>(
                             context),
                   )),
+          BlocProvider(
+            create: (context) => CustomerDataBloc(
+                customerDataRepository:
+                    RepositoryProvider.of<CustomerDataRepository>(context)),
+          ),
+          BlocProvider(
+            create: (context) => ShopAuthBloc(
+                shopDataRepository:
+                    RepositoryProvider.of<ShopDataRepository>(context)),
+          )
         ],
         child: MaterialApp(
           title: 'MCA Project',
           theme: AppTheme,
           debugShowCheckedModeBanner: false,
-          home: const HomePage(),
+          home: userModel is Customer || userModel == null
+              ? const CustomerHomePage()
+              : userModel is ShopModel
+                  ? const ShopHomePage()
+                  : const NoInternetScreen(),
         ),
       ),
     );

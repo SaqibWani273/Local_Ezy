@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '/data/models/category_model.dart';
+import '../../../../../data/models/category/product_category.dart';
 
 class CategoryScreen extends StatelessWidget {
-  final Category category;
+  final ProductCategory category;
   const CategoryScreen({super.key, required this.category});
 
   @override

@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../../../data/repositories/customer/customer_data_repository.dart';
 import 'category_screen.dart';
 import '/presentation/common/widgets/my_text_field_widget.dart';
-
-import '../../../../../utils/constants/data.dart';
 
 class CategoriesScreen extends StatelessWidget {
   const CategoriesScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final categories = context.read<CustomerDataRepository>().getCategories;
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Column(
@@ -31,8 +32,8 @@ class CategoriesScreen extends StatelessWidget {
                   crossAxisSpacing: 15,
                   childAspectRatio: 1.0),
               // physics: NeverScrollableScrollPhysics(),
-              children: categories
-                  .where((element) => !element.isTopCategory)
+              children: categories!
+                  .where((element) => !element.isTopProductCategory)
                   .map((e) => InkWell(
                         onTap: () =>
                             Navigator.of(context).push(MaterialPageRoute(

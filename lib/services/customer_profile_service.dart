@@ -3,9 +3,9 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:mca_project/utils/exceptions/customer_exception.dart';
-import 'package:mca_project/utils/functions/secure_storage.dart';
+import 'package:mca_project/utils/secure_storage.dart';
 
-import '../../models/customer.dart';
+import '../data/models/customer.dart';
 
 class CustomerProfileService {
   static const String baseApiUrl = 'http://10.0.2.2:8080/customer';

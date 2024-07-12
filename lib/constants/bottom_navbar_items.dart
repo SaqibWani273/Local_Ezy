@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mca_project/presentation/features/customer/profile/customer_profile.dart';
-import '../../presentation/features/customer/categories/view/categories_screen.dart';
-import '../../presentation/features/customer/dashboard/view/dashoard.dart';
+import '../presentation/features/customer/categories/view/categories_screen.dart';
+import '../presentation/features/customer/dashboard/view/dashoard.dart';
 
 class BottomNavbarItem {
   final String label;

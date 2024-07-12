@@ -22,10 +22,18 @@ dependencies:
   flutter_bloc: ^8.1.6
   http: ^1.2.1
   flutter_secure_storage: ^9.2.2
+  geolocator: ^12.0.0
+  flutter_native_splash: ^2.3.6
+  connectivity_plus: ^6.0.3
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+flutter_native_splash:
+
+  color: "#202046" 
+  image: assets/images/logo.png
+  fullscreen: true
 
   flutter_lints: ^3.0.0
 flutter:

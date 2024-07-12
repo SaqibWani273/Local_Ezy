@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:mca_project/data/repositories/customer/customer_profile_repository.dart';
 import 'package:mca_project/utils/exceptions/customer_exception.dart';
 
-import '../../../../../utils/constants/rest_api_const.dart';
+import '../../../../../constants/rest_api_const.dart';
 part 'customer_auth_event.dart';
 part 'customer_auth_state.dart';
 
