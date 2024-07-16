@@ -1,5 +1,5 @@
 import 'package:mca_project/data/models/category/product_category.dart';
-import 'package:mca_project/data/models/product/product_model.dart';
+import 'package:mca_project/data/models/product.dart';
 import 'package:mca_project/data/models/shop_model.dart';
 
 class CustomerDataRepository {

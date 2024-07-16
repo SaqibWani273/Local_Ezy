@@ -2,13 +2,19 @@
 import 'dart:convert';
 
 import 'product_category.dart';
+import 'specific_category/specific_category.dart';
 
-class ClothingFashionCategory implements SpecificCategory {
+class ClothingFashionCategory extends SpecificCategory {
   final String size;
   final String material;
   final Gender gender;
   final FitType? fitType;
   final Season? season;
+  final String name;
+  /* more attributes 
+List<Color> colors;
+
+  */
   ClothingFashionCategory({
     required this.name,
     required this.size,
@@ -16,10 +22,8 @@ class ClothingFashionCategory implements SpecificCategory {
     required this.gender,
     this.fitType,
     this.season,
-  });
-  @override
-  String name; //unique key
-  //will be used in the product model to identify the category
+  }) : super(name: name);
+
   factory ClothingFashionCategory.fromMap(Map<String, dynamic> map) {
     return ClothingFashionCategory(
       name: map['name'] as String,

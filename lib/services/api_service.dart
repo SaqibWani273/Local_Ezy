@@ -2,8 +2,11 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:mca_project/constants/rest_api_const.dart';
+import 'package:mca_project/data/models/category/product_category.dart';
+import 'package:mca_project/presentation/features/shop/product_upload/upload_product_screen.dart';
 import 'package:mca_project/utils/exceptions/custom_exception.dart';
 
+import '../data/models/category/category_data.dart';
 import '../data/models/customer.dart';
 import '../data/models/shop_model.dart';
 import '../utils/secure_storage.dart';
@@ -23,7 +26,7 @@ class ApiService {
         headers: {"Authorization": "Bearer $token"},
         body: token,
       );
-      log(response.body);
+
       if (response.statusCode == 200) {
         /* expected json response
        '{
@@ -110,7 +113,38 @@ class ApiService {
   }
 
   static Future<void> logoutShop() async {
-    try {} catch (e) {
+    try {
+      await SecureStorage.deleteToken();
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  static Future<List<CategoryData>?> loadAllCategories() async {
+    try {
+      final token = await SecureStorage.getToken();
+      if (token == null || token.isEmpty) {
+        //not logged in
+        return null;
+      }
+      final response = await http.get(
+        Uri.parse(loadAllCategoriesUrl),
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer $token"
+        },
+      );
+      if (response.statusCode == 200) {
+        var categoriesData = <CategoryData>[];
+        for (var element in jsonDecode(response.body)) {
+          categoriesData.add(CategoryData.fromJson(element));
+        }
+        return categoriesData;
+      } else {
+        throw CustomException(
+            message: " Something went wrong!,${response.statusCode}");
+      }
+    } catch (e) {
       rethrow;
     }
   }

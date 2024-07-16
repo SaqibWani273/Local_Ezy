@@ -2,20 +2,18 @@
 import 'dart:convert';
 
 import 'product_category.dart';
+import 'specific_category/specific_category.dart';
 
-class ElectronicsCategory implements SpecificCategory {
+class ElectronicsCategory extends SpecificCategory {
   final String brand;
   final String warrantyPeriod;
+  final String name;
 
   ElectronicsCategory({
     required this.brand,
     required this.warrantyPeriod,
     required this.name,
-  });
-
-  @override
-  String name; //unique key
-  //will be used in the product model to identify the category
+  }) : super(name: name);
 
   factory ElectronicsCategory.fromMap(Map<String, dynamic> map) {
     return ElectronicsCategory(

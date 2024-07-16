@@ -255,13 +255,13 @@ class _DashboardState extends State<Dashboard> {
         // ]);
       }
       if (state is CustomerDataErrorState) {
-        Scaffold(
+        return Scaffold(
           body: Center(child: Text(state.error)),
         );
       }
       if (state is CustomerDataLoadingState) {
         return Scaffold(
-          body: const Center(child: CircularProgressIndicator.adaptive()),
+          body: const Center(child: CircularProgressIndicator()),
         );
       }
       return Scaffold(

@@ -2,10 +2,11 @@
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
+import 'package:json_annotation/json_annotation.dart';
 
-import '/data/models/product/product_model.dart';
+import 'specific_category/specific_category.dart';
 
-//This Model is needed to show the product categories in the Dashboard
+//This Model is needed to show the product categories in the customer-Dashboard
 class ProductCategory {
   String name;
   String description;
@@ -43,39 +44,17 @@ class ProductCategory {
       ProductCategory.fromMap(json.decode(source) as Map<String, dynamic>);
 }
 
-abstract class SpecificCategory {
-  abstract String name;
-  // SpecificCategory({
-  //   required this.name,
-  // });
-
-  @override
-  String toString() => 'SpecificCategory(name: $name)';
-
-  @override
-  bool operator ==(covariant SpecificCategory other) {
-    if (identical(this, other)) return true;
-
-    return other.name == name;
-  }
-
-  @override
-  int get hashCode => name.hashCode;
-}
-
-class GeneralSpecificCategory implements SpecificCategory {
+class GeneralSpecificCategory extends SpecificCategory {
   //if a category has must-have attributes, add them at the time
   //of adding the product
   final SpecificAttributesMap? mustHaveSpecificAttributes;
   final SpecificAttributesMap? canHaveSpecificAttributes;
+  final String name;
   GeneralSpecificCategory({
     this.canHaveSpecificAttributes,
     this.mustHaveSpecificAttributes,
     required this.name,
-  });
-
-  @override
-  String name;
+  }) : super(name: name);
 }
 
 /*

@@ -35,7 +35,7 @@ class ShopAuthBloc extends Bloc<ShopAuthEvent, ShopAuthState> {
           break;
         case ShopAuthLogoutEvent _:
           await shopDataRepository.logoutShop();
-          emit(ShopAuthInitialState());
+          emit(ShopAuthLoggedOutState());
           break;
       }
     } on CustomException catch (e) {

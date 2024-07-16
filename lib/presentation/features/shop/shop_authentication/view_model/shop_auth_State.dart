@@ -8,6 +8,8 @@ class ShopAuthLoadingState extends ShopAuthState {}
 
 class ShopAuthLoggedInState extends ShopAuthState {}
 
+class ShopAuthLoggedOutState extends ShopAuthState {}
+
 class ShopAuthEmailSentState extends ShopAuthState {}
 
 class ShopAuthErrorState extends ShopAuthState {

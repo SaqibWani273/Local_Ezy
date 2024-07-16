@@ -5,3 +5,4 @@ const String customerRegisterUrl = '$baseCustomerUrl/register';
 const String userProfileUrl = '$baseApiUrl/user/me';
 const String shopRegistrationUrl = '$baseApiUrl/shop/register';
 const String shopLoginUrl = '$baseApiUrl/shop/login';
+const String loadAllCategoriesUrl = '$baseApiUrl/user/get-all-categories';

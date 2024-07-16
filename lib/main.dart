@@ -11,6 +11,7 @@ import 'package:mca_project/presentation/features/customer/authentication/view_m
 import 'package:mca_project/presentation/features/shop/shop_home_page.dart';
 import 'package:mca_project/utils/main_async_tasks.dart';
 import 'data/models/customer.dart';
+import 'presentation/features/shop/product_upload/view_model/shop_bloc.dart';
 import 'presentation/features/shop/shop_authentication/view_model/shop_auth_bloc.dart';
 import 'theme/theme.dart';
 import 'data/repositories/customer/customer_data_repository.dart';
@@ -70,7 +71,11 @@ class MyApp extends StatelessWidget {
             create: (context) => ShopAuthBloc(
                 shopDataRepository:
                     RepositoryProvider.of<ShopDataRepository>(context)),
-          )
+          ),
+          BlocProvider(
+              create: (context) => ShopBloc(
+                  shopDataRepository:
+                      RepositoryProvider.of<ShopDataRepository>(context))),
         ],
         child: MaterialApp(
           title: 'MCA Project',

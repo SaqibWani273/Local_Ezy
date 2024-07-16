@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mca_project/utils/extensions/date_formatting.dart';
-import '/data/models/product/product_model.dart';
+import '../../../../../data/models/product.dart';
 import '../../dashboard/view/widgets/large_sliding_images_widget.dart';
 
 class ProductDetailsScreen extends StatelessWidget {
@@ -93,7 +93,7 @@ class ProductDetailsScreen extends StatelessWidget {
                                 margin: EdgeInsets.symmetric(
                                     horizontal: deviceWidth * 0.03),
                                 decoration: BoxDecoration(
-                                  color: e,
+                                  color: Colors.green,
                                   shape: BoxShape.circle,
                                   // borderRadius: BorderRadius.circular(24.0),
                                 ),
@@ -112,7 +112,7 @@ class ProductDetailsScreen extends StatelessWidget {
                   height: 20,
                 ),
                 //reviews
-                if (product.reviews.isNotEmpty)
+                if (product.reviews != null && product.reviews!.isNotEmpty)
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -123,7 +123,7 @@ class ProductDetailsScreen extends StatelessWidget {
                           style: Theme.of(context).textTheme.headlineSmall,
                         ),
                       ),
-                      ...product.reviews.map((e) => Column(
+                      ...product.reviews!.map((e) => Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
