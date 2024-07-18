@@ -3,12 +3,13 @@ import 'dart:convert';
 
 import 'package:geolocator/geolocator.dart';
 
-import 'package:mca_project/data/models/category/product_category.dart';
-import 'package:mca_project/data/models/customer.dart';
-import 'package:mca_project/data/models/basic_user_model.dart';
+import '/data/models/category/product_category.dart';
+import '/data/models/customer.dart';
+import '/data/models/basic_user_model.dart';
 
 class ShopModel extends UserModel {
   // String name;
+  int? id;
   BasicUserModel user;
   String description;
   List<ProductCategory> categories;
@@ -24,21 +25,25 @@ class ShopModel extends UserModel {
     required this.description,
     required this.location,
     required this.contactInfo,
+    this.id,
   });
 
-  // Map<String, dynamic> toMap() {
-  //   return <String, dynamic>{
-  //     'name': name,
-  //     'description': description,
-  //     'categories': categories.map((x) => x.toMap()).toList(),
-  //     'image': image,
-  //     'location': location.toMap(),
-  //     'contactInfo': contactInfo.toMap(),
-  //   };
-  // }
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'id': id,
+      'myUser': user.toMap(),
+      // 'name': user.username,
+      // 'description': description,
+      // 'categories': categories.map((x) => x.toMap()).toList(),
+      // 'image': image,
+      // 'location': location.toMap(),
+      // 'contactInfo': contactInfo.toMap(),
+    };
+  }
 
   factory ShopModel.fromMap(Map<String, dynamic> map) {
     return ShopModel(
+      id: map['id'] as int,
       user: BasicUserModel.fromMap(map['myUser'] as Map<String, dynamic>),
       description: map['description'] as String,
       categories: [],

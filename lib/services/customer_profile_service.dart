@@ -2,8 +2,8 @@ import 'dart:developer';
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import 'package:mca_project/utils/exceptions/customer_exception.dart';
-import 'package:mca_project/utils/secure_storage.dart';
+import '/utils/exceptions/customer_exception.dart';
+import '/utils/secure_storage.dart';
 
 import '../data/models/customer.dart';
 

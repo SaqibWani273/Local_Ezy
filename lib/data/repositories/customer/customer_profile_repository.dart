@@ -1,7 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:developer';
 
-import 'package:mca_project/services/customer_profile_service.dart';
+import '/services/customer_profile_service.dart';
 
 import '../../models/customer.dart';
 

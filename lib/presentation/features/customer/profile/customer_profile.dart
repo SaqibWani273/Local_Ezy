@@ -2,10 +2,10 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mca_project/constants/image_constants.dart';
-import 'package:mca_project/data/models/customer.dart';
-import 'package:mca_project/data/repositories/customer/customer_profile_repository.dart';
-import 'package:mca_project/presentation/features/customer/authentication/view/customer_login.dart';
+import '/constants/image_constants.dart';
+import '/data/models/customer.dart';
+import '/data/repositories/customer/customer_profile_repository.dart';
+import '/presentation/features/customer/authentication/view/customer_login.dart';
 
 import '../authentication/view_model/customer_auth_bloc.dart';
 

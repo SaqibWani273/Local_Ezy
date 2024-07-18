@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mca_project/utils/extensions/date_formatting.dart';
+import '/utils/extensions/date_formatting.dart';
 import '../../../../../data/models/product.dart';
 import '../../dashboard/view/widgets/large_sliding_images_widget.dart';
 
@@ -40,7 +40,7 @@ class ProductDetailsScreen extends StatelessWidget {
                         ]),
                   ),
                   Hero(
-                    tag: product.id,
+                    tag: product.id!,
                     child: SizedBox(
                       //my custom widget using CourselSlider
                       child: ImagesWidget(
@@ -81,26 +81,26 @@ class ProductDetailsScreen extends StatelessWidget {
                 const SizedBox(
                   height: 20,
                 ),
-                if (product.colors.isNotEmpty)
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: product.colors
-                          .map((e) => Container(
-                                height: 40,
-                                width: 40,
-                                margin: EdgeInsets.symmetric(
-                                    horizontal: deviceWidth * 0.03),
-                                decoration: BoxDecoration(
-                                  color: Colors.green,
-                                  shape: BoxShape.circle,
-                                  // borderRadius: BorderRadius.circular(24.0),
-                                ),
-                              ))
-                          .toList(),
-                    ),
-                  ),
+                // if (product.colors.isNotEmpty)
+                //   SingleChildScrollView(
+                //     scrollDirection: Axis.horizontal,
+                //     child: Row(
+                //       mainAxisAlignment: MainAxisAlignment.start,
+                //       children: product.colors
+                //           .map((e) => Container(
+                //                 height: 40,
+                //                 width: 40,
+                //                 margin: EdgeInsets.symmetric(
+                //                     horizontal: deviceWidth * 0.03),
+                //                 decoration: BoxDecoration(
+                //                   color: Colors.green,
+                //                   shape: BoxShape.circle,
+                //                   // borderRadius: BorderRadius.circular(24.0),
+                //                 ),
+                //               ))
+                //           .toList(),
+                //     ),
+                //   ),
                 const SizedBox(
                   height: 20,
                 ),
@@ -112,62 +112,62 @@ class ProductDetailsScreen extends StatelessWidget {
                   height: 20,
                 ),
                 //reviews
-                if (product.reviews != null && product.reviews!.isNotEmpty)
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          "Reviews",
-                          style: Theme.of(context).textTheme.headlineSmall,
-                        ),
-                      ),
-                      ...product.reviews!.map((e) => Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  e.username,
-                                  style:
-                                      Theme.of(context).textTheme.headlineSmall,
-                                ),
-                                //to do : add uploadDateTime feild to
-                                // review model
-                                Text(DateTime.now().dayMonthYearFormatted),
-                                const SizedBox(
-                                  height: 10,
-                                ),
+                // if (product.reviews != null && product.reviews!.isNotEmpty)
+                //   Column(
+                //     crossAxisAlignment: CrossAxisAlignment.start,
+                //     children: [
+                //       Padding(
+                //         padding: const EdgeInsets.all(8.0),
+                //         child: Text(
+                //           "Reviews",
+                //           style: Theme.of(context).textTheme.headlineSmall,
+                //         ),
+                //       ),
+                //       ...product.reviews!.map((e) => Column(
+                //               crossAxisAlignment: CrossAxisAlignment.start,
+                //               children: [
+                //                 Text(
+                //                   e.username,
+                //                   style:
+                //                       Theme.of(context).textTheme.headlineSmall,
+                //                 ),
+                //                 //to do : add uploadDateTime feild to
+                //                 // review model
+                //                 Text(DateTime.now().dayMonthYearFormatted),
+                //                 const SizedBox(
+                //                   height: 10,
+                //                 ),
 
-                                Row(
-                                  children: List.generate(
-                                      5,
-                                      (index) => Icon(
-                                            Icons.star,
-                                            color: index >= e.rating
-                                                ? Colors.grey
-                                                : Colors.blue,
-                                          )),
-                                ),
-                                if (e.image != null)
-                                  Center(
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Image.asset(
-                                        e.image!,
-                                        alignment: Alignment.center,
-                                        width: deviceWidth * 0.7,
-                                      ),
-                                    ),
-                                  ),
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 8.0),
-                                  child: Text(e.review),
-                                ),
-                                const Divider()
-                              ])),
-                    ],
-                  )
+                //                 Row(
+                //                   children: List.generate(
+                //                       5,
+                //                       (index) => Icon(
+                //                             Icons.star,
+                //                             color: index >= e.rating
+                //                                 ? Colors.grey
+                //                                 : Colors.blue,
+                //                           )),
+                //                 ),
+                //                 if (e.image != null)
+                //                   Center(
+                //                     child: Padding(
+                //                       padding: const EdgeInsets.all(8.0),
+                //                       child: Image.asset(
+                //                         e.image!,
+                //                         alignment: Alignment.center,
+                //                         width: deviceWidth * 0.7,
+                //                       ),
+                //                     ),
+                //                   ),
+                //                 Padding(
+                //                   padding:
+                //                       const EdgeInsets.symmetric(vertical: 8.0),
+                //                   child: Text(e.review),
+                //                 ),
+                //                 const Divider()
+                //               ])),
+                //     ],
+                //   )
               ])),
             )
           ],

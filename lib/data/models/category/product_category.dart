@@ -47,14 +47,58 @@ class ProductCategory {
 class GeneralSpecificCategory extends SpecificCategory {
   //if a category has must-have attributes, add them at the time
   //of adding the product
-  final SpecificAttributesMap? mustHaveSpecificAttributes;
-  final SpecificAttributesMap? canHaveSpecificAttributes;
-  final String name;
+  SpecificAttributesMap? mustHaveSpecificAttributes;
+  SpecificAttributesMap? canHaveSpecificAttributes;
+  String name;
   GeneralSpecificCategory({
     this.canHaveSpecificAttributes,
     this.mustHaveSpecificAttributes,
     required this.name,
   }) : super(name: name);
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'mustHaveSpecificAttributes': mustHaveSpecificAttributes?.toMap(),
+      'canHaveSpecificAttributes': canHaveSpecificAttributes?.toMap(),
+      'name': name,
+    };
+  }
+
+  factory GeneralSpecificCategory.fromJson(Map<String, dynamic> map) {
+    return GeneralSpecificCategory(
+      mustHaveSpecificAttributes: map['mustHaveSpecificAttributes'] != null
+          ? SpecificAttributesMap.fromMap(
+              map['mustHaveSpecificAttributes'] as Map<String, dynamic>)
+          : null,
+      canHaveSpecificAttributes: map['canHaveSpecificAttributes'] != null
+          ? SpecificAttributesMap.fromMap(
+              map['canHaveSpecificAttributes'] as Map<String, dynamic>)
+          : null,
+      name: map['name'] as String,
+    );
+  }
+
+  // factory GeneralSpecificCategory.fromJson(String source) =>
+  //     GeneralSpecificCategory.fromMap(
+  //         json.decode(source) as Map<String, dynamic>);
+
+  GeneralSpecificCategory copyWith({
+    SpecificAttributesMap? mustHaveSpecificAttributes,
+    SpecificAttributesMap? canHaveSpecificAttributes,
+    String? name,
+  }) {
+    return GeneralSpecificCategory(
+      mustHaveSpecificAttributes:
+          mustHaveSpecificAttributes ?? this.mustHaveSpecificAttributes,
+      canHaveSpecificAttributes:
+          canHaveSpecificAttributes ?? this.canHaveSpecificAttributes,
+      name: name ?? this.name,
+    );
+  }
+
+  @override
+  String toString() =>
+      'GeneralSpecificCategory(mustHaveSpecificAttributes: $mustHaveSpecificAttributes, canHaveSpecificAttributes: $canHaveSpecificAttributes, name: $name)';
 }
 
 /*
@@ -69,8 +113,8 @@ SpecificAttributesMap Strucutre - >
 "stringAttribute2" : "value2",
 },
 "enumAttributes" : {
-"enumAttribute1" : ["option1", "option2"],
-"enumAttribute2" : ["option1", "option2"],
+"enumAttribute1" : "any option"
+// "enumAttribute2" : ["option1", "option2"],
 }
 }
 
@@ -78,7 +122,7 @@ SpecificAttributesMap Strucutre - >
 class SpecificAttributesMap {
   final Map<String, String> stringAttributes;
   final Map<String, bool> boolAttributes;
-  final Map<String, List<String>> enumAttributes;
+  final Map<String, String> enumAttributes;
   SpecificAttributesMap({
     required this.stringAttributes,
     required this.boolAttributes,
@@ -88,7 +132,7 @@ class SpecificAttributesMap {
   SpecificAttributesMap copyWith({
     Map<String, String>? stringAttributes,
     Map<String, bool>? boolAttributes,
-    Map<String, List<String>>? enumAttributes,
+    Map<String, String>? enumAttributes,
   }) {
     return SpecificAttributesMap(
       stringAttributes: stringAttributes ?? this.stringAttributes,
@@ -97,6 +141,13 @@ class SpecificAttributesMap {
     );
   }
 
+  factory SpecificAttributesMap.empty() {
+    return SpecificAttributesMap(
+      stringAttributes: <String, String>{},
+      boolAttributes: <String, bool>{},
+      enumAttributes: <String, String>{},
+    );
+  }
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'stringAttributes': stringAttributes,
@@ -111,8 +162,8 @@ class SpecificAttributesMap {
             (map['stringAttributes'] as Map<String, String>)),
         boolAttributes: Map<String, bool>.from(
             (map['boolAttributes'] as Map<String, bool>)),
-        enumAttributes: Map<String, List<String>>.from(
-          (map['enumAttributes'] as Map<String, List<String>>),
+        enumAttributes: Map<String, String>.from(
+          (map['enumAttributes'] as Map<String, String>),
         ));
   }
 

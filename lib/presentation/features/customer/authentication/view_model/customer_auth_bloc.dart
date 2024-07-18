@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
-import 'package:mca_project/data/repositories/customer/customer_profile_repository.dart';
-import 'package:mca_project/utils/exceptions/customer_exception.dart';
+import '/data/repositories/customer/customer_profile_repository.dart';
+import '/utils/exceptions/customer_exception.dart';
 
 import '../../../../../constants/rest_api_const.dart';
 part 'customer_auth_event.dart';

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mca_project/utils/handle_drawer_item_tap.dart';
+import '/utils/handle_drawer_item_tap.dart';
 import '../../../constants/drawer_data.dart';
 import '../../../theme/overflow_text_style.dart';
 
@@ -14,6 +14,8 @@ class DrawerWidget extends StatelessWidget {
     final deviceWidth = MediaQuery.of(context).size.width;
     var deviceHeight = MediaQuery.of(context).size.height;
     return Drawer(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+      width: deviceWidth * 0.7,
       child: ListView(
         // Remove padding from top
         padding: EdgeInsets.zero,

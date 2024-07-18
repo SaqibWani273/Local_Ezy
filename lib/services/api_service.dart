@@ -1,13 +1,14 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:mca_project/constants/rest_api_const.dart';
-import 'package:mca_project/data/models/category/product_category.dart';
-import 'package:mca_project/presentation/features/shop/product_upload/upload_product_screen.dart';
-import 'package:mca_project/utils/exceptions/custom_exception.dart';
+import '/constants/rest_api_const.dart';
+import '/data/models/category/product_category.dart';
+import '../presentation/features/shop/product_upload/view/upload_product_screen.dart';
+import '/utils/exceptions/custom_exception.dart';
 
 import '../data/models/category/category_data.dart';
 import '../data/models/customer.dart';
+import '../data/models/product.dart';
 import '../data/models/shop_model.dart';
 import '../utils/secure_storage.dart';
 import 'package:http/http.dart' as http;
@@ -141,6 +142,24 @@ class ApiService {
         }
         return categoriesData;
       } else {
+        throw CustomException(
+            message: " Something went wrong!,${response.statusCode}");
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  static Future<void> uploadProduct(Product product) async {
+    try {
+      final String? token = await SecureStorage.getToken();
+      final response = await http.post(Uri.parse(uploadProductUrl),
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer $token"
+          },
+          body: jsonEncode(product.toJson()));
+      if (response.statusCode != 200) {
         throw CustomException(
             message: " Something went wrong!,${response.statusCode}");
       }

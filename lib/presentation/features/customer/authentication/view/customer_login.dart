@@ -2,9 +2,9 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mca_project/presentation/common/widgets/email_sent_widget.dart';
-import 'package:mca_project/presentation/common/widgets/form_widget.dart';
-import 'package:mca_project/utils/extensions/form_validation.dart';
+import '/presentation/common/widgets/email_sent_widget.dart';
+import '/presentation/common/widgets/form_widget.dart';
+import '/utils/extensions/form_validation.dart';
 
 import '../view_model/customer_auth_bloc.dart';
 

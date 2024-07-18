@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mca_project/data/repositories/customer/customer_data_repository.dart';
-import 'package:mca_project/presentation/features/customer/authentication/view_model/customer_auth_bloc.dart';
-import 'package:mca_project/presentation/features/customer/dashboard/view_model/customer_data_bloc.dart';
+import '/data/repositories/customer/customer_data_repository.dart';
+import '/presentation/features/customer/authentication/view_model/customer_auth_bloc.dart';
+import '/presentation/features/customer/dashboard/view_model/customer_data_bloc.dart';
 import '../../../../common/widgets/my_text_field_widget.dart';
 
 import '../../../../../constants/data.dart';

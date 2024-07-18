@@ -14,3 +14,9 @@ class ShopErrorState extends ShopState {
   final String error;
   ShopErrorState({required this.error});
 }
+
+class ShopUploadedMultipleImagesState extends ShopState {
+  List<String> images;
+
+  ShopUploadedMultipleImagesState({required this.images});
+}

@@ -1,6 +1,8 @@
+import 'dart:developer';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mca_project/data/repositories/shop/shop_data_repository.dart';
-import 'package:mca_project/utils/exceptions/custom_exception.dart';
+import '/data/repositories/shop/shop_data_repository.dart';
+import '/utils/exceptions/custom_exception.dart';
 import '../../../../../data/models/shop_model.dart';
 
 part 'shop_auth_event.dart';
@@ -41,6 +43,7 @@ class ShopAuthBloc extends Bloc<ShopAuthEvent, ShopAuthState> {
     } on CustomException catch (e) {
       emit(ShopAuthErrorState(e.message));
     } catch (error) {
+      log("error in ShopAuthBloc: $error");
       emit(ShopAuthErrorState("Unknown error occurred !!! "));
     }
   }

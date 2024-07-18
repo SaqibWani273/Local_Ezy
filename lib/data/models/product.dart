@@ -1,6 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 
-import 'package:mca_project/data/models/category/product_category.dart';
+import '/data/models/category/product_category.dart';
+import '/data/models/shop_model.dart';
 
 import 'category/specific_category/specific_category.dart';
 
@@ -8,24 +9,24 @@ part 'product.g.dart';
 
 @JsonSerializable()
 class Product {
-  final String id;
+  final int? id;
   final String name;
   final String brand;
   final String shortDescription;
-  final List<String> images;
+  List<String> images;
   final int price;
   final double? discountInPercentage;
   final String completeDescription;
-  final String shopId;
+  final ShopModel shop;
   final int stockQuantity;
   final double? rating;
-  final SpecificCategory category;
-  final List<String> colors;
-  final bool isAvailable;
-  final List<ProductReview>? reviews;
+  final GeneralSpecificCategory category;
+  final List<String>? colors;
+  final bool available;
+  // final List<ProductReview>? reviews;
   final String sku; //stock keeping unit
   Product({
-    required this.id,
+    this.id,
     required this.name,
     required this.brand,
     required this.shortDescription,
@@ -33,15 +34,17 @@ class Product {
     required this.price,
     this.discountInPercentage,
     required this.completeDescription,
-    required this.shopId,
+    required this.shop,
     required this.stockQuantity,
     this.rating,
     required this.category,
     required this.colors,
-    required this.isAvailable,
+    required this.available,
     required this.sku,
-    required this.reviews,
+    // required this.reviews,
   });
+  //used at product upload screen by shop module
+  void set setImages(List<String> imgUrls) => images = imgUrls;
   factory Product.fromJson(Map<String, dynamic> json) =>
       _$ProductFromJson(json);
 

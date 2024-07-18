@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mca_project/data/repositories/customer/customer_data_repository.dart';
+import '/data/repositories/customer/customer_data_repository.dart';
 
 part 'customer_data_event.dart';
 part 'customer_data_state.dart';

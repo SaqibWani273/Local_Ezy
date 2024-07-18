@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mca_project/data/models/basic_user_model.dart';
-import 'package:mca_project/data/models/shop_model.dart';
-import 'package:mca_project/presentation/common/widgets/email_sent_widget.dart';
-import 'package:mca_project/presentation/common/widgets/form_widget.dart';
-import 'package:mca_project/presentation/features/shop/shop_home_page.dart';
+import '/data/models/basic_user_model.dart';
+import '/data/models/shop_model.dart';
+import '/presentation/common/widgets/email_sent_widget.dart';
+import '/presentation/common/widgets/form_widget.dart';
+import '/presentation/features/shop/shop_home_page.dart';
 
 import '../view_model/shop_auth_bloc.dart';
 

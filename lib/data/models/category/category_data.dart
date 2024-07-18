@@ -35,7 +35,7 @@ class CategoryData {
 @JsonSerializable()
 class CategoryFields {
   final List<String>? stringAttributes;
-  final List<bool>? boolAttributes;
+  final List<String>? boolAttributes;
   // final List<Map<String, List<String>>>? enumAttributes;
   final Map<String, List<String>>? enumAttributes;
   CategoryFields({

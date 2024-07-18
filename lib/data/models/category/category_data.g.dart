@@ -33,7 +33,7 @@ CategoryFields _$CategoryFieldsFromJson(Map<String, dynamic> json) =>
           ?.map((e) => e as String)
           .toList(),
       boolAttributes: (json['boolAttributes'] as List<dynamic>?)
-          ?.map((e) => e as bool)
+          ?.map((e) => e as String)
           .toList(),
       enumAttributes: (json['enumAttributes'] as Map<String, dynamic>?)?.map(
         (k, e) =>

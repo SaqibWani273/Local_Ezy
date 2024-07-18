@@ -1,8 +1,11 @@
+import 'dart:developer';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mca_project/presentation/features/shop/product_upload/upload_product_screen.dart';
-import 'package:mca_project/presentation/features/shop/shop_authentication/view/shop_auth_screen.dart';
+import '/data/repositories/shop/shop_data_repository.dart';
+import 'product_upload/view/upload_product_screen.dart';
+import '/presentation/features/shop/shop_authentication/view/shop_auth_screen.dart';
 
 import 'shop_authentication/view_model/shop_auth_bloc.dart';
 
@@ -28,19 +31,24 @@ class ShopHomePage extends StatelessWidget {
               children: [
                 Text('Shop Home Page'),
                 SizedBox(height: 20),
-                IconButton(
+                TextButton.icon(
                     onPressed: () =>
                         context.read<ShopAuthBloc>().add(ShopAuthLogoutEvent()),
+                    label: Text("Logout"),
                     icon: Icon(
                       Icons.exit_to_app,
                       size: 30,
                     )),
                 SizedBox(height: 80),
-                IconButton(
+                TextButton.icon(
                     onPressed: () => Navigator.of(context).push(
                         MaterialPageRoute(
                             builder: (_) => const UploadProductScreen())),
-                    icon: Icon(Icons.add)),
+                    label: Text("Upload Product"),
+                    icon: Icon(
+                      Icons.add,
+                      size: 30,
+                    )),
               ],
             ),
           );
