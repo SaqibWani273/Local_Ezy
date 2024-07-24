@@ -1,7 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
-import 'basic_user_model.dart';
+import 'basic_user_model/basic_user_model.dart';
 
 //UserModel is used to check user-type during app startup
 abstract class UserModel {}
@@ -22,13 +22,13 @@ class Customer extends UserModel {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'user': user.toMap(),
+      'user': user.toJson(),
     };
   }
 
   factory Customer.fromMap(Map<String, dynamic> map) {
     return Customer(
-      user: BasicUserModel.fromMap(map['myUser'] as Map<String, dynamic>),
+      user: BasicUserModel.fromJson(map['myUser'] as Map<String, dynamic>),
     );
   }
 

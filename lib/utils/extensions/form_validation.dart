@@ -16,6 +16,6 @@ extension PasswordValidator on String {
 
 extension UsernameValidator on String {
   bool isValidUsername() {
-    return RegExp(r"^[a-zA-Z0-9]+$").hasMatch(this);
+    return RegExp(r"^[a-zA-Z0-9\s]+$").hasMatch(this);
   }
 }

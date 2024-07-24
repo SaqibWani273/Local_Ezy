@@ -29,11 +29,13 @@ class CloudinaryService {
       log(decodeResponse.body);
       if (response.statusCode == 400) {
         log(decodeResponse.body);
-        throw CustomException(message: decodeResponse.body);
+        throw CustomException(
+            message: decodeResponse.body, errorType: ErrorType.unknown);
       }
       if (response.statusCode != 200) {
         log("${response.statusCode} -> ${decodeResponse.body}");
         throw CustomException(
+            errorType: ErrorType.internetConnection,
             message:
                 'Something went wrong! Please check your internet connection.');
       }

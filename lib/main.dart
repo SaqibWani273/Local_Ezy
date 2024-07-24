@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:mca_project/data/models/shop_model/shop_model1.dart';
 import '/data/models/shop_model.dart';
 import '/data/repositories/customer/customer_profile_repository.dart';
 import '/data/repositories/shop/shop_data_repository.dart';
@@ -36,11 +37,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Customer? customer;
-    ShopModel? shopModel;
+    ShopModel1? shopModel;
     if (userModel is Customer || userModel == null) {
       customer = userModel as Customer?;
-    } else if (userModel is ShopModel) {
-      shopModel = userModel as ShopModel;
+    } else if (userModel is ShopModel1) {
+      shopModel = userModel as ShopModel1;
     }
     return MultiRepositoryProvider(
       providers: [
@@ -83,7 +84,7 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           home: userModel is Customer || userModel == null
               ? const CustomerHomePage()
-              : userModel is ShopModel
+              : userModel is ShopModel1
                   ? const ShopHomePage()
                   : const NoInternetScreen(),
         ),

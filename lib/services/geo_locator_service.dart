@@ -3,7 +3,7 @@ import 'package:geolocator/geolocator.dart';
 import '../utils/exceptions/custom_exception.dart';
 
 class GeoLocatorService {
-  Future<Position?> getcurrentPosition() async {
+  static Future<Position?> getcurrentPosition() async {
     LocationPermission permission;
     final bool locationServiceEnabled =
         await Geolocator.isLocationServiceEnabled();
@@ -11,7 +11,7 @@ class GeoLocatorService {
       // return Future.error('Location Services are Disabled');
       throw CustomException(
         message: "Location Services are Disabled",
-        // errorType: ErrorType.locationServicesDisabled,
+        errorType: ErrorType.locationServicesDisabled,
       );
     }
     permission = await Geolocator.checkPermission();
@@ -22,7 +22,7 @@ class GeoLocatorService {
         // return Future.error('Location permission are denied');
         throw CustomException(
           message: "Please Allow location permission",
-          // errorType: ErrorType.locationpermissionDenied,
+          errorType: ErrorType.locationpermissionDenied,
         );
       }
     }
@@ -31,7 +31,7 @@ class GeoLocatorService {
       // return Future.error('Location permission are permanently denied');
       throw CustomException(
         message: "Location permissions were denied !!",
-        // errorType: ErrorType.locationPermissionDeniedPermanently,
+        errorType: ErrorType.locationPermissionDeniedPermanently,
       );
     }
     // When we reach here, permissions are granted and we can

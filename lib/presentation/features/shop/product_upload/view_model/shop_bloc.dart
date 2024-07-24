@@ -40,6 +40,7 @@ class ShopBloc extends Bloc<ShopEvent, ShopState> {
         //   break;
       }
     } on CustomException catch (e) {
+      log("error in ShopBloc: $e");
       emit(ShopErrorState(error: e.message));
     } catch (error) {
       log("error in ShopBloc: $error");

@@ -52,7 +52,9 @@ class _CustomerLoginState extends State<CustomerLogin> {
           );
         }
         return FormWidget(
-          registerCallback: ({
+          userType: UserType.customer,
+          registerCallback: (
+            _, {
             required email,
             required password,
             required username,

@@ -1,6 +1,8 @@
 import 'dart:developer';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mca_project/data/models/shop_model/shop_model1.dart';
+import 'package:mca_project/services/geo_locator_service.dart';
 import '/data/repositories/shop/shop_data_repository.dart';
 import '/utils/exceptions/custom_exception.dart';
 import '../../../../../data/models/shop_model.dart';
@@ -13,14 +15,20 @@ class ShopAuthBloc extends Bloc<ShopAuthEvent, ShopAuthState> {
 
   ShopAuthBloc({required this.shopDataRepository})
       : super(ShopAuthInitialState()) {
-    on<ShopAuthLoginEvent>(shopAuthLoginEvent);
-    on<ShopAuthRegisterEvent>(shopAuthRegisterEvent);
-    on<ShopAuthLogoutEvent>(shopAuthLogoutEvent);
-    on<ShopAuthInitialEvent>(shopAuthInitialEvent);
+    on<ShopAuthLoginEvent>(shopAuthLogin);
+    on<ShopAuthRegisterEvent>(shopAuthRegister);
+    on<ShopAuthLogoutEvent>(shopAuthLogout);
+    on<ShopAuthInitialEvent>(shopAuthInitial);
+    on<ShopAuthLoadLocationEvent>(shopAuthLoadLocation);
   }
   Future<void> _handleEvent(
       ShopAuthEvent event, Emitter<ShopAuthState> emit) async {
-    emit(ShopAuthLoadingState());
+    if (event is ShopAuthLoadLocationEvent) {
+      emit(ShopAuthLoadingLocationState());
+    } else {
+      emit(ShopAuthLoadingState());
+    }
+
     try {
       switch (event) {
         case ShopAuthInitialEvent _:
@@ -39,27 +47,33 @@ class ShopAuthBloc extends Bloc<ShopAuthEvent, ShopAuthState> {
           await shopDataRepository.logoutShop();
           emit(ShopAuthLoggedOutState());
           break;
+        case ShopAuthLoadLocationEvent _:
+          await GeoLocatorService.getcurrentPosition();
       }
     } on CustomException catch (e) {
-      emit(ShopAuthErrorState(e.message));
+      log("error in ShopAuthBloc: ${e.message}");
+      emit(ShopAuthErrorState(e));
     } catch (error) {
       log("error in ShopAuthBloc: $error");
-      emit(ShopAuthErrorState("Unknown error occurred !!! "));
+      emit(ShopAuthErrorState(CustomException(
+          message: "Unknown Error", errorType: ErrorType.unknown)));
     }
   }
 
-  void shopAuthInitialEvent(
+  void shopAuthInitial(
           ShopAuthInitialEvent event, Emitter<ShopAuthState> emit) =>
       _handleEvent(event, emit);
-  void shopAuthLoginEvent(
+  void shopAuthLogin(
           ShopAuthLoginEvent loginEvent, Emitter<ShopAuthState> emit) =>
       _handleEvent(loginEvent, emit);
 
-  void shopAuthRegisterEvent(
+  void shopAuthRegister(
           ShopAuthRegisterEvent registerEvent, Emitter<ShopAuthState> emit) =>
       _handleEvent(registerEvent, emit);
 
-  void shopAuthLogoutEvent(
-          ShopAuthLogoutEvent _, Emitter<ShopAuthState> emit) =>
+  void shopAuthLogout(ShopAuthLogoutEvent _, Emitter<ShopAuthState> emit) =>
+      _handleEvent(_, emit);
+  void shopAuthLoadLocation(
+          ShopAuthLoadLocationEvent _, Emitter<ShopAuthState> emit) =>
       _handleEvent(_, emit);
 }

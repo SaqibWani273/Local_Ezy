@@ -8,24 +8,23 @@ part of 'category_data.dart';
 
 CategoryData _$CategoryDataFromJson(Map<String, dynamic> json) => CategoryData(
       name: json['name'] as String,
-      image: json['imageUrl'] as String,
-      mustFields: json['catSpecificMustAttributes'] == null
+      image: json['image'] as String,
+      mustFields: json['mustFields'] == null
+          ? null
+          : CategoryFields.fromJson(json['mustFields'] as Map<String, dynamic>),
+      optionalFields: json['optionalFields'] == null
           ? null
           : CategoryFields.fromJson(
-              json['catSpecificMustAttributes'] as Map<String, dynamic>),
-      optionalFields: json['catSpecificOptionalAttributes'] == null
-          ? null
-          : CategoryFields.fromJson(
-              json['catSpecificOptionalAttributes'] as Map<String, dynamic>),
+              json['optionalFields'] as Map<String, dynamic>),
     );
 
-// Map<String, dynamic> _$CategoryDataToJson(CategoryData instance) =>
-//     <String, dynamic>{
-//       'name': instance.name,
-//       'image': instance.image,
-//       'mustFields': instance.mustFields,
-//       'optionalFields': instance.optionalFields,
-//     };
+Map<String, dynamic> _$CategoryDataToJson(CategoryData instance) =>
+    <String, dynamic>{
+      'name': instance.name,
+      'image': instance.image,
+      'mustFields': instance.mustFields,
+      'optionalFields': instance.optionalFields,
+    };
 
 CategoryFields _$CategoryFieldsFromJson(Map<String, dynamic> json) =>
     CategoryFields(

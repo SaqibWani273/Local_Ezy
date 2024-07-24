@@ -1,8 +1,13 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:geolocator/geolocator.dart';
+import 'package:mca_project/data/models/shop_model/shop_model1.dart';
+import 'package:mca_project/services/geo_locator_service.dart';
+import 'package:geocoding/geocoding.dart';
+
 import '/constants/rest_api_const.dart';
-import '/data/models/category/product_category.dart';
+import '../data/models/category/product_category/product_category.dart';
 import '../presentation/features/shop/product_upload/view/upload_product_screen.dart';
 import '/utils/exceptions/custom_exception.dart';
 
@@ -52,7 +57,7 @@ class ApiService {
           if (decodedResponse['role'] == Roles.ROLE_CUSTOMER.name) {
             return Customer.fromMap(decodedResponse['model']);
           }
-          return ShopModel.fromMap(decodedResponse['model']);
+          return ShopModel1.fromJson(decodedResponse['model']);
         }
         //server did not return any data
         log("Server did not return any data--> ${response.body}");
@@ -72,21 +77,17 @@ class ApiService {
     }
   }
 
-  static Future<void> registerShop(ShopModel shopModel) async {
+  static Future<void> registerShop(ShopModel1 shopModel) async {
     try {
       final response = await http.post(Uri.parse(shopRegistrationUrl),
           headers: {"Content-Type": "application/json"},
-          body: jsonEncode({
-            "description": shopModel.description,
-            "address": shopModel.location.completeAddress,
-            "mobileNumber": shopModel.contactInfo.phone,
-            "imageUrl": shopModel.image,
-            "myUser": shopModel.user.toMap(),
-          }));
+          body: jsonEncode(shopModel.toJson()));
       if (response.statusCode == 200) {
         log(response.body);
       } else {
+        log(" error in  registerShop,response-> ${response.body} ${response.statusCode} -> ${response.body}");
         throw CustomException(
+            errorType: ErrorType.internetConnection,
             message:
                 'Something went wrong! Please check your internet connection.');
       }
@@ -106,6 +107,7 @@ class ApiService {
         await SecureStorage.storeToken(response.body);
       } else {
         throw CustomException(
+            errorType: ErrorType.internetConnection,
             message: " Something went wrong!,${response.statusCode}");
       }
     } catch (e) {
@@ -143,6 +145,7 @@ class ApiService {
         return categoriesData;
       } else {
         throw CustomException(
+            errorType: ErrorType.internetConnection,
             message: " Something went wrong!,${response.statusCode}");
       }
     } catch (e) {
@@ -161,6 +164,7 @@ class ApiService {
           body: jsonEncode(product.toJson()));
       if (response.statusCode != 200) {
         throw CustomException(
+            errorType: ErrorType.internetConnection,
             message: " Something went wrong!,${response.statusCode}");
       }
     } catch (e) {
