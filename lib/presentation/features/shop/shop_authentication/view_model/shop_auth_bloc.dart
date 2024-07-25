@@ -2,10 +2,8 @@ import 'dart:developer';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mca_project/data/models/shop_model/shop_model1.dart';
-import 'package:mca_project/services/geo_locator_service.dart';
 import '/data/repositories/shop/shop_data_repository.dart';
 import '/utils/exceptions/custom_exception.dart';
-import '../../../../../data/models/shop_model.dart';
 
 part 'shop_auth_event.dart';
 part 'shop_auth_State.dart';
@@ -20,6 +18,7 @@ class ShopAuthBloc extends Bloc<ShopAuthEvent, ShopAuthState> {
     on<ShopAuthLogoutEvent>(shopAuthLogout);
     on<ShopAuthInitialEvent>(shopAuthInitial);
     on<ShopAuthLoadLocationEvent>(shopAuthLoadLocation);
+    // on<LoadAllCategoriesEvent>(_loadAllCategories);
   }
   Future<void> _handleEvent(
       ShopAuthEvent event, Emitter<ShopAuthState> emit) async {
@@ -32,6 +31,7 @@ class ShopAuthBloc extends Bloc<ShopAuthEvent, ShopAuthState> {
     try {
       switch (event) {
         case ShopAuthInitialEvent _:
+          await shopDataRepository.loadAllCategories();
           emit(ShopAuthInitialState());
           break;
         case ShopAuthLoginEvent loginEvent:
@@ -47,8 +47,11 @@ class ShopAuthBloc extends Bloc<ShopAuthEvent, ShopAuthState> {
           await shopDataRepository.logoutShop();
           emit(ShopAuthLoggedOutState());
           break;
-        case ShopAuthLoadLocationEvent _:
-          await GeoLocatorService.getcurrentPosition();
+        case ShopAuthLoadLocationEvent loadLocationEvent:
+          final String address = await shopDataRepository
+              .getLocationAddress(loadLocationEvent.userEnteredLocation);
+          emit(ShopAuthLoadedLocationState(address));
+          break;
       }
     } on CustomException catch (e) {
       log("error in ShopAuthBloc: ${e.message}");
@@ -76,4 +79,8 @@ class ShopAuthBloc extends Bloc<ShopAuthEvent, ShopAuthState> {
   void shopAuthLoadLocation(
           ShopAuthLoadLocationEvent _, Emitter<ShopAuthState> emit) =>
       _handleEvent(_, emit);
+// Future<void> _loadAllCategories(
+//       LoadAllCategoriesEvent event, Emitter<ShopAuthState> emit) async {
+//     await _handleEvent(event, emit);
+//   }
 }

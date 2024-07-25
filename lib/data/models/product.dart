@@ -1,8 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:mca_project/data/models/shop_model/shop_model1.dart';
 
-import 'category/product_category/product_category.dart';
-import '/data/models/shop_model.dart';
 
 import 'category/specific_category/specific_category.dart';
 

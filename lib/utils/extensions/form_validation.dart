@@ -8,9 +8,10 @@ extension EmailValidator on String {
 
 extension PasswordValidator on String {
   bool isValidPassword() {
-    return RegExp(
-            r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$')
-        .hasMatch(this);
+    return this.trim().length >= 8;
+    // return RegExp(
+    //         r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$')
+    //     .hasMatch(this);
   }
 }
 

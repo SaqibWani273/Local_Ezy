@@ -37,7 +37,7 @@ class CategoriesScreen extends StatelessWidget {
                             crossAxisSpacing: 15,
                             childAspectRatio: 1.0),
                     // physics: NeverScrollableScrollPhysics(),
-                    children: categories!
+                    children: categories
                         .where((element) => !element.isTopProductCategory)
                         .map((e) => InkWell(
                               onTap: () =>

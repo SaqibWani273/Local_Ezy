@@ -1,17 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '/data/repositories/customer/customer_data_repository.dart';
-import '/presentation/features/customer/authentication/view_model/customer_auth_bloc.dart';
 import '/presentation/features/customer/dashboard/view_model/customer_data_bloc.dart';
-import '../../../../common/widgets/my_text_field_widget.dart';
 
-import '../../../../../constants/data.dart';
-import '../../../../../constants/images.dart';
-import '../../../../../theme/overflow_text_style.dart';
-import '../../categories/view/category_screen.dart';
-import 'widgets/large_sliding_images_widget.dart';
-import 'widgets/medium_sliding_images_widget.dart';
-import 'widgets/top_categories_widget.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});

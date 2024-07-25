@@ -1,11 +1,9 @@
+import 'dart:developer';
+
 import 'package:geocoding/geocoding.dart' as geocoding;
-import 'package:geolocator/geolocator.dart';
 import 'package:mca_project/data/models/shop_model/shop_model1.dart';
 
 import '../../../services/geo_locator_service.dart';
-import '../../models/category/product_category/product_category.dart';
-import '/data/models/shop_model.dart';
-import '../../../presentation/features/shop/product_upload/view/upload_product_screen.dart';
 import '/services/cloudinary_service.dart';
 
 import '../../../services/api_service.dart';
@@ -16,8 +14,9 @@ import '../../models/product.dart';
 class ShopDataRepository {
   ShopModel1? shopModel;
   // ShopModel1? shopModel1;
-  AddressInfo? addressInfo;
+  LocationInfo? locationInfo;
   List<CategoryData> categoriesData = [];
+  // List<ProductCategory> productCategories = [];
 
   ShopDataRepository({this.shopModel});
 
@@ -25,7 +24,15 @@ class ShopDataRepository {
 
   Future<void> registerShop(ShopModel1 shopModel) async {
     try {
-      await ApiService.registerShop(shopModel);
+      final newShopModel = shopModel.copyWith(
+        ownerIdPicUrl:
+            await CloudinaryService.uploadImage(shopModel.ownerIdPicUrl),
+        shopPicUrl: await CloudinaryService.uploadImage(shopModel.shopPicUrl),
+        pancardPicUrl:
+            await CloudinaryService.uploadImage(shopModel.pancardPicUrl),
+        ownerPicUrl: await CloudinaryService.uploadImage(shopModel.ownerPicUrl),
+      );
+      await ApiService.registerShop(newShopModel);
     } catch (e) {
       rethrow;
     }
@@ -65,7 +72,16 @@ class ShopDataRepository {
       }
 
       categoriesData = response;
+      //need these at shop registration
+      // for (CategoryData category in categoriesData) {
+      //   productCategories.add(ProductCategory(
+      //       description: '',
+      //       image: category.image,
+      //       name: category.name,
+      //       isTopProductCategory: false));
+      // }
     } catch (e) {
+      log("loadAllCategories error: $e");
       rethrow;
     }
   }
@@ -112,8 +128,10 @@ class ShopDataRepository {
         _latitude = locations[0].latitude;
       }
       final shortAddress =
-          '${_placemarks[0].name}, ${_placemarks[0].locality}, ${_placemarks[0].country}';
-      addressInfo = AddressInfo(
+
+          // ${_placemarks[0].name},
+          '${_placemarks[0].street},${_placemarks[0].locality},${_placemarks[0].postalCode} ${_placemarks[0].country}';
+      locationInfo = LocationInfo(
           completeAddress:
               '${_placemarks[0].name}, ${_placemarks[0].street}, ${_placemarks[0].subLocality}, ${_placemarks[0].locality}, ${_placemarks[0].administrativeArea}, ${_placemarks[0].postalCode}, ${_placemarks[0].country}',
           shortAddress: shortAddress,

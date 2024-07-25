@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '/utils/extensions/date_formatting.dart';
 import '../../../../../data/models/product.dart';
 import '../../dashboard/view/widgets/large_sliding_images_widget.dart';
 
@@ -193,7 +192,7 @@ class ProductDetailsScreen extends StatelessWidget {
                     ),
                     style: ButtonStyle(
                       backgroundColor:
-                          MaterialStateProperty.all(Colors.grey.shade300),
+                          WidgetStateProperty.all(Colors.grey.shade300),
                     ),
                   ),
                 )),
@@ -211,7 +210,7 @@ class ProductDetailsScreen extends StatelessWidget {
                       ),
                     ),
                     style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(Colors.blue),
+                      backgroundColor: WidgetStateProperty.all(Colors.blue),
                     ),
                   ),
                 ))

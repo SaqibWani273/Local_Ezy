@@ -8,11 +8,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mca_project/presentation/common/screens/error_screen.dart';
-import 'package:mca_project/utils/secure_storage.dart';
 import '../../../../../data/models/category/specific_category/specific_category.dart';
 import '/constants/product_const.dart';
 
-import '../../../../../data/models/category/product_category/product_category.dart';
 import '../../../../../utils/image_picker.dart';
 import '/data/models/category/category_data.dart';
 import '/data/models/product.dart';
@@ -240,7 +238,11 @@ class _UploadProductScreenState extends State<UploadProductScreen> {
             return UploadSuccessScreen();
           }
           if (state is ShopErrorState) {
-            return ErrorScreen(errMsg: state.error);
+            return ErrorScreen(
+              customException: state.customException,
+              onTryAgainPressed: () =>
+                  context.read<ShopBloc>().add(ShopInitialEvent()),
+            );
           }
           // if (state is ShopLoadedAllCategoriesState) {
           final List<CategoryData> categories =

@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 
-// String baseApiUrl = 'http://${getHostname()}:8080';
-String baseApiUrl = 'http://3.111.169.191';
+String baseApiUrl = 'http://${getHostname()}:8080';
+// String baseApiUrl = 'http://3.111.169.191';
 final String baseCustomerUrl = '$baseApiUrl/customer';
 final String customerLoginUrl = '$baseCustomerUrl/login';
 final String customerRegisterUrl = '$baseCustomerUrl/register';
@@ -10,7 +10,7 @@ final String shopRegistrationUrl = '$baseApiUrl/shop/register';
 final String shopLoginUrl = '$baseApiUrl/shop/login';
 final String uploadProductUrl = '$baseApiUrl/shop/add-product';
 final String loadAllCategoriesUrl = '$baseApiUrl/user/get-all-categories';
-final myIpAddress = '192.168.1.8';
+final myIpAddress = '192.168.1.5'; //use ipconfig in cmd
 
 class CloudinaryApiConst {
   static String cloudinaryImageUploadUrl =

@@ -16,6 +16,10 @@ class ShopAuthRegisterEvent extends ShopAuthEvent {
   ShopAuthRegisterEvent(this.shopModel);
 }
 
+// final class LoadAllCategoriesEvent extends ShopAuthEvent {}
 class ShopAuthLogoutEvent extends ShopAuthEvent {}
 
-class ShopAuthLoadLocationEvent extends ShopAuthEvent {}
+class ShopAuthLoadLocationEvent extends ShopAuthEvent {
+  final String? userEnteredLocation;
+  ShopAuthLoadLocationEvent({this.userEnteredLocation});
+}

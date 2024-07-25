@@ -1,20 +1,14 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:geolocator/geolocator.dart';
 import 'package:mca_project/data/models/shop_model/shop_model1.dart';
-import 'package:mca_project/services/geo_locator_service.dart';
-import 'package:geocoding/geocoding.dart';
 
 import '/constants/rest_api_const.dart';
-import '../data/models/category/product_category/product_category.dart';
-import '../presentation/features/shop/product_upload/view/upload_product_screen.dart';
 import '/utils/exceptions/custom_exception.dart';
 
 import '../data/models/category/category_data.dart';
 import '../data/models/customer.dart';
 import '../data/models/product.dart';
-import '../data/models/shop_model.dart';
 import '../utils/secure_storage.dart';
 import 'package:http/http.dart' as http;
 
@@ -105,6 +99,9 @@ class ApiService {
       );
       if (response.statusCode == 200) {
         await SecureStorage.storeToken(response.body);
+      } else if (response.statusCode == 400) {
+        throw CustomException(
+            errorType: ErrorType.unknown, message: response.body);
       } else {
         throw CustomException(
             errorType: ErrorType.internetConnection,
@@ -125,16 +122,16 @@ class ApiService {
 
   static Future<List<CategoryData>?> loadAllCategories() async {
     try {
-      final token = await SecureStorage.getToken();
-      if (token == null || token.isEmpty) {
-        //not logged in
-        return null;
-      }
+      // final token = await SecureStorage.getToken();
+      // if (token == null || token.isEmpty) {
+      //   //not logged in
+      //   return null;
+      // }
       final response = await http.get(
         Uri.parse(loadAllCategoriesUrl),
         headers: {
           "Content-Type": "application/json",
-          "Authorization": "Bearer $token"
+          // "Authorization": "Bearer $token"
         },
       );
       if (response.statusCode == 200) {

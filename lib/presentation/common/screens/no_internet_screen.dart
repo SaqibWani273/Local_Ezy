@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class NoInternetScreen extends StatefulWidget {
@@ -45,7 +44,7 @@ class _NoInternetScreenState extends State<NoInternetScreen> {
                   );
                 },
                 style: ButtonStyle(
-                  backgroundColor: MaterialStatePropertyAll<Color>(
+                  backgroundColor: WidgetStatePropertyAll<Color>(
                       Colors.blue.withOpacity(0.4)),
                 ),
                 child:

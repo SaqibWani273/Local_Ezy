@@ -1,7 +1,5 @@
-import 'dart:developer';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
 import '/services/api_service.dart';
 
 import '../data/models/customer.dart';

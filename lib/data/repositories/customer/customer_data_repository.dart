@@ -2,7 +2,6 @@ import 'package:mca_project/data/models/shop_model/shop_model1.dart';
 
 import '../../models/category/product_category/product_category.dart';
 import '/data/models/product.dart';
-import '/data/models/shop_model.dart';
 
 class CustomerDataRepository {
   List<Product>? _products;

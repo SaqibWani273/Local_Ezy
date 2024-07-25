@@ -41,10 +41,14 @@ class ShopBloc extends Bloc<ShopEvent, ShopState> {
       }
     } on CustomException catch (e) {
       log("error in ShopBloc: $e");
-      emit(ShopErrorState(error: e.message));
+      emit(ShopErrorState(customException: e));
     } catch (error) {
       log("error in ShopBloc: $error");
-      emit(ShopErrorState(error: "Unknown error occurred !!! "));
+      emit(ShopErrorState(
+          customException: CustomException(
+        message: "Unknown Error",
+        errorType: ErrorType.unknown,
+      )));
     }
   }
 

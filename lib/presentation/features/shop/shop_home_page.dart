@@ -1,9 +1,6 @@
-import 'dart:developer';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '/data/repositories/shop/shop_data_repository.dart';
 import 'product_upload/view/upload_product_screen.dart';
 import '/presentation/features/shop/shop_authentication/view/shop_auth_screen.dart';
 

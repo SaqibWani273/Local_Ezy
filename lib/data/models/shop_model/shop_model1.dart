@@ -1,9 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:json_annotation/json_annotation.dart';
-import 'package:mca_project/data/models/shop_model.dart';
+
 
 import '../basic_user_model/basic_user_model.dart';
-import '../category/product_category/product_category.dart';
 import '../customer.dart';
 
 part 'shop_model1.g.dart';
@@ -13,14 +12,15 @@ class ShopModel1 extends UserModel {
   int? id;
   BasicUserModel user;
   String description;
-  List<ProductCategory> categories;
+  List<String> categories;
   String ownerPicUrl;
-  AddressInfo addressInfo;
+  LocationInfo locationInfo;
   String ownerName;
   String shopPicUrl;
   String pancardPicUrl;
   String ownerIdPicUrl;
   String businessLicense;
+  String address;
   int phoneNumber;
   ShopModel1({
     this.id,
@@ -28,35 +28,68 @@ class ShopModel1 extends UserModel {
     required this.description,
     required this.categories,
     required this.ownerPicUrl,
-    required this.addressInfo,
+    required this.locationInfo,
     required this.ownerName,
     required this.shopPicUrl,
     required this.pancardPicUrl,
     required this.ownerIdPicUrl,
     required this.businessLicense,
+    required this.address,
     required this.phoneNumber,
   });
 
   Map<String, dynamic> toJson() => _$ShopModel1ToJson(this);
   factory ShopModel1.fromJson(Map<String, dynamic> json) =>
       _$ShopModel1FromJson(json);
+
+  ShopModel1 copyWith({
+    int? id,
+    BasicUserModel? user,
+    String? description,
+    List<String>? categories,
+    String? ownerPicUrl,
+    LocationInfo? locationInfo,
+    String? ownerName,
+    String? shopPicUrl,
+    String? pancardPicUrl,
+    String? ownerIdPicUrl,
+    String? businessLicense,
+    String? address,
+    int? phoneNumber,
+  }) {
+    return ShopModel1(
+      id: id ?? this.id,
+      user: user ?? this.user,
+      description: description ?? this.description,
+      categories: categories ?? this.categories,
+      ownerPicUrl: ownerPicUrl ?? this.ownerPicUrl,
+      locationInfo: locationInfo ?? this.locationInfo,
+      ownerName: ownerName ?? this.ownerName,
+      shopPicUrl: shopPicUrl ?? this.shopPicUrl,
+      pancardPicUrl: pancardPicUrl ?? this.pancardPicUrl,
+      ownerIdPicUrl: ownerIdPicUrl ?? this.ownerIdPicUrl,
+      businessLicense: businessLicense ?? this.businessLicense,
+      address: address ?? this.address,
+      phoneNumber: phoneNumber ?? this.phoneNumber,
+    );
+  }
 }
 
 @JsonSerializable()
-class AddressInfo {
+class LocationInfo {
   final String completeAddress;
   final String shortAddress;
   final double latitude;
   final double longtitude;
-  AddressInfo({
+  LocationInfo({
     required this.completeAddress,
     required this.shortAddress,
     required this.latitude,
     required this.longtitude,
   });
 
-  Map<String, dynamic> toJson() => _$AddressInfoToJson(this);
+  Map<String, dynamic> toJson() => _$LocationInfoToJson(this);
 
-  factory AddressInfo.fromJson(Map<String, dynamic> json) =>
-      _$AddressInfoFromJson(json);
+  factory LocationInfo.fromJson(Map<String, dynamic> json) =>
+      _$LocationInfoFromJson(json);
 }

@@ -19,6 +19,8 @@ class ShopAuthLoggedOutState extends ShopAuthState {}
 
 class ShopAuthEmailSentState extends ShopAuthState {}
 
+// class ShopAuthLoadedAllCategoriesState extends ShopAuthState {}
+
 class ShopAuthErrorState extends ShopAuthState {
   // final String message;
   final CustomException error;

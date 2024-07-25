@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mca_project/data/models/category/product_category/product_category.dart';
 import 'package:mca_project/data/repositories/shop/shop_data_repository.dart';
 import '../../../../../data/models/shop_model/shop_model1.dart';
 import '../../../../../data/models/basic_user_model/basic_user_model.dart';
-import '/data/models/shop_model.dart';
+import '../../../../common/screens/error_screen.dart';
 import '/presentation/common/widgets/email_sent_widget.dart';
 import '/presentation/common/widgets/form_widget.dart';
 import '/presentation/features/shop/shop_home_page.dart';
@@ -45,10 +44,20 @@ class _ShopAuthScreenState extends State<ShopAuthScreen> {
           );
         }
         if (state is ShopAuthEmailSentState) {
-          return EmailSentWidget(onPressed: null);
+          return EmailSentWidget(
+            onPressed: () =>
+                context.read<ShopAuthBloc>().add(ShopAuthInitialEvent()),
+          );
         }
-        if (state is ShopAuthErrorState) {
-          // return Center(child: Text(state.message));
+        //do nothing here for location error
+        if (state is ShopAuthErrorState &&
+            !state.error.errorType.name.toLowerCase().contains("location")) {
+          return Center(
+              child: ErrorScreen(
+            customException: state.error,
+            onTryAgainPressed: () =>
+                context.read<ShopAuthBloc>().add(ShopAuthInitialEvent()),
+          ));
         }
 
         return FormWidget(
@@ -65,11 +74,10 @@ class _ShopAuthScreenState extends State<ShopAuthScreen> {
                       password: password,
                       email: email,
                     ),
-                    addressInfo:
-                        context.read<ShopDataRepository>().addressInfo!,
+                    locationInfo:
+                        context.read<ShopDataRepository>().locationInfo!,
                     businessLicense: moreShopDetails!['businessLicense']!,
-                    categories:
-                        moreShopDetails['categories']! as List<ProductCategory>,
+                    categories: moreShopDetails['categories']! as List<String>,
                     shopPicUrl: moreShopDetails['shopPicUrl']!,
                     description: moreShopDetails['description']!,
                     ownerName: moreShopDetails['ownerName']!,
@@ -77,6 +85,7 @@ class _ShopAuthScreenState extends State<ShopAuthScreen> {
                     pancardPicUrl: moreShopDetails['pancardPicUrl']!,
                     phoneNumber: moreShopDetails['phoneNumber']!,
                     ownerPicUrl: moreShopDetails['ownerPicUrl']!,
+                    address: moreShopDetails['address']!,
                   ))),
           loginCallback: ({required email, required password}) => context
               .read<ShopAuthBloc>()

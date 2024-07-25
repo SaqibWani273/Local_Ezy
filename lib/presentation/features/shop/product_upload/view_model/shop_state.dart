@@ -11,8 +11,8 @@ class ShopLoadedAllCategoriesState extends ShopState {}
 class ShopUploadedProductState extends ShopState {}
 
 class ShopErrorState extends ShopState {
-  final String error;
-  ShopErrorState({required this.error});
+  final CustomException customException;
+  ShopErrorState({required this.customException});
 }
 
 class ShopUploadedMultipleImagesState extends ShopState {
