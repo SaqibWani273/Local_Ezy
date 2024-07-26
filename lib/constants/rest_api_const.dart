@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 
-String baseApiUrl = 'http://${getHostname()}:8080';
-// String baseApiUrl = 'http://3.111.169.191';
+// String baseApiUrl = 'http://${getHostname()}:8080';
+String baseApiUrl = 'http://3.111.169.191';
 final String baseCustomerUrl = '$baseApiUrl/customer';
 final String customerLoginUrl = '$baseCustomerUrl/login';
 final String customerRegisterUrl = '$baseCustomerUrl/register';

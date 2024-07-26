@@ -302,12 +302,25 @@ class _UploadProductScreenState extends State<UploadProductScreen> {
                             .map(
                               (e) => Container(
                                 height: 50.0,
+                                margin: EdgeInsets.symmetric(horizontal: 8.0),
                                 width: deviceWidth * 0.2,
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(10.0),
                                   child: kIsWeb
-                                      ? Image.network(e.path)
-                                      : Image.file(File(e.path)),
+                                      ? FadeInImage.assetNetwork(
+                                          placeholder:
+                                              'assets/images/placeholder.jpg',
+                                          image: e.path,
+                                          fit: BoxFit.cover,
+                                        )
+                                      : FadeInImage(
+                                          placeholder: AssetImage(
+                                              'assets/images/placeholder.jpg'),
+                                          image: FileImage(File(e.path)),
+                                          fit: BoxFit.cover,
+                                        ),
+                                  //  Image.network(e.path)
+                                  // : Image.file(File(e.path)),
                                 ),
                               ),
                             )
@@ -386,17 +399,17 @@ class _UploadProductScreenState extends State<UploadProductScreen> {
                           );
                           return;
                         }
-
+                        List<Object> moreImages = [];
+                        _moreProductImages!.forEach((element) async {
+                          kIsWeb
+                              ? moreImages.add(await element.readAsBytes())
+                              : moreImages.add(element.path);
+                        });
                         final List<Object> imageObjects = [
                           kIsWeb
                               ? await _mainProductImage!.readAsBytes()
                               : _mainProductImage!.path,
-                          ..._moreProductImages!
-                              .map(
-                                (e) async =>
-                                    kIsWeb ? await e.readAsBytes() : e.path,
-                              )
-                              .toList()
+                          ...moreImages
                         ];
                         context.read<ShopBloc>().add(UploadProductEvent(
                             product: Product(
