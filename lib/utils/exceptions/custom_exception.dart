@@ -8,6 +8,7 @@ enum ErrorType {
   locationpermissionDenied,
   locationServicesDisabled,
   locationPermissionDeniedPermanently,
+  noLocationFound,
   internetConnection,
   unknown,
 }

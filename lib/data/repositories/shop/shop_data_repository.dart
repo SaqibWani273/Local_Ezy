@@ -99,45 +99,9 @@ class ShopDataRepository {
 
   Future<String> getLocationAddress(String? userEnteredLocation) async {
     try {
-      late List<geocoding.Placemark> _placemarks;
-      late double _latitude;
-      late double _longtitude;
-      if (userEnteredLocation == null) {
-        //position from current location
-        final position = await GeoLocatorService.getcurrentPosition();
-        if (position == null) {
-          throw CustomException(
-            errorType: ErrorType.unknown,
-            message: 'Something went wrong!,Please try agian',
-          );
-        }
-        _placemarks = await geocoding.placemarkFromCoordinates(
-            position.latitude, position.longitude);
-        _latitude = position.latitude;
-        _longtitude = position.longitude;
-      } else {
-//positon from the user entered address
-        List<geocoding.Location> locations =
-            await geocoding.locationFromAddress(userEnteredLocation);
-        //to do: later pass all the location to the function
-        //placemarkFromCoordinates to get all the placemarks
-        //and let user choose the one he wants
-        _placemarks = await geocoding.placemarkFromCoordinates(
-            locations[0].latitude, locations[0].longitude);
-        _longtitude = locations[0].longitude;
-        _latitude = locations[0].latitude;
-      }
-      final shortAddress =
-
-          // ${_placemarks[0].name},
-          '${_placemarks[0].street},${_placemarks[0].locality},${_placemarks[0].postalCode} ${_placemarks[0].country}';
-      locationInfo = LocationInfo(
-          completeAddress:
-              '${_placemarks[0].name}, ${_placemarks[0].street}, ${_placemarks[0].subLocality}, ${_placemarks[0].locality}, ${_placemarks[0].administrativeArea}, ${_placemarks[0].postalCode}, ${_placemarks[0].country}',
-          shortAddress: shortAddress,
-          latitude: _latitude,
-          longtitude: _longtitude);
-      return shortAddress;
+      locationInfo =
+          await GeoLocatorService.fetchLocationInfo(userEnteredLocation);
+      return locationInfo!.shortAddress;
     } catch (e) {
       rethrow;
     }

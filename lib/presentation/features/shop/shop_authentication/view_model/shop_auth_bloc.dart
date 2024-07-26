@@ -54,6 +54,9 @@ class ShopAuthBloc extends Bloc<ShopAuthEvent, ShopAuthState> {
           break;
       }
     } on CustomException catch (e) {
+      // if (e.errorType == ErrorType.noLocationFound) {
+      //   emit(ShopAuthNoLocationFoundState());
+      // }
       log("error in ShopAuthBloc: ${e.message}");
       emit(ShopAuthErrorState(e));
     } catch (error) {

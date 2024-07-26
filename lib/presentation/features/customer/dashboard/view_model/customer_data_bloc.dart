@@ -9,13 +9,26 @@ class CustomerDataBloc extends Bloc<CustomerDataEvent, CustomerDataState> {
   CustomerDataBloc({required this.customerDataRepository})
       : super(CustomerDataInitialState()) {
     on<LoadCustomerDataEvent>(_loadCustomerData);
+
+    on<ChangeCustomerCurrentLocationEvent>(_changeCustomerCurrentLocation);
   }
 
   Future<void> _loadCustomerData(
       LoadCustomerDataEvent event, Emitter emit) async {
     emit(CustomerDataLoadingState());
     try {
-      await customerDataRepository.setData();
+      await customerDataRepository.fetchData();
+      emit(CustomerDataLoadedState());
+    } catch (e) {
+      emit(CustomerDataErrorState(error: e.toString()));
+    }
+  }
+
+  Future<void> _changeCustomerCurrentLocation(
+      ChangeCustomerCurrentLocationEvent event, Emitter emit) async {
+    emit(CustomerDataLoadedState(isChangingLocation: true));
+    try {
+      await customerDataRepository.changeCurrentLocation(event.currentLocation);
       emit(CustomerDataLoadedState());
     } catch (e) {
       emit(CustomerDataErrorState(error: e.toString()));

@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mca_project/presentation/common/screens/error_screen.dart';
+import 'package:mca_project/presentation/common/widgets/loading_widgets.dart';
 import '../../../../../data/models/category/specific_category/specific_category.dart';
 import '/constants/product_const.dart';
 
@@ -222,17 +223,7 @@ class _UploadProductScreenState extends State<UploadProductScreen> {
       child: BlocBuilder<ShopBloc, ShopState>(
         builder: (context, state) {
           if (state is ShopLoadingState) {
-            return Center(
-                child: SpinKitFadingCircle(
-              size: deviceWidth * 0.1,
-              itemBuilder: (BuildContext context, int index) {
-                return Container(
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(50.0),
-                      color: Colors.blueGrey),
-                );
-              },
-            ));
+            return LoadingWidgets.SpinKitFading(deviceWidth);
           }
           if (state is ShopUploadedProductState) {
             return UploadSuccessScreen();

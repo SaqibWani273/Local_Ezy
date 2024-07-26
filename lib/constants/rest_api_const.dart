@@ -10,6 +10,7 @@ final String shopRegistrationUrl = '$baseApiUrl/shop/register';
 final String shopLoginUrl = '$baseApiUrl/shop/login';
 final String uploadProductUrl = '$baseApiUrl/shop/add-product';
 final String loadAllCategoriesUrl = '$baseApiUrl/user/get-all-categories';
+final fetchProductUrl = '$baseApiUrl/customer/get-all-products';
 final myIpAddress = '192.168.1.5'; //use ipconfig in cmd
 
 class CloudinaryApiConst {

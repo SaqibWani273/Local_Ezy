@@ -87,7 +87,7 @@ class _ImagesWidgetState extends State<ImagesWidget> {
                     //   imageUrl,
                     //   // semanticsLabel: 'Acme Logo'
                     // ),
-                    Image.asset(
+                    Image.network(
                   imageUrl,
                   width: double.infinity,
                   fit: BoxFit.fill,

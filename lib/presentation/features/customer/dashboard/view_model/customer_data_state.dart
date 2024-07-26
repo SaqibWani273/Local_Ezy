@@ -6,7 +6,12 @@ class CustomerDataInitialState extends CustomerDataState {}
 
 class CustomerDataLoadingState extends CustomerDataState {}
 
-class CustomerDataLoadedState extends CustomerDataState {}
+class CustomerDataChangingCurrentLocationState extends CustomerDataState {}
+
+class CustomerDataLoadedState extends CustomerDataState {
+  bool? isChangingLocation;
+  CustomerDataLoadedState({this.isChangingLocation});
+}
 
 class CustomerDataErrorState extends CustomerDataState {
   final String error;

@@ -168,6 +168,28 @@ class ApiService {
       rethrow;
     }
   }
+
+  static Future<List<Product>> fetchProducts() async {
+    try {
+      final response = await http.get(Uri.parse(fetchProductUrl));
+      if (response.statusCode == 200) {
+        log(response.body);
+        final products = <Product>[];
+        for (var element in jsonDecode(response.body)) {
+          products.add(Product.fromJson(element));
+        }
+        return products;
+      } else {
+        log("error in fetchProducts,response-> ${response.body} ${response.statusCode} -> ${response.body}, ${response.statusCode}");
+        throw CustomException(
+            errorType: ErrorType.internetConnection,
+            message: " Something went wrong!,${response.statusCode}");
+      }
+    } catch (e) {
+      log("fetchProducts error: $e");
+      rethrow;
+    }
+  }
 }
 
 enum Roles { ROLE_CUSTOMER, ROLE_SHOP }
