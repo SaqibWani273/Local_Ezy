@@ -314,7 +314,7 @@ class _OtherShopDetailsWidgetState extends State<OtherShopDetailsWidget> {
       'pancardPicUrl': _pancardPic,
       'ownerIdPicUrl': _ownerIdPic,
       'businessLicense': _businessLicense!,
-      'phoneNumber': _phoneNumber!,
+      'phoneNumber': _phoneNumber!.toString(),
       'categories': selectedCategories,
       'address': _address!,
       'description': _shopDescription!,

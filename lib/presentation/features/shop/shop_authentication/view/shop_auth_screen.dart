@@ -27,6 +27,7 @@ class _ShopAuthScreenState extends State<ShopAuthScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(),
       body:
           BlocConsumer<ShopAuthBloc, ShopAuthState>(listener: (context, state) {
         if (state is ShopAuthLoggedInState) {

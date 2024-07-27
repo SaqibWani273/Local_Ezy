@@ -22,7 +22,7 @@ class ApiService {
       }
 
       final response = await http.post(
-        Uri.parse(userProfileUrl),
+        Uri.parse(ApiConst.userProfileUrl),
         headers: {"Authorization": "Bearer $token"},
         body: token,
       );
@@ -73,17 +73,19 @@ class ApiService {
 
   static Future<void> registerShop(ShopModel1 shopModel) async {
     try {
-      final response = await http.post(Uri.parse(shopRegistrationUrl),
+      final response = await http.post(Uri.parse(ApiConst.shopRegistrationUrl),
           headers: {"Content-Type": "application/json"},
           body: jsonEncode(shopModel.toJson()));
       if (response.statusCode == 200) {
         log(response.body);
       } else {
+        final String errorMessage =
+            jsonDecode(response.body)["message"].toString();
         log(" error in  registerShop,response-> ${response.body} ${response.statusCode} -> ${response.body}");
         throw CustomException(
             errorType: ErrorType.internetConnection,
             message:
-                'Something went wrong! Please check your internet connection.');
+                'Data Integrity Error! ${response.statusCode} -> ${errorMessage.length > 40 ? errorMessage.substring(0, 40) : errorMessage}');
       }
     } catch (e) {
       rethrow;
@@ -93,7 +95,7 @@ class ApiService {
   static Future<void> loginShop(String email, String password) async {
     try {
       final response = await http.post(
-        Uri.parse(shopLoginUrl),
+        Uri.parse(ApiConst.shopLoginUrl),
         headers: {"Content-Type": "application/json"},
         body: jsonEncode({'email': email, 'password': password}),
       );
@@ -128,7 +130,7 @@ class ApiService {
       //   return null;
       // }
       final response = await http.get(
-        Uri.parse(loadAllCategoriesUrl),
+        Uri.parse(ApiConst.loadAllCategoriesUrl),
         headers: {
           "Content-Type": "application/json",
           // "Authorization": "Bearer $token"
@@ -153,16 +155,19 @@ class ApiService {
   static Future<void> uploadProduct(Product product) async {
     try {
       final String? token = await SecureStorage.getToken();
-      final response = await http.post(Uri.parse(uploadProductUrl),
+      final response = await http.post(Uri.parse(ApiConst.uploadProductUrl),
           headers: {
             "Content-Type": "application/json",
             "Authorization": "Bearer $token"
           },
           body: jsonEncode(product.toJson()));
       if (response.statusCode != 200) {
+        final String errorMessage =
+            jsonDecode(response.body)["message"].toString();
         throw CustomException(
             errorType: ErrorType.internetConnection,
-            message: " Something went wrong!,${response.statusCode}");
+            message:
+                " Sever Error -> ${response.statusCode} ${response.statusCode} -> ${errorMessage.length > 40 ? errorMessage.substring(0, 40) : errorMessage}");
       }
     } catch (e) {
       rethrow;
@@ -171,7 +176,7 @@ class ApiService {
 
   static Future<List<Product>> fetchProducts() async {
     try {
-      final response = await http.get(Uri.parse(fetchProductUrl));
+      final response = await http.get(Uri.parse(ApiConst.fetchProductUrl));
       if (response.statusCode == 200) {
         log(response.body);
         final products = <Product>[];

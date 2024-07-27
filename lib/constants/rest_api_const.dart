@@ -1,17 +1,21 @@
 import 'package:flutter/foundation.dart';
 
-// String baseApiUrl = 'http://${getHostname()}:8080';
-String baseApiUrl = 'http://3.111.169.191';
-final String baseCustomerUrl = '$baseApiUrl/customer';
-final String customerLoginUrl = '$baseCustomerUrl/login';
-final String customerRegisterUrl = '$baseCustomerUrl/register';
-final String userProfileUrl = '$baseApiUrl/user/me';
-final String shopRegistrationUrl = '$baseApiUrl/shop/register';
-final String shopLoginUrl = '$baseApiUrl/shop/login';
-final String uploadProductUrl = '$baseApiUrl/shop/add-product';
-final String loadAllCategoriesUrl = '$baseApiUrl/user/get-all-categories';
-final fetchProductUrl = '$baseApiUrl/customer/get-all-products';
-final myIpAddress = '192.168.1.5'; //use ipconfig in cmd
+class ApiConst {
+  // static String baseApiUrl = 'http://${getHostname()}:8080';
+  static final String baseApiUrl = 'http://3.111.169.191';
+  static final String baseCustomerUrl = '$baseApiUrl/customer';
+  static final String customerLoginUrl = '$baseCustomerUrl/login';
+  static final String customerRegisterUrl = '$baseCustomerUrl/register';
+  static final String userProfileUrl = '$baseApiUrl/user/me';
+  static final String customerProfileUrl = '$baseApiUrl/customer/me';
+  static final String shopRegistrationUrl = '$baseApiUrl/shop/register';
+  static final String shopLoginUrl = '$baseApiUrl/shop/login';
+  static final String uploadProductUrl = '$baseApiUrl/shop/add-product';
+  static final String loadAllCategoriesUrl =
+      '$baseApiUrl/user/get-all-categories';
+  static final fetchProductUrl = '$baseApiUrl/customer/get-all-products';
+  static final myIpAddress = '192.168.1.5'; //use ipconfig in cmd
+}
 
 class CloudinaryApiConst {
   static String cloudinaryImageUploadUrl =
@@ -21,7 +25,7 @@ class CloudinaryApiConst {
 
 String getHostname() {
   if (!kIsWeb) {
-    return myIpAddress;
+    return ApiConst.myIpAddress;
   }
   return 'localhost';
 }

@@ -22,9 +22,11 @@ class _DashboardState extends State<Dashboard> {
   TextEditingController locationController = TextEditingController();
   @override
   void initState() {
-    //to load Customer data from db using auht token from secure storage
-    // context.read<CustomerAuthBloc>().add(CustomerAuthVerificationEvent());
-    context.read<CustomerDataBloc>().add(LoadCustomerDataEvent());
+    if (context.read<CustomerDataRepository>().getProducts == null) {
+      //to load Customer data from db using auht token from secure storage
+      // context.read<CustomerAuthBloc>().add(CustomerAuthVerificationEvent());
+      context.read<CustomerDataBloc>().add(LoadCustomerDataEvent());
+    }
     super.initState();
   }
 

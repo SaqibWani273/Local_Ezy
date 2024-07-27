@@ -1,7 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:json_annotation/json_annotation.dart';
 
-
 import '../basic_user_model/basic_user_model.dart';
 import '../customer.dart';
 
@@ -21,7 +20,7 @@ class ShopModel1 extends UserModel {
   String ownerIdPicUrl;
   String businessLicense;
   String address;
-  int phoneNumber;
+  String phoneNumber;
   ShopModel1({
     this.id,
     required this.user,
@@ -55,7 +54,7 @@ class ShopModel1 extends UserModel {
     String? ownerIdPicUrl,
     String? businessLicense,
     String? address,
-    int? phoneNumber,
+    String? phoneNumber,
   }) {
     return ShopModel1(
       id: id ?? this.id,

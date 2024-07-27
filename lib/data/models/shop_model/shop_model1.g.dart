@@ -22,7 +22,7 @@ ShopModel1 _$ShopModel1FromJson(Map<String, dynamic> json) => ShopModel1(
       ownerIdPicUrl: json['ownerIdPicUrl'] as String,
       businessLicense: json['businessLicense'] as String,
       address: json['address'] as String,
-      phoneNumber: (json['phoneNumber'] as num).toInt(),
+      phoneNumber: json['phoneNumber'] as String,
     );
 
 Map<String, dynamic> _$ShopModel1ToJson(ShopModel1 instance) =>

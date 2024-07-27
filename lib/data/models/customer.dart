@@ -22,7 +22,7 @@ class Customer extends UserModel {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'user': user.toJson(),
+      'myUser': user.toJson(),
     };
   }
 

@@ -31,7 +31,11 @@ class CustomerProfileRepository {
   }
 
   Future<void> isCustomerLoggedIn() async {
-    customer = await CustomerProfileService().isCustomerLoggedIn();
+    try {
+      customer = await CustomerProfileService().isCustomerLoggedIn();
+    } catch (e) {
+      rethrow;
+    }
   }
 
   Future<void> logoutCustomer() async {

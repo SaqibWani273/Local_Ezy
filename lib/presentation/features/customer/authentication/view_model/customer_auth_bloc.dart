@@ -48,7 +48,7 @@ class CustomerAuthBloc extends Bloc<CustomerAuthEvent, CustomerAuthState> {
     } on CustomerException catch (e) {
       emit(CustomerAuthErrorState(e.message));
     } catch (error) {
-      emit(CustomerAuthErrorState("Unknown error occurred !!! "));
+      emit(CustomerAuthErrorState("$error!!! "));
     }
   }
 
