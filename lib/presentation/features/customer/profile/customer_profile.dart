@@ -1,6 +1,6 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mca_project/data/repositories/customer/customer_data_repository.dart';
 import '/constants/image_constants.dart';
 import '/data/models/customer.dart';
 import '/data/repositories/customer/customer_profile_repository.dart';
@@ -16,8 +16,7 @@ class CustomerProfile extends StatelessWidget {
     return BlocBuilder(
         bloc: BlocProvider.of<CustomerAuthBloc>(context),
         builder: (context, state) {
-          Customer? customer =
-              context.read<CustomerProfileRepository>().customer;
+          Customer? customer = context.read<CustomerDataRepository>().customer;
           if (state is CustomerAuthLoggedInState || customer != null) {
             return Padding(
               padding: const EdgeInsets.all(20.0),

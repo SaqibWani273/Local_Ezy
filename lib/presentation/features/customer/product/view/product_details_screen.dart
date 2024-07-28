@@ -1,6 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mca_project/data/repositories/customer/customer_data_repository.dart';
+import 'package:mca_project/data/repositories/customer/customer_profile_repository.dart';
+import 'package:mca_project/presentation/features/customer/cart/cart_screen.dart';
+import 'package:mca_project/utils/utils.dart';
+import '../../../../../data/models/customer.dart';
 import '../../../../../data/models/product.dart';
+import '../../appbar_widget.dart';
+import '../../authentication/view/customer_login.dart';
 import '../../dashboard/view/widgets/large_sliding_images_widget.dart';
+import '../../dashboard/view_model/customer_data_bloc.dart';
 
 class ProductDetailsScreen extends StatelessWidget {
   final Product product;
@@ -9,6 +18,7 @@ class ProductDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var deviceWidth = MediaQuery.of(context).size.width;
+    Customer? customer = context.read<CustomerDataRepository>().customer;
     return Scaffold(
       body: Stack(children: [
         CustomScrollView(
@@ -30,12 +40,7 @@ class ProductDetailsScreen extends StatelessWidget {
                               size: 30,
                             ),
                           ),
-                          IconButton(
-                              onPressed: () {},
-                              icon: const Icon(
-                                Icons.shopping_cart,
-                                size: 30,
-                              ))
+                          CartIcon(customer: customer)
                         ]),
                   ),
                   Hero(
@@ -182,7 +187,33 @@ class ProductDetailsScreen extends StatelessWidget {
                     child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
                   child: ElevatedButton(
-                    onPressed: null,
+                    onPressed: () async {
+                      //not logged in
+                      if (customer == null) {
+                        await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const CustomerLogin()),
+                        );
+                      } else {
+                        //logged in
+                        context.read<CustomerDataBloc>().add(
+                            CustomerDataAddProductToCartEvent(
+                                product: product));
+                        Utils.showScaffoldMessage(
+                            message: "Added to Cart",
+                            context: context,
+                            actionWidget: TextButton(
+                              onPressed: () {
+                                Navigator.of(context)
+                                    .push(MaterialPageRoute(builder: (context) {
+                                  return CartScreen();
+                                }));
+                              },
+                              child: Text("View Cart"),
+                            ));
+                      }
+                    },
                     child: Text(
                       "Add to Cart",
                       style: Theme.of(context)

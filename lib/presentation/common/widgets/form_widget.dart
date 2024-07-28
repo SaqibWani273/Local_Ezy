@@ -5,6 +5,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:mca_project/data/repositories/shop/shop_data_repository.dart';
 import 'package:mca_project/presentation/common/widgets/image_upload_field.dart';
 import 'package:mca_project/presentation/common/widgets/location_widget.dart';
+import 'package:mca_project/utils/utils.dart';
+import '../../../services/api_service.dart';
 import '/utils/extensions/form_validation.dart';
 
 enum FormType { login, register, forgotpassword }
@@ -97,6 +99,7 @@ class _FormWidgetState extends State<FormWidget> {
                   if (value == null || !value.isValidEmail()) {
                     return 'Please enter valid email address';
                   }
+
                   return null;
                 },
                 onSaved: (value) => _email = value!, // Update _email on save
@@ -180,9 +183,19 @@ class _FormWidgetState extends State<FormWidget> {
                     minimumSize: Size(deviceWidth, 50),
                     foregroundColor: Colors.white,
                     backgroundColor: Colors.blue),
-                onPressed: () {
+                onPressed: () async {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
+                    if (await ApiService.emailExists(_email) == true) {
+                      Utils.showScaffoldMessage(
+                          message: "Email already exists", context: context);
+                      return;
+                    }
+                    if (await ApiService.usernameExists(_username) == true) {
+                      Utils.showScaffoldMessage(
+                          message: "Username already exists", context: context);
+                      return;
+                    }
 
                     if (currentForm == FormType.forgotpassword) {
                     } else if (currentForm == FormType.register) {

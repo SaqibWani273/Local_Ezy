@@ -26,19 +26,19 @@ class ErrorScreen extends StatelessWidget {
       ),
       margin: EdgeInsets.symmetric(vertical: 16.0),
       padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 8.0),
-      height: deviceHeight * 0.3,
+      height: deviceHeight * 0.9,
       child: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Expanded(child: getLottieImage(customException)),
+            // Expanded(child: getLottieImage(customException)),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 18.0),
                 child: Text(
                   customException.message,
-                  style: const TextStyle(fontSize: 25),
+                  style: const TextStyle(fontSize: 10),
                   //   overflow: TextOverflow.visible,
                 ),
               ),

@@ -163,7 +163,7 @@ class _DashboardState extends State<Dashboard> {
                         child: Column(
                           children: [
                             Expanded(
-                              flex: deviceHeight < 400 ? 1 : 0,
+                              flex: deviceHeight < 550 ? 1 : 0,
                               child: ClipRRect(
                                 borderRadius: BorderRadius.only(
                                     topLeft: Radius.circular(30.0),

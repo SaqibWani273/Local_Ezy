@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:mca_project/presentation/features/customer/cart/cart_screen.dart';
 import '/presentation/features/customer/profile/customer_profile.dart';
 import '../presentation/features/customer/categories/view/categories_screen.dart';
 import '../presentation/features/customer/dashboard/view/dashoard.dart';
@@ -48,6 +49,6 @@ List<Widget> mainScreens = [
   const CategoriesScreen(),
   Container(),
   const Dashboard(),
-  Container(),
+  CartScreen(),
   CustomerProfile(),
 ];

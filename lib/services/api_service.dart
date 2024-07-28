@@ -49,6 +49,7 @@ class ApiService {
         if (response.body.isNotEmpty) {
           final decodedResponse = jsonDecode(response.body);
           if (decodedResponse['role'] == Roles.ROLE_CUSTOMER.name) {
+            // return Customer.fromMap(decodedResponse['model']);
             return Customer.fromMap(decodedResponse['model']);
           }
           return ShopModel1.fromJson(decodedResponse['model']);
@@ -167,7 +168,7 @@ class ApiService {
         throw CustomException(
             errorType: ErrorType.internetConnection,
             message:
-                " Sever Error -> ${response.statusCode} ${response.statusCode} -> ${errorMessage.length > 40 ? errorMessage.substring(0, 40) : errorMessage}");
+                " Sever Error ->  ${response.statusCode} -> ${errorMessage.length > 40 ? errorMessage.substring(0, 40) : errorMessage}");
       }
     } catch (e) {
       rethrow;
@@ -178,7 +179,6 @@ class ApiService {
     try {
       final response = await http.get(Uri.parse(ApiConst.fetchProductUrl));
       if (response.statusCode == 200) {
-        log(response.body);
         final products = <Product>[];
         for (var element in jsonDecode(response.body)) {
           products.add(Product.fromJson(element));
@@ -193,6 +193,28 @@ class ApiService {
     } catch (e) {
       log("fetchProducts error: $e");
       rethrow;
+    }
+  }
+
+  static Future<bool?> emailExists(String email) async {
+    final response = await http.post(Uri.parse(ApiConst.emailExistsUrl),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode({'email': email}));
+    if (response.statusCode == 200) {
+      return bool.fromEnvironment(response.body);
+    } else {
+      return null;
+    }
+  }
+
+  static Future<bool?> usernameExists(String username) async {
+    final response = await http.post(Uri.parse(ApiConst.usernameExistsUrl),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode({'username': username}));
+    if (response.statusCode == 200) {
+      return bool.fromEnvironment(response.body);
+    } else {
+      return null;
     }
   }
 }

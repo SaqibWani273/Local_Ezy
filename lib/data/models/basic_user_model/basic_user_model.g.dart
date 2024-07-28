@@ -8,6 +8,7 @@ part of 'basic_user_model.dart';
 
 BasicUserModel _$BasicUserModelFromJson(Map<String, dynamic> json) =>
     BasicUserModel(
+      id: json['id'] as int?,
       username: json['username'] as String,
       password: json['password'] as String,
       email: json['email'] as String,
@@ -15,7 +16,8 @@ BasicUserModel _$BasicUserModelFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$BasicUserModelToJson(BasicUserModel instance) =>
     <String, dynamic>{
+      'id': instance.id,
+      'email': instance.email,
       'username': instance.username,
       'password': instance.password,
-      'email': instance.email,
     };

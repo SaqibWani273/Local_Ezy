@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mca_project/data/repositories/customer/customer_data_repository.dart';
 import '/data/repositories/customer/customer_profile_repository.dart';
 import '/utils/exceptions/customer_exception.dart';
 
@@ -6,9 +7,9 @@ part 'customer_auth_event.dart';
 part 'customer_auth_state.dart';
 
 class CustomerAuthBloc extends Bloc<CustomerAuthEvent, CustomerAuthState> {
-  final CustomerProfileRepository customerProfileRepository;
+  final CustomerDataRepository customerDataRepository;
 
-  CustomerAuthBloc({required this.customerProfileRepository})
+  CustomerAuthBloc({required this.customerDataRepository})
       : super(CustomerAuthInitial()) {
     on<CustomerAuthInitialEvent>(customerAuthInitialEvent);
     on<CustomerLoginEvent>(customerLoginEvent);
@@ -27,21 +28,21 @@ class CustomerAuthBloc extends Bloc<CustomerAuthEvent, CustomerAuthState> {
           emit(CustomerAuthInitial());
           break;
         case CustomerAuthVerificationEvent _:
-          await customerProfileRepository.isCustomerLoggedIn();
+          await customerDataRepository.isCustomerLoggedIn();
           // emit(CustomerAuthVerifiedState());
           break;
         case CustomerLoginEvent loginEvent:
-          await customerProfileRepository.loginCustomer(
+          await customerDataRepository.loginCustomer(
               loginEvent.email, loginEvent.password);
           emit(CustomerAuthLoggedInState());
           break;
         case CustomerRegisterEvent registerEvent:
-          await customerProfileRepository.registerCustomer(
+          await customerDataRepository.registerCustomer(
               registerEvent.name, registerEvent.email, registerEvent.password);
           emit(CustomerAuthRegisteredState());
           break;
         case CustomerLogoutEvent _:
-          await customerProfileRepository.logoutCustomer();
+          await customerDataRepository.logoutCustomer();
           emit(CustomerAuthLoggedOutState());
           break;
       }

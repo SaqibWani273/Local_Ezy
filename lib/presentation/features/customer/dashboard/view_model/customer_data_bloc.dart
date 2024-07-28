@@ -1,4 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../../../data/models/product.dart';
 import '/data/repositories/customer/customer_data_repository.dart';
 
 part 'customer_data_event.dart';
@@ -9,29 +11,74 @@ class CustomerDataBloc extends Bloc<CustomerDataEvent, CustomerDataState> {
   CustomerDataBloc({required this.customerDataRepository})
       : super(CustomerDataInitialState()) {
     on<LoadCustomerDataEvent>(_loadCustomerData);
-
     on<ChangeCustomerCurrentLocationEvent>(_changeCustomerCurrentLocation);
+    on<CustomerDataAddProductToCartEvent>(_addToCart);
+    on<CustomerDataRemoveProductFromCartEvent>(_removeFromCart);
+    on<CustomerDataIncreaseQuantityByOneEvent>(_increaseQuantityByOne);
+    on<CustomerDataDecreaseQuantityByOneEvent>(_decreaseQuantityByOne);
+  }
+  Future<void> _handleEvent(
+      CustomerDataEvent event, Emitter<CustomerDataState> emit) async {
+    try {
+      if (event is ChangeCustomerCurrentLocationEvent) {
+        emit(CustomerDataLoadedState(isChangingLocation: true));
+      } else {
+        emit(CustomerDataLoadingState());
+      }
+      switch (event) {
+        case LoadCustomerDataEvent _:
+          await customerDataRepository.fetchData();
+          emit(CustomerDataLoadedState());
+          break;
+        case ChangeCustomerCurrentLocationEvent _:
+          await customerDataRepository
+              .changeCurrentLocation(event.currentLocation);
+          emit(CustomerDataLoadedState());
+          break;
+        case CustomerDataAddProductToCartEvent _:
+          await customerDataRepository.addToCart(event.product);
+          emit(CustomerDataLoadedState());
+          break;
+        case CustomerDataRemoveProductFromCartEvent _:
+          await customerDataRepository.removeFromCart(event.product);
+          emit(CustomerDataLoadedState());
+          break;
+        case CustomerDataIncreaseQuantityByOneEvent _:
+          await customerDataRepository.increaseQuantityByOne(event.product);
+          emit(CustomerDataLoadedState());
+          break;
+        case CustomerDataDecreaseQuantityByOneEvent _:
+          await customerDataRepository.decreaseQuantityByOne(event.product);
+          emit(CustomerDataLoadedState());
+          break;
+      }
+    } catch (e) {
+      emit(CustomerDataErrorState(error: e.toString()));
+    }
   }
 
   Future<void> _loadCustomerData(
-      LoadCustomerDataEvent event, Emitter emit) async {
-    emit(CustomerDataLoadingState());
-    try {
-      await customerDataRepository.fetchData();
-      emit(CustomerDataLoadedState());
-    } catch (e) {
-      emit(CustomerDataErrorState(error: e.toString()));
-    }
-  }
+          LoadCustomerDataEvent event, Emitter<CustomerDataState> emit) async =>
+      await _handleEvent(event, emit);
 
   Future<void> _changeCustomerCurrentLocation(
-      ChangeCustomerCurrentLocationEvent event, Emitter emit) async {
-    emit(CustomerDataLoadedState(isChangingLocation: true));
-    try {
-      await customerDataRepository.changeCurrentLocation(event.currentLocation);
-      emit(CustomerDataLoadedState());
-    } catch (e) {
-      emit(CustomerDataErrorState(error: e.toString()));
-    }
-  }
+          ChangeCustomerCurrentLocationEvent event,
+          Emitter<CustomerDataState> emit) async =>
+      await _handleEvent(event, emit);
+  Future<void> _addToCart(CustomerDataAddProductToCartEvent event,
+          Emitter<CustomerDataState> emit) async =>
+      await _handleEvent(event, emit);
+
+  Future<void> _removeFromCart(CustomerDataRemoveProductFromCartEvent event,
+          Emitter<CustomerDataState> emit) async =>
+      await _handleEvent(event, emit);
+
+  Future<void> _increaseQuantityByOne(
+          CustomerDataIncreaseQuantityByOneEvent event,
+          Emitter<CustomerDataState> emit) async =>
+      await _handleEvent(event, emit);
+  Future<void> _decreaseQuantityByOne(
+          CustomerDataDecreaseQuantityByOneEvent event,
+          Emitter<CustomerDataState> emit) async =>
+      await _handleEvent(event, emit);
 }

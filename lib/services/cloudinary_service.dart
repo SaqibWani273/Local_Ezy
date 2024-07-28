@@ -37,7 +37,7 @@ class CloudinaryService {
       request.files.add(multipartFile);
       final response = await request.send();
       final decodeResponse = await http.Response.fromStream(response);
-      log(decodeResponse.body);
+
       if (response.statusCode == 400) {
         log(decodeResponse.body);
         throw CustomException(

@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:mca_project/constants/rest_api_const.dart';
+import '../data/models/cart.dart';
 import '/utils/exceptions/customer_exception.dart';
 import '/utils/secure_storage.dart';
 
@@ -85,5 +86,27 @@ class CustomerProfileService {
 
   Future<void> logoutCustomer() async {
     await SecureStorage.deleteToken();
+  }
+
+  static Future<void> updateCartItems(
+      {required int customerId, required List<CartItem> cartItems}) async {
+    try {
+      final response = await http.post(Uri.parse(ApiConst.updateCartUrl),
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer ${await SecureStorage.getToken()}"
+          },
+          body: jsonEncode({
+            'customerId': customerId,
+            'cartItems': cartItems.map((e) => e.toMap()).toList()
+          }));
+      if (response.statusCode == 200) {
+        log(response.body);
+      } else {
+        log(" error in  updateCustomer,response-> ${response.body} ${response.statusCode} -> ${response.body}");
+      }
+    } catch (e) {
+      rethrow;
+    }
   }
 }

@@ -44,11 +44,11 @@ class MyApp extends StatelessWidget {
     }
     return MultiRepositoryProvider(
       providers: [
+        // RepositoryProvider(
+        //   create: (context) => CustomerProfileRepository(customer: customer),
+        // ),
         RepositoryProvider(
-          create: (context) => CustomerProfileRepository(customer: customer),
-        ),
-        RepositoryProvider(
-          create: (context) => CustomerDataRepository(),
+          create: (context) => CustomerDataRepository(customer: customer),
         ),
         RepositoryProvider(
           create: (context) => ShopDataRepository(shopModel: shopModel),
@@ -58,9 +58,8 @@ class MyApp extends StatelessWidget {
         providers: [
           BlocProvider(
               create: (context) => CustomerAuthBloc(
-                    customerProfileRepository:
-                        RepositoryProvider.of<CustomerProfileRepository>(
-                            context),
+                    customerDataRepository:
+                        RepositoryProvider.of<CustomerDataRepository>(context),
                   )),
           BlocProvider(
             create: (context) => CustomerDataBloc(

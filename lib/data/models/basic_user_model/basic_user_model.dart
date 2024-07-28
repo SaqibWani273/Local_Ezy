@@ -5,10 +5,12 @@ part 'basic_user_model.g.dart';
 
 @JsonSerializable()
 class BasicUserModel {
+  int? id;
   String username;
   String password;
   String email;
   BasicUserModel({
+    this.id,
     required this.username,
     required this.password,
     required this.email,
