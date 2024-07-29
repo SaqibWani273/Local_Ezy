@@ -2,10 +2,10 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:mca_project/data/repositories/shop/shop_data_repository.dart';
-import 'package:mca_project/presentation/common/widgets/image_upload_field.dart';
-import 'package:mca_project/presentation/common/widgets/location_widget.dart';
-import 'package:mca_project/utils/utils.dart';
+import '/data/repositories/shop/shop_data_repository.dart';
+import '/presentation/common/widgets/image_upload_field.dart';
+import '/presentation/common/widgets/location_widget.dart';
+import '/utils/utils.dart';
 import '../../../services/api_service.dart';
 import '/utils/extensions/form_validation.dart';
 

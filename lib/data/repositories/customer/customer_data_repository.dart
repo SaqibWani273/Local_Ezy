@@ -1,7 +1,8 @@
 import 'dart:developer';
 
-import 'package:mca_project/data/models/shop_model/shop_model1.dart';
-import 'package:mca_project/services/api_service.dart';
+import '/data/models/cart.dart';
+import '/data/models/shop_model/shop_model1.dart';
+import '/services/api_service.dart';
 
 import '../../../services/customer_profile_service.dart';
 import '../../../services/geo_locator_service.dart';
@@ -19,6 +20,7 @@ class CustomerDataRepository {
   List<ProductCategory>? get getCategories => _categories;
   List<Product>? get getProducts => _products;
   Customer? customer;
+  List<CartItemDetails> cartItemDetails = [];
   CustomerDataRepository({
     this.customer,
   });
@@ -94,11 +96,15 @@ class CustomerDataRepository {
 
   Future<void> addToCart(Product product) async {
     try {
-      //update cart locally
+      //update locally
       customer = customer!.copyWith(
         cartItems: await Utils.addToCart(
             product: product, cartItems: customer!.cartItems),
       );
+      final x = await CustomerProfileService.fetchProductsFromIds(
+          [CartItem(productId: product.id!, quantity: 1)]);
+      cartItemDetails.add(x.first);
+      //update at server
       await CustomerProfileService.updateCartItems(
           customerId: customer!.id!, cartItems: customer!.cartItems!);
     } catch (e) {
@@ -113,7 +119,9 @@ class CustomerDataRepository {
         cartItems: await Utils.removeFromCart(
             product: product, cartItems: customer!.cartItems!),
       );
-
+      cartItemDetails.removeWhere(
+        (element) => element.product.id == product.id,
+      );
       await CustomerProfileService.updateCartItems(
           customerId: customer!.id!, cartItems: customer!.cartItems!);
     } catch (e) {
@@ -128,6 +136,10 @@ class CustomerDataRepository {
         cartItems: await Utils.increaseQuantityByOne(
             product: product, cartItems: customer!.cartItems!),
       );
+      cartItemDetails
+          .firstWhere((element) => element.product.id == product.id)
+          .quantity += 1;
+
       await CustomerProfileService.updateCartItems(
           customerId: customer!.id!, cartItems: customer!.cartItems!);
     } catch (e) {
@@ -142,10 +154,26 @@ class CustomerDataRepository {
         cartItems: await Utils.decreaseQuantityByOne(
             product: product, cartItems: customer!.cartItems!),
       );
+      cartItemDetails
+          .firstWhere((element) => element.product.id == product.id)
+          .quantity -= 1;
+
       await CustomerProfileService.updateCartItems(
           customerId: customer!.id!, cartItems: customer!.cartItems!);
     } catch (e) {
       rethrow;
     }
   }
+
+  Future<void> fetchMultipleCartItemDetails(List<CartItem> cartItems) async {
+    try {
+      //here we fetch the products from their ids
+      cartItemDetails =
+          await CustomerProfileService.fetchProductsFromIds(cartItems);
+    } catch (e) {
+      rethrow;
+    }
+  }
+// Future<void> fetchOneCartItemDetails(CartItem cartItem) async {
+// }
 }

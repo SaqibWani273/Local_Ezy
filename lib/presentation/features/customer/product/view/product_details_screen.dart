@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mca_project/data/repositories/customer/customer_data_repository.dart';
-import 'package:mca_project/data/repositories/customer/customer_profile_repository.dart';
-import 'package:mca_project/presentation/features/customer/cart/cart_screen.dart';
-import 'package:mca_project/utils/utils.dart';
+import '/data/repositories/customer/customer_data_repository.dart';
+import '/data/repositories/customer/customer_profile_repository.dart';
+import '/presentation/features/customer/cart/cart_screen.dart';
+import '/utils/utils.dart';
 import '../../../../../data/models/customer.dart';
 import '../../../../../data/models/product.dart';
 import '../../appbar_widget.dart';

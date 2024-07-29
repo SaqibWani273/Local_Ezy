@@ -32,7 +32,7 @@ class ErrorScreen extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Expanded(child: getLottieImage(customException)),
+            Expanded(child: getLottieImage(customException)),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 18.0),

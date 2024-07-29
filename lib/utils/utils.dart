@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../data/models/cart.dart';
 import '../data/models/product.dart';
 
@@ -8,18 +7,18 @@ class Utils {
       {required Product product, required List<CartItem>? cartItems}) {
     if (cartItems == null) {
       //if cart is null create a new cart
-      return [CartItem(product: product, quantity: 1)];
+      return [CartItem(productId: product.id!, quantity: 1)];
     } else {
       //not null
       //if cart already has this product, increase the quantity
-      if (cartItems.any((element) => element.product.id == product.id)) {
+      if (cartItems.any((element) => element.productId == product.id)) {
         cartItems
-            .firstWhere((element) => element.product.id == product.id)
+            .firstWhere((element) => element.productId == product.id)
             .quantity += 1;
         return cartItems;
       }
-      //IcartItemselse add the product to the cart
-      return [...cartItems, CartItem(product: product, quantity: 1)];
+      //else add the product to the cart
+      return [...cartItems, CartItem(productId: product.id!, quantity: 1)];
     }
   }
 
@@ -46,7 +45,7 @@ class Utils {
 
   static List<CartItem> removeFromCart(
       {required List<CartItem> cartItems, required Product product}) {
-    cartItems.removeWhere((element) => element.product.id == product.id);
+    cartItems.removeWhere((element) => element.productId == product.id);
 
     return cartItems;
   }
@@ -54,7 +53,7 @@ class Utils {
   static List<CartItem> decreaseQuantityByOne(
       {required List<CartItem> cartItems, required Product product}) {
     cartItems
-        .firstWhere((element) => element.product.id == product.id)
+        .firstWhere((element) => element.productId == product.id)
         .quantity -= 1;
     return cartItems;
   }
@@ -62,7 +61,7 @@ class Utils {
   static List<CartItem> increaseQuantityByOne(
       {required List<CartItem> cartItems, required Product product}) {
     cartItems
-        .firstWhere((element) => element.product.id == product.id)
+        .firstWhere((element) => element.productId == product.id)
         .quantity += 1;
     return cartItems;
   }

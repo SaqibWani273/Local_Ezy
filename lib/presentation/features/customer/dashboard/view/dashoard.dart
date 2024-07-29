@@ -2,10 +2,10 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mca_project/presentation/common/widgets/loading_widgets.dart';
-import 'package:mca_project/presentation/common/widgets/show_cupertino_alert_dialog.dart';
-import 'package:mca_project/presentation/features/customer/dashboard/view/widgets/shop_loading_screen.dart';
-import 'package:mca_project/presentation/features/customer/product/view/product_details_screen.dart';
+import '/presentation/common/widgets/loading_widgets.dart';
+import '/presentation/common/widgets/show_cupertino_alert_dialog.dart';
+import '/presentation/features/customer/dashboard/view/widgets/shop_loading_screen.dart';
+import '/presentation/features/customer/product/view/product_details_screen.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../../../common/widgets/my_text_field_widget.dart';
 import '/data/repositories/customer/customer_data_repository.dart';

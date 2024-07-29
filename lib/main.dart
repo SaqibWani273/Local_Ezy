@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
-import 'package:mca_project/data/models/shop_model/shop_model1.dart';
+import '/data/models/shop_model/shop_model1.dart';
 import '/data/repositories/customer/customer_profile_repository.dart';
 import '/data/repositories/shop/shop_data_repository.dart';
 import '/presentation/common/screens/no_internet_screen.dart';

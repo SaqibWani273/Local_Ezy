@@ -1,9 +1,13 @@
 import 'dart:developer';
 import 'dart:convert';
+import 'dart:ffi';
 
 import 'package:http/http.dart' as http;
-import 'package:mca_project/constants/rest_api_const.dart';
+import '/constants/rest_api_const.dart';
+import '/utils/exceptions/custom_exception.dart';
+import '/utils/utils.dart';
 import '../data/models/cart.dart';
+import '../data/models/product.dart';
 import '/utils/exceptions/customer_exception.dart';
 import '/utils/secure_storage.dart';
 
@@ -104,6 +108,43 @@ class CustomerProfileService {
         log(response.body);
       } else {
         log(" error in  updateCustomer,response-> ${response.body} ${response.statusCode} -> ${response.body}");
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  static Future<List<CartItemDetails>> fetchProductsFromIds(
+      List<CartItem> cartItems) async {
+    try {
+      List<CartItemDetails> cartItemDetails = [];
+      final response = await http.post(
+          Uri.parse(ApiConst.fetchProductsByIdsUrl),
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer ${await SecureStorage.getToken()}"
+          },
+          body: jsonEncode(
+              {'productIds': cartItems.map((e) => e.productId).toList()}));
+
+      if (response.statusCode == 200) {
+        List<Product> products = [];
+        final List<dynamic> dynamicList = jsonDecode(response.body);
+        for (var i = 0; i < dynamicList.length; i++) {
+          products
+              .add(Product.fromJson(dynamicList[i] as Map<String, dynamic>));
+        }
+        for (int i = 0; i < products.length; i++) {
+          cartItemDetails.add(CartItemDetails(
+            quantity: cartItems[i].quantity,
+            product: products[i],
+          ));
+        }
+
+        return cartItemDetails;
+      } else {
+        log(" error in  fetchProducts for cart,response-> ${response.body} ${response.statusCode} -> ${response.body}");
+        throw cartException;
       }
     } catch (e) {
       rethrow;

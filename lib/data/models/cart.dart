@@ -1,7 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
-import 'package:mca_project/data/models/product.dart';
+import '/data/models/product.dart';
 
 // class Cart {
 //   final List<CartItem> cartItems;
@@ -30,24 +30,23 @@ import 'package:mca_project/data/models/product.dart';
 // }
 
 class CartItem {
-  final int? id;
-  final Product product;
+  //just store id here and when user tries to open cart screen
+  //
+  final int productId;
   int quantity;
 
-  CartItem({required this.product, required this.quantity, this.id});
+  CartItem({required this.productId, required this.quantity});
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'id': id,
-      'product': product.toJson(),
+      'productId': productId,
       'quantity': quantity,
     };
   }
 
   factory CartItem.fromMap(Map<String, dynamic> map) {
     return CartItem(
-      id: map['id'] != null ? map['id'] as int : null,
-      product: Product.fromJson(map['product'] as Map<String, dynamic>),
+      productId: map['productId'] as int,
       quantity: map['quantity'] as int,
     );
   }
@@ -56,4 +55,25 @@ class CartItem {
 
   factory CartItem.fromJson(String source) =>
       CartItem.fromMap(json.decode(source) as Map<String, dynamic>);
+}
+
+class CartItemDetails {
+  int quantity;
+  final Product product;
+
+  CartItemDetails({required this.quantity, required this.product});
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'quantity': quantity,
+      'product': product.toJson(),
+    };
+  }
+
+  factory CartItemDetails.fromMap(Map<String, dynamic> map) {
+    return CartItemDetails(
+      quantity: map['quantity'] as int,
+      product: Product.fromJson(map['product'] as Map<String, dynamic>),
+    );
+  }
 }

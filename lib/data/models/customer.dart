@@ -1,7 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
-import 'package:mca_project/data/models/cart.dart';
+import '/data/models/cart.dart';
 
 import 'basic_user_model/basic_user_model.dart';
 

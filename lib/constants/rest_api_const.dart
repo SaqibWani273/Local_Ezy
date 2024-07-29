@@ -15,6 +15,8 @@ class ApiConst {
   static final String updateCartUrl = '$baseApiUrl/customer/update-cart-items';
   static final String loadAllCategoriesUrl =
       '$baseApiUrl/user/get-all-categories';
+  static final String fetchProductsByIdsUrl =
+      '$baseApiUrl/customer/get-products-by-ids';
   static final String usernameExistsUrl = '$baseApiUrl/user/username-exists';
   static final String emailExistsUrl = '$baseApiUrl/user/email-exists';
   static final fetchProductUrl = '$baseApiUrl/customer/get-all-products';

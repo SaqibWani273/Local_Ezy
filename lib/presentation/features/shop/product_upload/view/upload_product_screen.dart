@@ -7,8 +7,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:mca_project/presentation/common/screens/error_screen.dart';
-import 'package:mca_project/presentation/common/widgets/loading_widgets.dart';
+import '/presentation/common/screens/error_screen.dart';
+import '/presentation/common/widgets/loading_widgets.dart';
 import '../../../../../data/models/category/specific_category/specific_category.dart';
 import '/constants/product_const.dart';
 

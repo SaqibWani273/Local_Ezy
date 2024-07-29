@@ -1,8 +1,8 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mca_project/presentation/features/customer/appbar_widget.dart';
-import 'package:mca_project/presentation/features/customer/dashboard/view_model/customer_data_bloc.dart';
+import '/presentation/features/customer/appbar_widget.dart';
+import '/presentation/features/customer/dashboard/view_model/customer_data_bloc.dart';
 import '../../../data/models/customer.dart';
 import '../../../data/repositories/customer/customer_data_repository.dart';
 import '../../common/widgets/drawer_widget.dart';

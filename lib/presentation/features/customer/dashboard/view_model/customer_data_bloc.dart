@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '/utils/exceptions/custom_exception.dart';
+import '/utils/exceptions/customer_exception.dart';
+import '../../../../../data/models/cart.dart';
 import '../../../../../data/models/product.dart';
 import '/data/repositories/customer/customer_data_repository.dart';
 
@@ -16,12 +19,20 @@ class CustomerDataBloc extends Bloc<CustomerDataEvent, CustomerDataState> {
     on<CustomerDataRemoveProductFromCartEvent>(_removeFromCart);
     on<CustomerDataIncreaseQuantityByOneEvent>(_increaseQuantityByOne);
     on<CustomerDataDecreaseQuantityByOneEvent>(_decreaseQuantityByOne);
+    on<CustomerDataFetchCartItemDetailsEvent>(_fetchMultipleCartItemDetails);
   }
   Future<void> _handleEvent(
       CustomerDataEvent event, Emitter<CustomerDataState> emit) async {
     try {
       if (event is ChangeCustomerCurrentLocationEvent) {
         emit(CustomerDataLoadedState(isChangingLocation: true));
+      } else if (event is CustomerDataFetchCartItemDetailsEvent) {
+        emit(CustomerDataFetchingCartItemDetailsState());
+      } else if (event is CustomerDataIncreaseQuantityByOneEvent ||
+          event is CustomerDataDecreaseQuantityByOneEvent ||
+          event is CustomerDataAddProductToCartEvent ||
+          event is CustomerDataRemoveProductFromCartEvent) {
+        //do nothing
       } else {
         emit(CustomerDataLoadingState());
       }
@@ -51,7 +62,16 @@ class CustomerDataBloc extends Bloc<CustomerDataEvent, CustomerDataState> {
           await customerDataRepository.decreaseQuantityByOne(event.product);
           emit(CustomerDataLoadedState());
           break;
+        case CustomerDataFetchCartItemDetailsEvent _:
+          await customerDataRepository
+              .fetchMultipleCartItemDetails(event.cartItems);
+          // emit(CustomerDataCartFetchedCartItemDetailsState());
+          emit(CustomerDataLoadedState());
+          break;
       }
+    } on CustomException catch (e) {
+      if (e.errorType == ErrorType.cartError)
+        emit(CustomerDataCartErrorState(error: e));
     } catch (e) {
       emit(CustomerDataErrorState(error: e.toString()));
     }
@@ -79,6 +99,11 @@ class CustomerDataBloc extends Bloc<CustomerDataEvent, CustomerDataState> {
       await _handleEvent(event, emit);
   Future<void> _decreaseQuantityByOne(
           CustomerDataDecreaseQuantityByOneEvent event,
+          Emitter<CustomerDataState> emit) async =>
+      await _handleEvent(event, emit);
+
+  Future<void> _fetchMultipleCartItemDetails(
+          CustomerDataFetchCartItemDetailsEvent event,
           Emitter<CustomerDataState> emit) async =>
       await _handleEvent(event, emit);
 }

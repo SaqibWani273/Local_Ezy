@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:mca_project/data/models/shop_model/shop_model1.dart';
+import '/data/models/shop_model/shop_model1.dart';
 
 import '/constants/rest_api_const.dart';
 import '/utils/exceptions/custom_exception.dart';

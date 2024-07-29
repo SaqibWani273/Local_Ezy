@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mca_project/data/repositories/shop/shop_data_repository.dart';
+import '/data/repositories/shop/shop_data_repository.dart';
 
 import '../../features/shop/shop_authentication/view_model/shop_auth_bloc.dart';
 import '../screens/error_screen.dart';

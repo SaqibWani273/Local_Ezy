@@ -17,3 +17,13 @@ class CustomerDataErrorState extends CustomerDataState {
   final String error;
   CustomerDataErrorState({required this.error});
 }
+
+class CustomerDataFetchingCartItemDetailsState extends CustomerDataState {}
+
+class CustomerDataCartErrorState extends CustomerDataState {
+  final CustomException error;
+
+  CustomerDataCartErrorState({required this.error});
+}
+
+class CustomerDataCartFetchedCartItemDetailsState extends CustomerDataState {}

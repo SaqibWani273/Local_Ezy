@@ -7,6 +7,7 @@ class EmptyCartScreen extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          SizedBox(height: 40),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(16.0),

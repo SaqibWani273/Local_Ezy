@@ -28,3 +28,8 @@ class CustomerDataDecreaseQuantityByOneEvent extends CustomerDataEvent {
   final Product product;
   CustomerDataDecreaseQuantityByOneEvent({required this.product});
 }
+
+class CustomerDataFetchCartItemDetailsEvent extends CustomerDataEvent {
+  final List<CartItem> cartItems;
+  CustomerDataFetchCartItemDetailsEvent({required this.cartItems});
+}

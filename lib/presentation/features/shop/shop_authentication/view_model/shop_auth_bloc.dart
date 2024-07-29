@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mca_project/data/models/shop_model/shop_model1.dart';
+import '/data/models/shop_model/shop_model1.dart';
 import '/data/repositories/shop/shop_data_repository.dart';
 import '/utils/exceptions/custom_exception.dart';
 
