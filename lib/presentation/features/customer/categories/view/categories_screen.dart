@@ -9,7 +9,7 @@ class CategoriesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final categories = context.read<CustomerDataRepository>().getCategories;
+    final categories = context.read<CustomerDataRepository>().categories;
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Column(

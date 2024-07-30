@@ -12,13 +12,13 @@ import '../../models/customer.dart';
 import '/data/models/product.dart';
 
 class CustomerDataRepository {
-  List<Product>? _products;
-  List<ProductCategory>? _categories;
+  List<Product> products = [];
+  List<ProductCategory>? categories;
   LocationInfo? currentSelectedLocation;
-  List<ShopModel1>? _shops;
-  List<ShopModel1>? get getShops => _shops;
-  List<ProductCategory>? get getCategories => _categories;
-  List<Product>? get getProducts => _products;
+  // List<ShopModel1>? _shops;
+  // List<ShopModel1>? get getShops => _shops;
+  // List<ProductCategory>? get getCategories => _categories;
+  // List<Product>? get getProducts => _products;
   Customer? customer;
   List<CartItemDetails> cartItemDetails = [];
   CustomerDataRepository({
@@ -58,13 +58,10 @@ class CustomerDataRepository {
     customer = null;
   }
 
-  Future<void> fetchData() async {
+  Future<void> fetchProducts() async {
     try {
-      //fetch and update current location
-      currentSelectedLocation = await GeoLocatorService.fetchLocationInfo(null);
-      //fetch shop-data from server
-//fetch products
-      _products = await ApiService.fetchProducts();
+      //fetch products
+      products = await ApiService.fetchProducts(currentSelectedLocation);
       //fetch categories
     } catch (e) {
       log("Error fetching products data from server-> $e");
@@ -72,9 +69,9 @@ class CustomerDataRepository {
     }
   }
 
-  Future<void> changeCurrentLocation(String? location) async {
+  Future<void> fetchLocation(String? location) async {
     try {
-      if (location == null) {
+      if (location == 'global') {
         //user wants to set location to global
         currentSelectedLocation = null;
         return;
@@ -174,6 +171,4 @@ class CustomerDataRepository {
       rethrow;
     }
   }
-// Future<void> fetchOneCartItemDetails(CartItem cartItem) async {
-// }
 }

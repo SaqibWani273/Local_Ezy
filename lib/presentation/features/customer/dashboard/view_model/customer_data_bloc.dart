@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mca_project/data/models/shop_model/shop_model1.dart';
 import '/utils/exceptions/custom_exception.dart';
 import '/utils/exceptions/customer_exception.dart';
 import '../../../../../data/models/cart.dart';
@@ -38,12 +39,16 @@ class CustomerDataBloc extends Bloc<CustomerDataEvent, CustomerDataState> {
       }
       switch (event) {
         case LoadCustomerDataEvent _:
-          await customerDataRepository.fetchData();
+          await customerDataRepository.fetchLocation('current');
+          emit(CustomerDataLoadedState(loadingProducts: true));
+          await customerDataRepository.fetchProducts();
           emit(CustomerDataLoadedState());
+
           break;
         case ChangeCustomerCurrentLocationEvent _:
-          await customerDataRepository
-              .changeCurrentLocation(event.currentLocation);
+          await customerDataRepository.fetchLocation(event.currentLocation);
+          emit(CustomerDataLoadedState(loadingProducts: true));
+          await customerDataRepository.fetchProducts();
           emit(CustomerDataLoadedState());
           break;
         case CustomerDataAddProductToCartEvent _:
@@ -70,8 +75,12 @@ class CustomerDataBloc extends Bloc<CustomerDataEvent, CustomerDataState> {
           break;
       }
     } on CustomException catch (e) {
-      if (e.errorType == ErrorType.cartError)
+      if (e.errorType.name.toLowerCase().contains("location")) {
+        emit(CustomerDataLocationErrorState(error: e));
+      }
+      if (e.errorType == ErrorType.cartError) {
         emit(CustomerDataCartErrorState(error: e));
+      }
     } catch (e) {
       emit(CustomerDataErrorState(error: e.toString()));
     }

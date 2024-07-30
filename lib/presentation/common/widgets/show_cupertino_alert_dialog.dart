@@ -29,7 +29,7 @@ void showCupertinoAlertDialog({
                   onPressed: () {
                     context.read<CustomerDataBloc>().add(
                         ChangeCustomerCurrentLocationEvent(
-                            currentLocation: null));
+                            currentLocation: 'global'));
                     Navigator.pop(context);
                   },
                   label: Text(

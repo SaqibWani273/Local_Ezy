@@ -175,9 +175,16 @@ class ApiService {
     }
   }
 
-  static Future<List<Product>> fetchProducts() async {
+  static Future<List<Product>> fetchProducts(LocationInfo? locationInfo) async {
     try {
-      final response = await http.get(Uri.parse(ApiConst.fetchProductUrl));
+      // final response = await http.get(Uri.parse(ApiConst.fetchProductUrl));
+      final response = await http.post(
+        Uri.parse(ApiConst.getProductsByLocation),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: locationInfo == null ? null : jsonEncode(locationInfo.toJson()),
+      );
       if (response.statusCode == 200) {
         final products = <Product>[];
         for (var element in jsonDecode(response.body)) {

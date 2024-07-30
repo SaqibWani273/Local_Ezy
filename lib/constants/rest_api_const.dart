@@ -21,6 +21,8 @@ class ApiConst {
   static final String emailExistsUrl = '$baseApiUrl/user/email-exists';
   static final fetchProductUrl = '$baseApiUrl/customer/get-all-products';
   static final myIpAddress = '192.168.1.5'; //use ipconfig in cmd
+  static final String getProductsByLocation =
+      '$baseApiUrl/customer/get-products-by-location';
 }
 
 class CloudinaryApiConst {

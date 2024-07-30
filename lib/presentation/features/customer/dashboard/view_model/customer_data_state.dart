@@ -10,7 +10,8 @@ class CustomerDataChangingCurrentLocationState extends CustomerDataState {}
 
 class CustomerDataLoadedState extends CustomerDataState {
   bool? isChangingLocation;
-  CustomerDataLoadedState({this.isChangingLocation});
+  bool? loadingProducts;
+  CustomerDataLoadedState({this.isChangingLocation, this.loadingProducts});
 }
 
 class CustomerDataErrorState extends CustomerDataState {
@@ -27,3 +28,8 @@ class CustomerDataCartErrorState extends CustomerDataState {
 }
 
 class CustomerDataCartFetchedCartItemDetailsState extends CustomerDataState {}
+
+class CustomerDataLocationErrorState extends CustomerDataState {
+  final CustomException error;
+  CustomerDataLocationErrorState({required this.error});
+}

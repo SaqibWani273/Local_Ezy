@@ -2,6 +2,8 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mca_project/data/models/shop_model/shop_model1.dart';
+import 'package:mca_project/presentation/common/screens/error_screen.dart';
 import '/presentation/common/widgets/loading_widgets.dart';
 import '/presentation/common/widgets/show_cupertino_alert_dialog.dart';
 import '/presentation/features/customer/dashboard/view/widgets/shop_loading_screen.dart';
@@ -20,11 +22,13 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
   TextEditingController locationController = TextEditingController();
+  LocationInfo? locationInfo;
   @override
   void initState() {
-    if (context.read<CustomerDataRepository>().getProducts == null) {
+    if (context.read<CustomerDataRepository>().products.isEmpty) {
       //to load Customer data from db using auht token from secure storage
       // context.read<CustomerAuthBloc>().add(CustomerAuthVerificationEvent());
+
       context.read<CustomerDataBloc>().add(LoadCustomerDataEvent());
     }
     super.initState();
@@ -104,11 +108,16 @@ class _DashboardState extends State<Dashboard> {
           // return const Center(child: CircularProgressIndicator());
           return ShopLocalLoadingScreen();
         }
+        if (state is CustomerDataLocationErrorState) {
+          return ErrorScreen(
+              customException: state.error,
+              onTryAgainPressed: () {
+                context.read<CustomerDataBloc>().add(LoadCustomerDataEvent());
+              });
+        }
         if (state is CustomerDataLoadedState) {
-          final products = context.read<CustomerDataRepository>().getProducts;
-          if (products == null || products.isEmpty) {
-            return Center(child: Text("No Products here !!!"));
-          }
+          final products = context.read<CustomerDataRepository>().products;
+
           return CustomScrollView(slivers: [
             // const SliverAppBar(),
             SliverList(
@@ -136,69 +145,87 @@ class _DashboardState extends State<Dashboard> {
                   AddressWidget(deviceHeight * 0.15),
               ]),
             ),
-            SliverPadding(
-              padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 16.0),
-              sliver: SliverGrid.builder(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    mainAxisExtent: deviceHeight * 0.3,
-                    crossAxisSpacing: 10,
-                    mainAxisSpacing: 10,
-                    childAspectRatio: 0.8,
-                  ),
-                  itemCount: products.length,
-                  itemBuilder: (context, index) {
-                    return InkWell(
-                      onTap: () => Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              ProductDetailsScreen(product: products[index]),
+            SliverList(delegate: SliverChildListDelegate([])),
+            if (state.loadingProducts == true)
+              SliverPadding(
+                  padding: EdgeInsets.all(8.0),
+                  sliver: SliverToBoxAdapter(
+                    child: Container(
+                        margin: EdgeInsets.only(top: deviceHeight * 0.2),
+                        child: LoadingWidgets.SpinKitFading(deviceWidth)),
+                  )),
+
+            if (state.loadingProducts == null && products.isEmpty)
+              SliverToBoxAdapter(
+                child: Container(
+                    margin: EdgeInsets.only(top: deviceHeight * 0.2),
+                    child: Center(child: Text("No Products Found"))),
+              ),
+            // if (products.isEmpty) Center(child: Text("No Products Found")),
+            if (state.loadingProducts == null && products.isNotEmpty)
+              SliverPadding(
+                padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 16.0),
+                sliver: SliverGrid.builder(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      mainAxisExtent: deviceHeight * 0.3,
+                      crossAxisSpacing: 10,
+                      mainAxisSpacing: 10,
+                      childAspectRatio: 0.8,
+                    ),
+                    itemCount: products.length,
+                    itemBuilder: (context, index) {
+                      return InkWell(
+                        onTap: () => Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                ProductDetailsScreen(product: products[index]),
+                          ),
                         ),
-                      ),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.grey.shade100,
-                          borderRadius: BorderRadius.circular(30.0),
-                        ),
-                        child: Column(
-                          children: [
-                            Expanded(
-                              flex: deviceHeight < 550 ? 1 : 0,
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(30.0),
-                                    topRight: Radius.circular(30.0)),
-                                child: Hero(
-                                  tag: products[index].id!,
-                                  child: Image.network(
-                                      fit: BoxFit.fill,
-                                      height: deviceHeight * 0.2,
-                                      // width: deviceWidth * 0.4,
-                                      products[index].images.first),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade100,
+                            borderRadius: BorderRadius.circular(30.0),
+                          ),
+                          child: Column(
+                            children: [
+                              Expanded(
+                                flex: deviceHeight < 550 ? 1 : 0,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(30.0),
+                                      topRight: Radius.circular(30.0)),
+                                  child: Hero(
+                                    tag: products[index].id!,
+                                    child: Image.network(
+                                        fit: BoxFit.fill,
+                                        height: deviceHeight * 0.2,
+                                        // width: deviceWidth * 0.4,
+                                        products[index].images.first),
+                                  ),
                                 ),
                               ),
-                            ),
-                            Spacer(),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 10.0, right: 10.0, bottom: 20.0),
-                              child: Row(
-                                children: [
-                                  Expanded(child: Text(products[index].name)),
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 8.0),
-                                    child: Text(
-                                        "₹" + products[index].price.toString()),
-                                  ),
-                                ],
+                              Spacer(),
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 10.0, right: 10.0, bottom: 20.0),
+                                child: Row(
+                                  children: [
+                                    Expanded(child: Text(products[index].name)),
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 8.0),
+                                      child: Text("₹" +
+                                          products[index].price.toString()),
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-                    );
-                  }),
-            )
+                      );
+                    }),
+              )
           ]);
         }
         return LoadingWidgets.SpinKitFading(deviceWidth);
