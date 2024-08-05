@@ -13,11 +13,14 @@ class CustomerDataLoadedState extends CustomerDataState {
   bool? loadingProducts;
   bool? canAddToCart;
   List<Product>? searchProducts;
-  CustomerDataLoadedState(
-      {this.canAddToCart,
-      this.isChangingLocation,
-      this.loadingProducts,
-      this.searchProducts});
+  List<ShopModel1>? shops;
+  CustomerDataLoadedState({
+    this.canAddToCart,
+    this.isChangingLocation,
+    this.loadingProducts,
+    this.searchProducts,
+    this.shops,
+  });
 }
 
 class CustomerDataErrorState extends CustomerDataState {

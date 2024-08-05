@@ -350,6 +350,57 @@ class ApiService {
       rethrow;
     }
   }
+
+  static Future<List<ShopModel1>> fetchNearbyShops(
+      LocationInfo? location) async {
+    try {
+      List<ShopModel1> shops = [];
+      final response = await http.post(Uri.parse(ApiConst.getNearbyShopsUrl),
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer ${await SecureStorage.getToken()}"
+          },
+          body: location == null ? null : jsonEncode(location.toJson()));
+      if (response.statusCode == 200) {
+        for (var element in jsonDecode(response.body)) {
+          shops.add(ShopModel1.fromJson(element));
+        }
+      } else {
+        log("serveer error in  fetchNearbyShops,response-> ${response.body} ${response.statusCode} -> ${response.body}");
+      }
+
+      return shops;
+    } catch (e) {
+      log("fetchNearbyShops error: $e");
+      rethrow;
+    }
+  }
+
+  static Future<List<Product>> fetchProductsByShopId(int id) async {
+    try {
+      List<Product> products = [];
+      final response = await http.get(
+        Uri.parse("${ApiConst.getProductsByShopId}?shopId=$id"),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      );
+      if (response.statusCode == 200) {
+        for (var element in jsonDecode(response.body)) {
+          products.add(Product.fromJson(element));
+        }
+      } else {
+        log("serveer error in  fetchProductsByShopId,response-> ${response.body} ${response.statusCode} -> ${response.body}");
+        throw CustomException(
+            errorType: ErrorType.internetConnection,
+            message: "Something went wrong!,${response.statusCode}");
+      }
+      return products;
+    } catch (e) {
+      log("fetchShopById error: $e");
+      rethrow;
+    }
+  }
 }
 
 enum Roles { ROLE_CUSTOMER, ROLE_SHOP }

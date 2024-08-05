@@ -24,6 +24,7 @@ class CustomerDataBloc extends Bloc<CustomerDataEvent, CustomerDataState> {
     on<CustomerDataFetchCartItemDetailsEvent>(_fetchMultipleCartItemDetails);
     on<CustomerDataSearchProductEvent>(_searchProduct);
     on<CustomerDataLoadProductsEvent>(_loadProducts);
+    on<CustomerDataFetchNearbyShopsEvent>(_fetchNearbyShops);
   }
   Future<void> _handleEvent(
       CustomerDataEvent event, Emitter<CustomerDataState> emit) async {
@@ -90,6 +91,10 @@ class CustomerDataBloc extends Bloc<CustomerDataEvent, CustomerDataState> {
               await customerDataRepository.searchProduct(event.keyword);
           emit(CustomerDataLoadedState(searchProducts: products));
           break;
+        case CustomerDataFetchNearbyShopsEvent _:
+          final shops = await customerDataRepository.fetchNearbyShops();
+          emit(CustomerDataLoadedState(shops: shops));
+          break;
       }
     } on CustomException catch (e) {
       if (e.errorType.name.toLowerCase().contains("location")) {
@@ -140,6 +145,9 @@ class CustomerDataBloc extends Bloc<CustomerDataEvent, CustomerDataState> {
       await _handleEvent(event, emit);
 
   Future<void> _loadProducts(CustomerDataLoadProductsEvent event,
+          Emitter<CustomerDataState> emit) async =>
+      await _handleEvent(event, emit);
+  Future<void> _fetchNearbyShops(CustomerDataFetchNearbyShopsEvent event,
           Emitter<CustomerDataState> emit) async =>
       await _handleEvent(event, emit);
 }

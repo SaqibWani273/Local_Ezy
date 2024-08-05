@@ -34,6 +34,11 @@ class ApiConst {
   static final String updateOrderStatusUrl =
       '$baseApiUrl/shop/update-order-status';
   static const int pageSize = 10;
+
+  static final String getNearbyShopsUrl =
+      '$baseApiUrl/customer/get-shops-by-location';
+  static final String getProductsByShopId =
+      '$baseApiUrl/customer/get-products-by-shop-id';
 }
 
 class CloudinaryApiConst {

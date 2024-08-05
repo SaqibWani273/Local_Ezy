@@ -60,8 +60,8 @@ class ShopProfileScreen extends StatelessWidget {
 
 class ShopHeader extends StatelessWidget {
   final String shopPicUrl;
-  final String ownerPicUrl;
-  final String ownerName;
+  final String? ownerPicUrl;
+  final String? ownerName;
 
   final String shopName;
 
@@ -74,6 +74,7 @@ class ShopHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool isShopProfile = ownerName != null && ownerPicUrl != null;
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -89,51 +90,55 @@ class ShopHeader extends StatelessWidget {
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            Expanded(
-              child: Column(
+        isShopProfile
+            ? Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  SizedBox(height: 16.0),
-                  CircleAvatar(
-                    radius: 50,
-                    backgroundImage: NetworkImage(ownerPicUrl),
+                  Expanded(
+                    child: Column(
+                      children: [
+                        SizedBox(height: 16.0),
+                        CircleAvatar(
+                          radius: 50,
+                          backgroundImage: NetworkImage(ownerPicUrl!),
+                        ),
+                        SizedBox(height: 8.0),
+                        Text(
+                          ownerName!,
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
                   ),
-                  SizedBox(height: 8.0),
-                  Text(
-                    ownerName,
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-            ),
-            Expanded(
-              child: InkWell(
-                onTap: () =>
-                    context.read<ShopAuthBloc>().add(ShopAuthLogoutEvent()),
-                child: Container(
-                  // height: 50,
-                  // width: 50,
-                  decoration: BoxDecoration(
-                      color: Colors.grey.shade200,
-                      borderRadius: BorderRadius.circular(15.0),
-                      border:
-                          Border.all(color: Colors.grey.shade300, width: 2)),
-                  child: Column(
-                    children: [
-                      Text("Logout"),
-                      SizedBox(
-                        height: 20,
+                  Expanded(
+                    child: InkWell(
+                      onTap: () => context
+                          .read<ShopAuthBloc>()
+                          .add(ShopAuthLogoutEvent()),
+                      child: Container(
+                        // height: 50,
+                        // width: 50,
+                        decoration: BoxDecoration(
+                            color: Colors.grey.shade200,
+                            borderRadius: BorderRadius.circular(15.0),
+                            border: Border.all(
+                                color: Colors.grey.shade300, width: 2)),
+                        child: Column(
+                          children: [
+                            Text("Logout"),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Icon(Icons.logout)
+                          ],
+                        ),
                       ),
-                      Icon(Icons.logout)
-                    ],
-                  ),
-                ),
-              ),
-            )
-          ],
-        )
+                    ),
+                  )
+                ],
+              )
+            : Container()
       ],
     );
   }
@@ -168,9 +173,9 @@ class ShopDetails extends StatelessWidget {
   final String address;
   final String phoneNumber;
   final String email;
-  final String businessLicense;
-  final String pancardPicUrl;
-  final String ownerIdPicUrl;
+  final String? businessLicense;
+  final String? pancardPicUrl;
+  final String? ownerIdPicUrl;
 
   ShopDetails({
     required this.categories,
@@ -184,6 +189,9 @@ class ShopDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool isShopProfile = businessLicense != null &&
+        pancardPicUrl != null &&
+        ownerIdPicUrl != null;
     return Card(
       elevation: 4.0,
       shape: RoundedRectangleBorder(
@@ -216,17 +224,25 @@ class ShopDetails extends StatelessWidget {
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
             Text(email, style: TextStyle(fontSize: 16)),
             SizedBox(height: 8.0),
-            Text('Business License:',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-            Text(businessLicense, style: TextStyle(fontSize: 16)),
-            SizedBox(height: 8.0),
-            Text('Pan Card:',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-            Image.network(pancardPicUrl, height: 100, fit: BoxFit.cover),
-            SizedBox(height: 8.0),
-            Text('Owner ID:',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-            Image.network(ownerIdPicUrl, height: 100, fit: BoxFit.cover),
+            if (isShopProfile)
+              Column(
+                children: [
+                  Text('Business License:',
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                  Text(businessLicense!, style: TextStyle(fontSize: 16)),
+                  SizedBox(height: 8.0),
+                  Text('Pan Card:',
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                  Image.network(pancardPicUrl!, height: 100, fit: BoxFit.cover),
+                  SizedBox(height: 8.0),
+                  Text('Owner ID:',
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                  Image.network(ownerIdPicUrl!, height: 100, fit: BoxFit.cover),
+                ],
+              )
           ],
         ),
       ),

@@ -42,11 +42,8 @@ class CustomerDataSearchProductEvent extends CustomerDataEvent {
 
 final class CustomerDataLoadProductsEvent extends CustomerDataEvent {
   final int pageKey;
-  // final PagingController<int, Product> pagingController;
 
-  CustomerDataLoadProductsEvent({
-    required this.pageKey,
-
-    // required this.pagingController
-  });
+  CustomerDataLoadProductsEvent({required this.pageKey});
 }
+
+final class CustomerDataFetchNearbyShopsEvent extends CustomerDataEvent {}

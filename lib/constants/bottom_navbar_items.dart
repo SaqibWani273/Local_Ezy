@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mca_project/presentation/features/shop/orders/orders_screen.dart';
+import '../presentation/features/customer/shops/shops_screen.dart';
 import '../presentation/features/shop/inventory/shop_inventory_screen.dart';
 import '../presentation/features/shop/shop_profile/shop_profile_screen.dart';
 import '/presentation/features/customer/cart/cart_screen.dart';
@@ -51,7 +52,7 @@ List<BottomNavbarItem> customerBottomNavbarItems = [
 
 List<Widget> customerMainScreens = [
   const CategoriesScreen(),
-  Container(),
+  ShopsScreen(),
   const Dashboard(),
   CartScreen(),
   CustomerProfile(),

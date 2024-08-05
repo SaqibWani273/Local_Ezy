@@ -250,4 +250,14 @@ class CustomerDataRepository {
     // log("found ${searchedProducts.length} products");
     return searchedProducts;
   }
+
+  Future<List<ShopModel1>> fetchNearbyShops() async {
+    try {
+      shops = await ApiService.fetchNearbyShops(currentSelectedLocation);
+      // customer = customer!.copyWith(shops: shops);
+      return shops!;
+    } catch (e) {
+      rethrow;
+    }
+  }
 }
