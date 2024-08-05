@@ -147,6 +147,7 @@ class CustomerProfileService {
         throw cartException;
       }
     } catch (e) {
+      log("fetchProductsFromIds error: $e");
       rethrow;
     }
   }

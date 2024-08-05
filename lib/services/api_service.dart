@@ -367,7 +367,7 @@ class ApiService {
       final response = await http.post(Uri.parse(ApiConst.getNearbyShopsUrl),
           headers: {
             "Content-Type": "application/json",
-            "Authorization": "Bearer ${await SecureStorage.getToken()}"
+            // "Authorization": "Bearer ${await SecureStorage.getToken()}"
           },
           body: location == null ? null : jsonEncode(location.toJson()));
       if (response.statusCode == 200) {

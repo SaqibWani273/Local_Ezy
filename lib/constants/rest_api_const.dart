@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
 
 class ApiConst {
-  static String baseApiUrl = 'http://${getHostname()}:8080';
-  // static final String baseApiUrl = 'http://3.110.148.117';
+  // static String baseApiUrl = 'http://${getHostname()}:8080';
+  static final String baseApiUrl = 'http://3.110.148.117';
   static final String baseCustomerUrl = '$baseApiUrl/customer';
   static final String customerLoginUrl = '$baseCustomerUrl/login';
   static final String customerRegisterUrl = '$baseCustomerUrl/register';

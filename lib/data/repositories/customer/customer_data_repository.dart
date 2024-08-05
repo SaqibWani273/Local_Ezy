@@ -125,7 +125,7 @@ class CustomerDataRepository {
       //user adds item to cart without visiting the cart first,in that
       //case we won't have fetched the cart item details yet,so fetch all
 
-      if (cartItemDetails.isEmpty) {
+      if (cartItemDetails.isEmpty && customer!.cartItems != null) {
         await fetchMultipleCartItemDetails(customer!.cartItems!);
       }
       //if product already exists in cart

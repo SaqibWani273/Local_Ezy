@@ -144,7 +144,7 @@ class ShopDataRepository {
 
   Future<void> updateOrderStatus(String orderId, String status) async {
     try {
-      // await ApiService.updateOrderStatus(orderId: orderId, status: status);
+      await ApiService.updateOrderStatus(orderId: orderId, status: status);
       Order order = myOrders.firstWhere((x) => x.id == orderId);
       int index = myOrders.indexOf(order);
       order = order.copyWith(status: status);
