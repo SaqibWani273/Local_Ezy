@@ -47,3 +47,5 @@ final class CustomerDataLoadProductsEvent extends CustomerDataEvent {
 }
 
 final class CustomerDataFetchNearbyShopsEvent extends CustomerDataEvent {}
+
+final class CustomerDataFetchCategoriesEvent extends CustomerDataEvent {}

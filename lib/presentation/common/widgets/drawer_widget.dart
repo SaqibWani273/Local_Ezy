@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '/utils/handle_drawer_item_tap.dart';
 import '../../../constants/drawer_data.dart';
 import '../../../theme/overflow_text_style.dart';
@@ -20,15 +21,17 @@ class DrawerWidget extends StatelessWidget {
         // Remove padding from top
         padding: EdgeInsets.zero,
         children: [
-          const DrawerHeader(
+          DrawerHeader(
             decoration: BoxDecoration(
               color: Colors.blue,
             ),
             child: Text(
-              'ShopLocal',
+              'LocalEzy',
               style: TextStyle(
-                color: Colors.white,
-                fontSize: 24,
+                color: Colors.purple,
+                fontSize: 40,
+                fontFamily:
+                    GoogleFonts.aBeeZeeTextTheme().headlineLarge?.fontFamily,
               ),
             ),
           ),

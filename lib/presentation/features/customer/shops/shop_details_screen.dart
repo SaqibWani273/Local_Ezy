@@ -40,14 +40,7 @@ class ShopDetailsScreen extends StatelessWidget {
           }
           log("snap ${snapshot.data}");
           List<Product> products = snapshot.data as List<Product>;
-          if (products.isEmpty) {
-            return Center(
-              child: Text(
-                "Shop has no products",
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
-            );
-          }
+
           return CustomScrollView(
             slivers: [
               SliverList(
@@ -70,67 +63,68 @@ class ShopDetailsScreen extends StatelessWidget {
                   )
                 ]),
               ),
-              SliverGrid.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  mainAxisExtent: deviceHeight * 0.3,
-                  crossAxisSpacing: 10,
-                  mainAxisSpacing: 10,
-                  childAspectRatio: 0.8,
-                ),
-                itemCount: products.length,
-                itemBuilder: (context, index) {
-                  var item = products[index];
-                  return InkWell(
-                    onTap: () => Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            ProductDetailsScreen(product: item),
+              if (products.isNotEmpty)
+                SliverGrid.builder(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    mainAxisExtent: deviceHeight * 0.3,
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10,
+                    childAspectRatio: 0.8,
+                  ),
+                  itemCount: products.length,
+                  itemBuilder: (context, index) {
+                    var item = products[index];
+                    return InkWell(
+                      onTap: () => Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              ProductDetailsScreen(product: item),
+                        ),
                       ),
-                    ),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.grey.shade100,
-                        borderRadius: BorderRadius.circular(30.0),
-                      ),
-                      child: Column(
-                        children: [
-                          Expanded(
-                            flex: deviceHeight < 550 ? 1 : 0,
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(30.0),
-                                  topRight: Radius.circular(30.0)),
-                              child: Hero(
-                                tag: item.id!,
-                                child: Image.network(
-                                    fit: BoxFit.fill,
-                                    height: deviceHeight * 0.2,
-                                    // width: deviceWidth * 0.4,
-                                    item.images.first),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.grey.shade100,
+                          borderRadius: BorderRadius.circular(30.0),
+                        ),
+                        child: Column(
+                          children: [
+                            Expanded(
+                              flex: deviceHeight < 550 ? 1 : 0,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(30.0),
+                                    topRight: Radius.circular(30.0)),
+                                child: Hero(
+                                  tag: item.id!,
+                                  child: Image.network(
+                                      fit: BoxFit.fill,
+                                      height: deviceHeight * 0.2,
+                                      // width: deviceWidth * 0.4,
+                                      item.images.first),
+                                ),
                               ),
                             ),
-                          ),
-                          Spacer(),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                left: 10.0, right: 10.0, bottom: 20.0),
-                            child: Row(
-                              children: [
-                                Expanded(child: Text(item.name)),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 8.0),
-                                  child: Text("₹" + item.price.toString()),
-                                ),
-                              ],
+                            Spacer(),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 10.0, right: 10.0, bottom: 20.0),
+                              child: Row(
+                                children: [
+                                  Expanded(child: Text(item.name)),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 8.0),
+                                    child: Text("₹" + item.price.toString()),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                  );
-                },
-              )
+                    );
+                  },
+                )
             ],
           );
         },

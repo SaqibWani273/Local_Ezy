@@ -44,8 +44,8 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
           appBar: PreferredSize(
               child: AppBarWidget(),
               preferredSize: deviceHeight > 600
-                  ? Size.fromHeight(deviceHeight * 0.05)
-                  : Size.fromHeight(deviceHeight * 0.09)),
+                  ? Size.fromHeight(deviceHeight * 0.09)
+                  : Size.fromHeight(deviceHeight * 0.05)),
           drawer: DrawerWidget(
             currentIndex: currentDrawerItemIndex,
             homePageContext: context,
@@ -74,7 +74,7 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
                 .asMap()
                 .entries
                 .map((e) => Padding(
-                      padding: const EdgeInsets.only(bottom: 8.0),
+                      padding: const EdgeInsets.only(bottom: 8.0, left: 4.0),
                       // height: deviceHeight * 0.05,
 
                       child: Column(

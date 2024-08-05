@@ -124,10 +124,31 @@ class ProductDetailsScreen extends StatelessWidget {
                       const SizedBox(
                         height: 20,
                       ),
-                      Text(
-                        "₹ ${product.price}",
-                        style: Theme.of(context).textTheme.headlineMedium,
+                      Row(
+                        children: [
+                          if (product.disCountedPrice < product.price)
+                            Text(
+                              "₹" + product.disCountedPrice.toString(),
+                              style: Theme.of(context).textTheme.headlineMedium,
+                            ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8.0),
+                            child: Text(
+                              "₹" + product.price.toString(),
+                              style: product.disCountedPrice < product.price
+                                  ? TextStyle(
+                                      color: Colors.grey,
+                                      decoration: TextDecoration.lineThrough,
+                                      decorationColor: Colors.grey)
+                                  : Theme.of(context).textTheme.headlineMedium,
+                            ),
+                          ),
+                        ],
                       ),
+                      // Text(
+                      //   "₹ ${product.price}",
+                      //   style: Theme.of(context).textTheme.headlineMedium,
+                      // ),
                       const SizedBox(
                         height: 20,
                       ),

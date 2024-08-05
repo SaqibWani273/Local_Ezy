@@ -6,12 +6,14 @@ part 'product_category.g.dart';
 //This Model is needed to show the product categories in the customer-Dashboard
 @JsonSerializable()
 class ProductCategory {
+  int id;
   String name;
   String description;
   String image;
   bool isTopProductCategory;
 
   ProductCategory({
+    required this.id,
     required this.name,
     required this.image,
     required this.isTopProductCategory,

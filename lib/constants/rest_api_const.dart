@@ -39,6 +39,9 @@ class ApiConst {
       '$baseApiUrl/customer/get-shops-by-location';
   static final String getProductsByShopId =
       '$baseApiUrl/customer/get-products-by-shop-id';
+  static final String getProductsByCategoryId =
+      '$baseApiUrl/customer/get-products-by-category-id';
+  static final String searchProducts = '$baseApiUrl/customer/search-products';
 }
 
 class CloudinaryApiConst {

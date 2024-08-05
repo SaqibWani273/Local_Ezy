@@ -5,12 +5,14 @@ class MyTextFieldWidget extends StatelessWidget {
   final Widget? prefixIcon;
   final Widget? suffixIcon;
   final Function(String fieldVal)? onChanged;
+  final VoidCallback? onTap;
   const MyTextFieldWidget({
     super.key,
     required this.hintText,
     this.prefixIcon,
     this.suffixIcon,
     this.onChanged,
+    this.onTap,
   });
 
   @override
@@ -18,6 +20,7 @@ class MyTextFieldWidget extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16.0),
       child: TextField(
+        onTap: onTap,
         onChanged: onChanged,
         decoration: InputDecoration(
           hintText: hintText,

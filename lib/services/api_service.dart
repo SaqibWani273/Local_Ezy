@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:mca_project/data/models/Order.dart';
+import 'package:mca_project/data/models/category/product_category/product_category.dart';
 
 import '/data/models/shop_model/shop_model1.dart';
 
@@ -125,7 +126,7 @@ class ApiService {
     }
   }
 
-  static Future<List<CategoryData>?> loadAllCategories() async {
+  static Future<List<dynamic>?> loadAllCategories(Roles role) async {
     try {
       // final token = await SecureStorage.getToken();
       // if (token == null || token.isEmpty) {
@@ -140,6 +141,14 @@ class ApiService {
         },
       );
       if (response.statusCode == 200) {
+        if (role == Roles.ROLE_CUSTOMER) {
+          List<ProductCategory> categories = [];
+          for (var element in jsonDecode(response.body)) {
+            categories.add(ProductCategory.fromJson(element));
+          }
+          return categories;
+        }
+        //for shop
         var categoriesData = <CategoryData>[];
         for (var element in jsonDecode(response.body)) {
           categoriesData.add(CategoryData.fromJson(element));
@@ -398,6 +407,58 @@ class ApiService {
       return products;
     } catch (e) {
       log("fetchShopById error: $e");
+      rethrow;
+    }
+  }
+
+  static Future<List<Product>> fetchProductsByCategoryId(int id) async {
+    try {
+      List<Product> products = [];
+      final response = await http.get(
+        Uri.parse("${ApiConst.getProductsByCategoryId}?categoryId=$id"),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      );
+      if (response.statusCode == 200) {
+        for (var element in jsonDecode(response.body)) {
+          products.add(Product.fromJson(element));
+        }
+      } else {
+        log("serveer error in  fetchProductsByCategoryId,response-> ${response.body} ${response.statusCode} -> ${response.body}");
+        throw CustomException(
+            errorType: ErrorType.internetConnection,
+            message: "Something went wrong!,${response.statusCode}");
+      }
+      return products;
+    } catch (e) {
+      log("fetchShopById error: $e");
+      rethrow;
+    }
+  }
+
+  static Future<List<Product>> searchProducts(String searchText) async {
+    try {
+      List<Product> products = [];
+      final response = await http.get(
+        Uri.parse("${ApiConst.searchProducts}?query=$searchText"),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      );
+      if (response.statusCode == 200) {
+        for (var element in jsonDecode(response.body)) {
+          products.add(Product.fromJson(element));
+        }
+      } else {
+        log("serveer error in  searchProducts,response-> ${response.body} ${response.statusCode} -> ${response.body}");
+        throw CustomException(
+            errorType: ErrorType.internetConnection,
+            message: "Something went wrong!,${response.statusCode}");
+      }
+      return products;
+    } catch (e) {
+      log("searchProducts error: $e");
       rethrow;
     }
   }

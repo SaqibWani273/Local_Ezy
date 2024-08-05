@@ -47,6 +47,11 @@ class Product {
       _$ProductFromJson(json);
 
   Map<String, dynamic> toJson() => _$ProductToJson(this);
+  int get disCountedPrice => discountInPercentage == null
+      ? price
+      :
+      //  (price - ((price * discountInPercentage!) / 100).toInt());
+      (price - ((discountInPercentage! / 100) * price).toInt());
 }
 
 @JsonSerializable()

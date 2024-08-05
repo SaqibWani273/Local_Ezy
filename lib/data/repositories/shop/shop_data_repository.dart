@@ -65,7 +65,9 @@ class ShopDataRepository {
 
   Future<void> loadAllCategories() async {
     try {
-      final List<CategoryData>? response = await ApiService.loadAllCategories();
+      final List<CategoryData>? response =
+          await ApiService.loadAllCategories(Roles.ROLE_SHOP)
+              as List<CategoryData>?;
       if (response == null) {
         throw CustomException(
             errorType: ErrorType.internetConnection,

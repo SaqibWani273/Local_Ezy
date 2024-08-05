@@ -8,6 +8,7 @@ import 'package:mca_project/data/models/shop_model/shop_model1.dart';
 import 'package:mca_project/presentation/common/screens/error_screen.dart';
 import '../../../../../data/models/product.dart';
 import '../../../../../services/api_service.dart';
+import '../../../shop/inventory/shop_inventory_screen.dart';
 import '/presentation/common/widgets/loading_widgets.dart';
 import '/presentation/common/widgets/show_cupertino_alert_dialog.dart';
 import '/presentation/features/customer/dashboard/view/widgets/shop_loading_screen.dart';
@@ -33,7 +34,7 @@ class _DashboardState extends State<Dashboard> {
   @override
   void initState() {
     context.read<CustomerDataBloc>().add(LoadCustomerDataEvent());
-
+    context.read<CustomerDataRepository>().products = [];
     context.read<CustomerDataRepository>().globalPagingController =
         _pagingController;
     _pagingController.addPageRequestListener((int pageKey) {
@@ -115,8 +116,12 @@ class _DashboardState extends State<Dashboard> {
     final deviceHeight = MediaQuery.of(context).size.height;
     final deviceWidth = MediaQuery.of(context).size.width;
     return Scaffold(
-      body: BlocBuilder<CustomerDataBloc, CustomerDataState>(
-          builder: (context, state) {
+      body: BlocConsumer<CustomerDataBloc, CustomerDataState>(
+          listener: (context, state) {
+        // if(state is CustomerDataSearchProductState){
+
+        // }
+      }, builder: (context, state) {
         if (state is CustomerDataErrorState) {
           return Scaffold(
             body: Center(child: Text(state.error)),
@@ -183,7 +188,29 @@ class _DashboardState extends State<Dashboard> {
                         child: LoadingWidgets.SpinKitFading(deviceWidth)),
                   )),
 
-            if (state.loadingProducts == null)
+//show search results here
+            if (state.loadingProducts == null && state.searchProducts != null)
+              SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (context, index) {
+                    final product = state.searchProducts![index];
+                    return InkWell(
+                        onTap: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ProductDetailsScreen(
+                                  product: product,
+                                ),
+                              ),
+                            ),
+                        child: ProductCard(product: product));
+                  },
+                  childCount: state.searchProducts!.length,
+                ),
+              ),
+
+//show main dashboard here
+            if (state.loadingProducts == null && state.searchProducts == null)
               SliverPadding(
                   padding:
                       EdgeInsets.symmetric(horizontal: 8.0, vertical: 16.0),
@@ -255,11 +282,29 @@ class _DashboardState extends State<Dashboard> {
                                   child: Row(
                                     children: [
                                       Expanded(child: Text(item.name)),
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.only(left: 8.0),
-                                        child:
-                                            Text("₹" + item.price.toString()),
+                                      Column(
+                                        children: [
+                                          if (item.disCountedPrice < item.price)
+                                            Text("₹" +
+                                                item.disCountedPrice
+                                                    .toString()),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 8.0),
+                                            child: Text(
+                                              "₹" + item.price.toString(),
+                                              style: item.disCountedPrice <
+                                                      item.price
+                                                  ? TextStyle(
+                                                      color: Colors.grey,
+                                                      decoration: TextDecoration
+                                                          .lineThrough,
+                                                      decorationColor:
+                                                          Colors.grey)
+                                                  : null,
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ],
                                   ),

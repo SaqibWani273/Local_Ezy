@@ -239,16 +239,22 @@ class CustomerDataRepository {
     }
   }
 
-  List<Product> searchProduct(String searchText) {
-    List<Product> searchedProducts = [];
-    for (var product in products) {
-      if (product.name.toLowerCase().contains(searchText.toLowerCase()) ||
-          product.sku.toLowerCase().contains(searchText.toLowerCase())) {
-        searchedProducts.add(product);
-      }
+  Future<List<Product>> searchProduct(String searchText) async {
+    try {
+      return await ApiService.searchProducts(searchText);
+    } catch (e) {
+      rethrow;
     }
-    // log("found ${searchedProducts.length} products");
-    return searchedProducts;
+
+    // List<Product> searchedProducts = [];
+    // for (var product in products) {
+    //   if (product.name.toLowerCase().contains(searchText.toLowerCase()) ||
+    //       product.sku.toLowerCase().contains(searchText.toLowerCase())) {
+    //     searchedProducts.add(product);
+    //   }
+    // }
+    // // log("found ${searchedProducts.length} products");
+    // return searchedProducts;
   }
 
   Future<List<ShopModel1>> fetchNearbyShops() async {
@@ -256,6 +262,16 @@ class CustomerDataRepository {
       shops = await ApiService.fetchNearbyShops(currentSelectedLocation);
       // customer = customer!.copyWith(shops: shops);
       return shops!;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<void> loadCategories() async {
+    try {
+      final response = await ApiService.loadAllCategories(Roles.ROLE_CUSTOMER)
+          as List<ProductCategory>?;
+      categories = response ?? [];
     } catch (e) {
       rethrow;
     }
