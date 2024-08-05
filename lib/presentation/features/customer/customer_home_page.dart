@@ -8,6 +8,7 @@ import '../../../data/repositories/customer/customer_data_repository.dart';
 import '../../common/widgets/drawer_widget.dart';
 
 import '../../../constants/bottom_navbar_items.dart';
+import 'authentication/view_model/customer_auth_bloc.dart';
 import 'cart/cart_screen.dart';
 
 class CustomerHomePage extends StatefulWidget {
@@ -49,16 +50,27 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
             currentIndex: currentDrawerItemIndex,
             homePageContext: context,
           ),
-          body: RefreshIndicator.adaptive(
-              onRefresh: () async {
-                return context
-                    .read<CustomerDataBloc>()
-                    .add(LoadCustomerDataEvent());
-              },
-              child: mainScreens[currentIndex]),
+          body: SafeArea(
+            child: RefreshIndicator.adaptive(
+                onRefresh: () async {
+                  //to reload customer profile data
+                  context
+                      .read<CustomerAuthBloc>()
+                      .add(CustomerAuthVerificationEvent());
+                  //to reload products
+                  context
+                      .read<CustomerDataRepository>()
+                      .globalPagingController
+                      .refresh();
+                  return context
+                      .read<CustomerDataBloc>()
+                      .add(CustomerDataLoadProductsEvent(pageKey: 0));
+                },
+                child: customerMainScreens[currentIndex]),
+          ),
           bottomNavigationBar: CurvedNavigationBar(
             index: 2,
-            items: bottomNavbarItems
+            items: customerBottomNavbarItems
                 .asMap()
                 .entries
                 .map((e) => Padding(

@@ -16,6 +16,7 @@ class CustomerAuthBloc extends Bloc<CustomerAuthEvent, CustomerAuthState> {
     on<CustomerRegisterEvent>(customerRegisterEvent);
     on<CustomerLogoutEvent>(customerLogoutEvent);
     on<CustomerAuthVerificationEvent>(customerAuthVerificationEvent);
+    on<CustomerDataLoadMyOrdersEvent>(_loadMyOrders);
   }
 
   Future<void> _handleEvent(
@@ -29,7 +30,8 @@ class CustomerAuthBloc extends Bloc<CustomerAuthEvent, CustomerAuthState> {
           break;
         case CustomerAuthVerificationEvent _:
           await customerDataRepository.isCustomerLoggedIn();
-          // emit(CustomerAuthVerifiedState());
+          await customerDataRepository.fetchMyOrders();
+          emit(CustomerAuthVerifiedState());
           break;
         case CustomerLoginEvent loginEvent:
           await customerDataRepository.loginCustomer(
@@ -44,6 +46,10 @@ class CustomerAuthBloc extends Bloc<CustomerAuthEvent, CustomerAuthState> {
         case CustomerLogoutEvent _:
           await customerDataRepository.logoutCustomer();
           emit(CustomerAuthLoggedOutState());
+          break;
+        case CustomerDataLoadMyOrdersEvent _:
+          await customerDataRepository.fetchMyOrders();
+          emit(CustomerAuthVerifiedState());
           break;
       }
     } on CustomerException catch (e) {
@@ -72,4 +78,8 @@ class CustomerAuthBloc extends Bloc<CustomerAuthEvent, CustomerAuthState> {
   void customerAuthVerificationEvent(CustomerAuthVerificationEvent event,
           Emitter<CustomerAuthState> emit) =>
       _handleEvent(event, emit);
+
+  Future<void> _loadMyOrders(CustomerDataLoadMyOrdersEvent event,
+          Emitter<CustomerAuthState> emit) async =>
+      await _handleEvent(event, emit);
 }

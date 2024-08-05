@@ -49,5 +49,9 @@
 		<true/>
 		<key>UIViewControllerBasedStatusBarAppearance</key>
 		<false/>
+		<key>NSCameraUsageDescription</key>
+		<string>Scan your card to add it automatically</string>
+		<key>NSCameraUsageDescription &lt;string>To scan cards&lt;/string></key>
+		<string>To scan cards</string>
 	</dict>
 </plist>

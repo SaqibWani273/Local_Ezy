@@ -1,5 +1,10 @@
 import 'dart:developer';
 
+import 'package:flutter/material.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+
+import '../../../constants/rest_api_const.dart';
+import '../../models/Order.dart';
 import '/data/models/cart.dart';
 import '/data/models/shop_model/shop_model1.dart';
 import '/services/api_service.dart';
@@ -14,13 +19,13 @@ import '/data/models/product.dart';
 class CustomerDataRepository {
   List<Product> products = [];
   List<ProductCategory>? categories;
-  LocationInfo? currentSelectedLocation;
-  // List<ShopModel1>? _shops;
-  // List<ShopModel1>? get getShops => _shops;
-  // List<ProductCategory>? get getCategories => _categories;
-  // List<Product>? get getProducts => _products;
+  LocationInfo? currentSelectedLocation = LocationInfo.defaultValue();
+  List<ShopModel1>? shops = [];
+  List<ProductCategory> productCategories = [];
+
   Customer? customer;
   List<CartItemDetails> cartItemDetails = [];
+  late PagingController<int, Product> globalPagingController;
   CustomerDataRepository({
     this.customer,
   });
@@ -58,13 +63,36 @@ class CustomerDataRepository {
     customer = null;
   }
 
-  Future<void> fetchProducts() async {
+  Future<void> fetchProducts(
+    int pageKey,
+
+    //  PagingController pagingController
+  ) async {
     try {
       //fetch products
-      products = await ApiService.fetchProducts(currentSelectedLocation);
+      final newProducts =
+          await ApiService.fetchProducts(currentSelectedLocation, pageKey);
+      products.addAll(newProducts);
+      final isLastPage = newProducts.length < ApiConst.pageSize;
+      if (isLastPage) {
+        globalPagingController.appendLastPage(newProducts);
+      } else {
+        final nextPageKey = pageKey + 1;
+        // final nextPageKey = pageKey + newProducts.length;
+        globalPagingController.appendPage(newProducts, nextPageKey);
+      }
       //fetch categories
     } catch (e) {
-      log("Error fetching products data from server-> $e");
+      rethrow;
+    }
+  }
+
+  Future<void> fetchShops() async {
+    try {
+      //fetch products
+      shops = await ApiService.fetchShops(currentSelectedLocation);
+      //fetch categories
+    } catch (e) {
       rethrow;
     }
   }
@@ -86,24 +114,48 @@ class CustomerDataRepository {
       currentSelectedLocation =
           await GeoLocatorService.fetchLocationInfo(location);
     } catch (e) {
-      log("Error Changing current location-> $e");
       rethrow;
     }
   }
 
-  Future<void> addToCart(Product product) async {
+  Future<bool?> addToCart(Product product) async {
     try {
+      // if(customer!.cartItems!=null && customer!.cartItems!.isNotEmpty&& customer!.cartItems.first.)
+
+      //user adds item to cart without visiting the cart first,in that
+      //case we won't have fetched the cart item details yet,so fetch all
+
+      if (cartItemDetails.isEmpty) {
+        await fetchMultipleCartItemDetails(customer!.cartItems!);
+      }
+      //if product already exists in cart
+      //increase quantity
+      if (cartItemDetails.any((element) => element.product.id == product.id)) {
+        cartItemDetails
+            .firstWhere((element) => element.product.id == product.id)
+            .quantity += 1;
+
+        return true;
+      }
+      //check if new product belongs to same shop
+      if (cartItemDetails.isNotEmpty &&
+          cartItemDetails.first.product.shop.id != product.shop.id!) {
+        return false;
+      }
+      //now fetch details of only the newly added item
+      final x = await CustomerProfileService.fetchProductsFromIds(
+          [CartItem(productId: product.id!, quantity: 1)]);
+      cartItemDetails.add(x.first);
+
       //update locally
       customer = customer!.copyWith(
         cartItems: await Utils.addToCart(
             product: product, cartItems: customer!.cartItems),
       );
-      final x = await CustomerProfileService.fetchProductsFromIds(
-          [CartItem(productId: product.id!, quantity: 1)]);
-      cartItemDetails.add(x.first);
       //update at server
       await CustomerProfileService.updateCartItems(
           customerId: customer!.id!, cartItems: customer!.cartItems!);
+      return true;
     } catch (e) {
       rethrow;
     }
@@ -133,10 +185,15 @@ class CustomerDataRepository {
         cartItems: await Utils.increaseQuantityByOne(
             product: product, cartItems: customer!.cartItems!),
       );
+      CartItemDetails x = cartItemDetails
+          .firstWhere((element) => element.product.id == product.id);
+      if (x.quantity == product.stockQuantity) {
+        return;
+      }
+
       cartItemDetails
           .firstWhere((element) => element.product.id == product.id)
           .quantity += 1;
-
       await CustomerProfileService.updateCartItems(
           customerId: customer!.id!, cartItems: customer!.cartItems!);
     } catch (e) {
@@ -170,5 +227,27 @@ class CustomerDataRepository {
     } catch (e) {
       rethrow;
     }
+  }
+
+  Future<void> fetchMyOrders() async {
+    try {
+      List<Order> orders =
+          await ApiService.fetchMyOrders(customer!.id!, Roles.ROLE_CUSTOMER);
+      customer = customer!.copyWith(orders: orders);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  List<Product> searchProduct(String searchText) {
+    List<Product> searchedProducts = [];
+    for (var product in products) {
+      if (product.name.toLowerCase().contains(searchText.toLowerCase()) ||
+          product.sku.toLowerCase().contains(searchText.toLowerCase())) {
+        searchedProducts.add(product);
+      }
+    }
+    // log("found ${searchedProducts.length} products");
+    return searchedProducts;
   }
 }

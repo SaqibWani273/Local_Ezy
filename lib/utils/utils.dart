@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import '../data/models/cart.dart';
 import '../data/models/product.dart';
@@ -60,9 +62,17 @@ class Utils {
 
   static List<CartItem> increaseQuantityByOne(
       {required List<CartItem> cartItems, required Product product}) {
+    CartItem cartItem =
+        cartItems.firstWhere((element) => element.productId == product.id);
+    log("cartitem quantity: ${cartItem.quantity}, product quantity: ${product.stockQuantity}");
+    if (cartItem.quantity == product.stockQuantity) {
+      return cartItems;
+    }
+    // cartItem.quantity += 1;
     cartItems
         .firstWhere((element) => element.productId == product.id)
         .quantity += 1;
+
     return cartItems;
   }
 }

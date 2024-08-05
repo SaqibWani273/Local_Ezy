@@ -86,7 +86,12 @@ class LocationInfo {
     required this.latitude,
     required this.longtitude,
   });
-
+  factory LocationInfo.defaultValue() => LocationInfo(
+        completeAddress: "",
+        shortAddress: "Srinagar,190001 J&K",
+        latitude: 34.083656,
+        longtitude: 74.797371,
+      );
   Map<String, dynamic> toJson() => _$LocationInfoToJson(this);
 
   factory LocationInfo.fromJson(Map<String, dynamic> json) =>

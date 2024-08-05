@@ -1,6 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
+import 'package:mca_project/data/models/Order.dart';
+
 import '/data/models/cart.dart';
 
 import 'basic_user_model/basic_user_model.dart';
@@ -13,20 +15,24 @@ class Customer extends UserModel {
 
   List<CartItem>? cartItems;
   BasicUserModel user;
+  List<Order>? orders;
   Customer({
     required this.user,
     this.cartItems,
     this.id,
+    required this.orders,
   });
 
   Customer copyWith({
     BasicUserModel? user,
     List<CartItem>? cartItems,
+    List<Order>? orders,
   }) {
     return Customer(
       user: user ?? this.user,
       cartItems: cartItems ?? this.cartItems,
       id: this.id,
+      orders: orders ?? this.orders,
     );
   }
 
@@ -35,6 +41,7 @@ class Customer extends UserModel {
       'id': id,
       'myUser': user.toJson(),
       'cartItems': cartItems?.map((cartItem) => cartItem.toMap()).toList(),
+      'orders': orders!.map((order) => order.toMap()).toList(),
     };
   }
 
@@ -42,6 +49,10 @@ class Customer extends UserModel {
     return Customer(
         id: map['id'] != null ? map['id'] as int : null,
         user: BasicUserModel.fromJson(map['myUser'] as Map<String, dynamic>),
+        orders: map["order"] == null
+            ? null
+            : List<Order>.from((map["order"] as List<dynamic>)
+                .map((x) => Order.fromMap(x as Map<String, dynamic>))),
         cartItems: map['cartItems'] == null
             ? null
             : List<CartItem>.from(

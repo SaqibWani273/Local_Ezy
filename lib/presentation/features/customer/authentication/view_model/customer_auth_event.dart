@@ -21,3 +21,5 @@ final class CustomerRegisterEvent extends CustomerAuthEvent {
 final class CustomerLogoutEvent extends CustomerAuthEvent {}
 
 final class CustomerAuthVerificationEvent extends CustomerAuthEvent {}
+
+final class CustomerDataLoadMyOrdersEvent extends CustomerAuthEvent {}

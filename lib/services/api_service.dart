@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:mca_project/data/models/Order.dart';
+
 import '/data/models/shop_model/shop_model1.dart';
 
 import '/constants/rest_api_const.dart';
@@ -175,7 +177,40 @@ class ApiService {
     }
   }
 
-  static Future<List<Product>> fetchProducts(LocationInfo? locationInfo) async {
+  static Future<List<Product>> fetchProducts(
+      LocationInfo? locationInfo, int currentPageKey) async {
+    try {
+      // final response = await http.get(Uri.parse(ApiConst.fetchProductUrl));
+      final response = await http.post(
+        Uri.parse(ApiConst.getProductsByLocation),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: jsonEncode({
+          "pageKey": currentPageKey,
+          "location": locationInfo == null ? null : locationInfo.toJson()
+        }),
+      );
+      // log(response.body);
+      if (response.statusCode == 200) {
+        final products = <Product>[];
+        for (var element in jsonDecode(response.body)) {
+          products.add(Product.fromJson(element));
+        }
+        return products;
+      } else {
+        log("server error in fetchProducts,response-> ${response.body} ${response.statusCode} -> ${response.body}, ${response.statusCode}");
+        throw CustomException(
+            errorType: ErrorType.internetConnection,
+            message: " Something went wrong!,${response.statusCode}");
+      }
+    } catch (e) {
+      log("fetchProducts error: $e");
+      rethrow;
+    }
+  }
+
+  static Future<List<ShopModel1>> fetchShops(LocationInfo? locationInfo) async {
     try {
       // final response = await http.get(Uri.parse(ApiConst.fetchProductUrl));
       final response = await http.post(
@@ -186,19 +221,20 @@ class ApiService {
         body: locationInfo == null ? null : jsonEncode(locationInfo.toJson()),
       );
       if (response.statusCode == 200) {
-        final products = <Product>[];
+        final shops = <ShopModel1>[];
         for (var element in jsonDecode(response.body)) {
-          products.add(Product.fromJson(element));
+          shops.add(ShopModel1.fromJson(element));
         }
-        return products;
+        log("${shops.length}");
+        return shops;
       } else {
-        log("error in fetchProducts,response-> ${response.body} ${response.statusCode} -> ${response.body}, ${response.statusCode}");
+        log("error in fetchShops,response-> ${response.body} ${response.statusCode} -> ${response.body}, ${response.statusCode}");
         throw CustomException(
             errorType: ErrorType.internetConnection,
             message: " Something went wrong!,${response.statusCode}");
       }
     } catch (e) {
-      log("fetchProducts error: $e");
+      log("fetchShops error: $e");
       rethrow;
     }
   }
@@ -222,6 +258,96 @@ class ApiService {
       return bool.fromEnvironment(response.body);
     } else {
       return null;
+    }
+  }
+
+  static Future<List<Product>> fetchMyUploadedProducts(int shopId) async {
+    List<Product> products = [];
+    try {
+      final response = await http.get(
+        Uri.parse("${ApiConst.getProductsByShop}?shopId=$shopId"),
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer ${await SecureStorage.getToken()}"
+        },
+      );
+      if (response.statusCode == 200) {
+        if (response.body.isEmpty) {
+          return products;
+        }
+        for (var element in jsonDecode(response.body)) {
+          // log(element.runtimeType.toString());
+          products.add(Product.fromJson(element));
+        }
+        log("fetchMyUploadedProducts: ${products.length}");
+      } else {
+        throw CustomException(
+            errorType: ErrorType.internetConnection,
+            message: "Something went wrong!,${response.statusCode}");
+      }
+    } catch (e) {
+      log("fetchMyUploadedProducts error: $e");
+      rethrow;
+    }
+    return products;
+  }
+
+  static Future<List<Order>> fetchMyOrders(int id, Roles role) async {
+    List<Order> orders = [];
+    try {
+      String param = role == Roles.ROLE_CUSTOMER ? "customerId" : "shopId";
+      String url = role == Roles.ROLE_CUSTOMER
+          ? ApiConst.getOrdersByCustomer
+          : ApiConst.getOrdersByShop;
+      final response = await http.get(
+        Uri.parse("$url?$param=$id"),
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer ${await SecureStorage.getToken()}"
+        },
+      );
+      if (response.statusCode == 200) {
+        if (response.body.isEmpty) {
+          return orders;
+        }
+        // log("orders body: ${response.body}");
+        for (var element in jsonDecode(response.body)) {
+          // log(element.runtimeType.toString());
+          orders.add(Order.fromMap(element));
+          // orders.add(Order.fromMap(element));
+        }
+      } else {
+        log("error in fetchMyOrders,response-> ${response.body} ${response.statusCode} -> ${response.body}, ${response.statusCode}");
+        throw CustomException(
+            errorType: ErrorType.internetConnection,
+            message: "Something went wrong!,${response.statusCode}");
+      }
+    } catch (e) {
+      log("fetchMyOrders error: $e");
+      rethrow;
+    }
+    return orders;
+  }
+
+  static Future<void> updateOrderStatus(
+      {required String orderId, required String status}) async {
+    try {
+      final token = await SecureStorage.getToken();
+      log(token!);
+      final response = await http.post(Uri.parse(ApiConst.updateOrderStatusUrl),
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer ${await SecureStorage.getToken()}"
+          },
+          body: jsonEncode({'orderId': int.parse(orderId), 'status': status}));
+      if (response.statusCode == 200) {
+        log(response.body);
+      } else {
+        log(" error in  updateOrderStatus,response-> ${response.body} ${response.statusCode} -> ${response.body}");
+      }
+    } catch (e) {
+      log("updateOrderStatus error: $e");
+      rethrow;
     }
   }
 }

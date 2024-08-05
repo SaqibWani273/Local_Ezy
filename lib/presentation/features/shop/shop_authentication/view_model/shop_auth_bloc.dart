@@ -18,6 +18,7 @@ class ShopAuthBloc extends Bloc<ShopAuthEvent, ShopAuthState> {
     on<ShopAuthLogoutEvent>(shopAuthLogout);
     on<ShopAuthInitialEvent>(shopAuthInitial);
     on<ShopAuthLoadLocationEvent>(shopAuthLoadLocation);
+
     // on<LoadAllCategoriesEvent>(_loadAllCategories);
   }
   Future<void> _handleEvent(
@@ -82,6 +83,7 @@ class ShopAuthBloc extends Bloc<ShopAuthEvent, ShopAuthState> {
   void shopAuthLoadLocation(
           ShopAuthLoadLocationEvent _, Emitter<ShopAuthState> emit) =>
       _handleEvent(_, emit);
+
 // Future<void> _loadAllCategories(
 //       LoadAllCategoriesEvent event, Emitter<ShopAuthState> emit) async {
 //     await _handleEvent(event, emit);

@@ -15,6 +15,10 @@ class ShopBloc extends Bloc<ShopEvent, ShopState> {
     on<LoadAllCategoriesEvent>(_loadAllCategories);
     on<UploadProductEvent>(_UploadProduct);
     on<ShopInitialEvent>(_shopInitial);
+    on<ShopLoadProductsEvent>(_shopLoadProducts);
+    on<ShopSearchProductEvent>(_shopSearchProduct);
+    on<ShopLoadMyOrdersEvent>(_shopLoadMyOrders);
+    on<ShopUpdateOrderStatus>(_shopUpdateOrderStatus);
     // on<UploadMultipleImagesEvent>(_UploadMultipleImages);
   }
 
@@ -33,6 +37,25 @@ class ShopBloc extends Bloc<ShopEvent, ShopState> {
           break;
         case ShopInitialEvent _:
           emit(ShopInitialState());
+          break;
+        case ShopLoadProductsEvent _:
+          await shopDataRepository.fetchMyUploadedProducts();
+          emit(ShopLoadedProductsState());
+          break;
+        case ShopSearchProductEvent searchProductEvent:
+          final List<Product> products =
+              shopDataRepository.searchProducts(searchProductEvent.keyword);
+          emit(ShopSearchProductState(products: products));
+          break;
+        case ShopLoadMyOrdersEvent _:
+          await shopDataRepository.fetchMyOrders();
+          emit(ShopLoadMyOrdersState());
+          break;
+        case ShopUpdateOrderStatus updateOrderStatus:
+          await shopDataRepository.updateOrderStatus(
+              updateOrderStatus.orderId, updateOrderStatus.status);
+          emit(ShopUpdatedOrderStatusState());
+          break;
         // case UploadMultipleImagesEvent uploadMultipleImagesEvent:
         //   final List<String> images = await shopDataRepository
         //       .uploadMultipleImages(uploadMultipleImagesEvent.images);
@@ -65,6 +88,16 @@ class ShopBloc extends Bloc<ShopEvent, ShopState> {
   void _shopInitial(ShopInitialEvent event, Emitter<ShopState> emit) async {
     _handleEvent(event, emit);
   }
+
+  void _shopLoadProducts(ShopLoadProductsEvent _, Emitter<ShopState> emit) =>
+      _handleEvent(_, emit);
+  void _shopSearchProduct(ShopSearchProductEvent _, Emitter<ShopState> emit) =>
+      _handleEvent(_, emit);
+  void _shopLoadMyOrders(ShopLoadMyOrdersEvent _, Emitter<ShopState> emit) =>
+      _handleEvent(_, emit);
+  void _shopUpdateOrderStatus(
+          ShopUpdateOrderStatus event, Emitter<ShopState> emit) =>
+      _handleEvent(event, emit);
 
   // Future<void> _UploadMultipleImages(
   //     UploadMultipleImagesEvent event, Emitter<ShopState> emit) async {

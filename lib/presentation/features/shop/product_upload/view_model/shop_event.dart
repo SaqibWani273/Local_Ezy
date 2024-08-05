@@ -24,3 +24,19 @@ final class UploadMultipleImagesEvent extends ShopEvent {
 
   UploadMultipleImagesEvent({required this.images});
 }
+
+class ShopLoadProductsEvent extends ShopEvent {}
+
+class ShopLoadMyOrdersEvent extends ShopEvent {}
+
+class ShopSearchProductEvent extends ShopEvent {
+  final String keyword;
+
+  ShopSearchProductEvent({required this.keyword});
+}
+
+class ShopUpdateOrderStatus extends ShopEvent {
+  final String orderId;
+  final String status;
+  ShopUpdateOrderStatus({required this.orderId, required this.status});
+}

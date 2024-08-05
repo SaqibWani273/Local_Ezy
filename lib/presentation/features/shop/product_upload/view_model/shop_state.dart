@@ -20,3 +20,15 @@ class ShopUploadedMultipleImagesState extends ShopState {
 
   ShopUploadedMultipleImagesState({required this.images});
 }
+
+class ShopLoadedProductsState extends ShopState {}
+
+class ShopLoadMyOrdersState extends ShopState {}
+
+class ShopSearchProductState extends ShopState {
+  final List<Product> products;
+
+  ShopSearchProductState({required this.products});
+}
+
+class ShopUpdatedOrderStatusState extends ShopState {}

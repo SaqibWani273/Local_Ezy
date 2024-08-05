@@ -21,7 +21,7 @@ class AppBarWidget extends StatelessWidget {
             return Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text('ShopLocal'),
+                const Text('LocalEzy'),
                 Row(
                   children: [
                     IconButton(
@@ -39,7 +39,7 @@ class AppBarWidget extends StatelessWidget {
             );
           }
 
-          return const Text('ShopLocal');
+          return const Text('LocalEzy');
         },
       ),
     );

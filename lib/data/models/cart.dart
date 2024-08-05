@@ -50,6 +50,13 @@ class CartItem {
       quantity: map['quantity'] as int,
     );
   }
+  factory CartItem.fromCartItemDetails(
+      {required CartItemDetails cartItemDetails}) {
+    return CartItem(
+      productId: cartItemDetails.product.id!,
+      quantity: cartItemDetails.quantity,
+    );
+  }
 
   String toJson() => json.encode(toMap());
 

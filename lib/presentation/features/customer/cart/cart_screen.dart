@@ -1,9 +1,13 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../data/models/cart.dart';
 import '../../../../data/models/customer.dart';
+import '../checkout/checkout_screen.dart';
 import '../authentication/view/customer_login.dart';
+import '../../../../services/stripe_service.dart';
 import '../product/view/product_details_screen.dart';
 import '/data/repositories/customer/customer_data_repository.dart';
 import '/presentation/common/screens/error_screen.dart';
@@ -21,14 +25,15 @@ class CartScreen extends StatefulWidget {
 class _CartScreenState extends State<CartScreen> {
   Customer? customer;
   bool isCartEmpty = false;
-  List<CartItemDetails> cartItemDetails = [];
+  List<CartItemDetails> cartItemDetailsList = [];
   @override
   void initState() {
     customer = context.read<CustomerDataRepository>().customer;
-    cartItemDetails = context.read<CustomerDataRepository>().cartItemDetails;
+    cartItemDetailsList =
+        context.read<CustomerDataRepository>().cartItemDetails;
     if (customer != null) {
       isCartEmpty = checkIsCartEmpty(customer);
-      if (!isCartEmpty && cartItemDetails.isEmpty) {
+      if (!isCartEmpty && cartItemDetailsList.isEmpty) {
         context.read<CustomerDataBloc>().add(
             CustomerDataFetchCartItemDetailsEvent(
                 cartItems: customer!.cartItems!));
@@ -56,7 +61,19 @@ class _CartScreenState extends State<CartScreen> {
                 context,
                 MaterialPageRoute(builder: (context) => const CustomerLogin()),
               );
-              // updateState();
+              customer = context.read<CustomerDataRepository>().customer;
+              log("customer: " + customer.toString());
+              if (customer != null) {
+                isCartEmpty = checkIsCartEmpty(customer);
+                if (!isCartEmpty) {
+                  context.read<CustomerDataBloc>().add(
+                      CustomerDataFetchCartItemDetailsEvent(
+                          cartItems: customer!.cartItems!));
+                }
+              }
+              // setState(() {
+              //   customer = context.read<CustomerDataRepository>().customer;
+              // });
             },
             label: Text("Login Here"),
             icon: Icon(Icons.login),
@@ -93,18 +110,20 @@ class _CartScreenState extends State<CartScreen> {
       }
 
       if (state is CustomerDataLoadedState) {
-        cartItemDetails =
+        cartItemDetailsList =
             context.read<CustomerDataRepository>().cartItemDetails;
         customer = context.read<CustomerDataRepository>().customer;
         isCartEmpty = checkIsCartEmpty(customer);
-        if (cartItemDetails.isEmpty) {
+        if (cartItemDetailsList.isEmpty) {
           return Scaffold(body: EmptyCartScreen());
         }
         return Scaffold(
           body: ListView.builder(
-            itemCount: cartItemDetails.length, //customer!.cartItems!.length,
+            itemCount:
+                cartItemDetailsList.length, //customer!.cartItems!.length,
             itemBuilder: (context, index) {
-              final cartItem = cartItemDetails[index];
+              log('${cartItemDetailsList.length}');
+              final cartItem = cartItemDetailsList[index];
 
               return ListTile(
                 leading: InkWell(
@@ -154,7 +173,7 @@ class _CartScreenState extends State<CartScreen> {
           ),
           bottomNavigationBar: customer == null || isCartEmpty
               ? null
-              : CartBottomBar(cartItemDetails: cartItemDetails),
+              : CartBottomBar(cartItemDetailsList: cartItemDetailsList),
         );
       }
 //incase any other state is received
@@ -164,19 +183,9 @@ class _CartScreenState extends State<CartScreen> {
 }
 
 class CartBottomBar extends StatelessWidget {
-  final List<CartItemDetails> cartItemDetails;
+  final List<CartItemDetails> cartItemDetailsList;
 
-  const CartBottomBar({super.key, required this.cartItemDetails});
-
-  double calculateTotalPrice(List<CartItemDetails> cartItemDetails) {
-    double totalPrice = 0.0;
-
-    for (var cartItemDetails in cartItemDetails) {
-      totalPrice += cartItemDetails.product.price * cartItemDetails.quantity;
-    }
-
-    return totalPrice;
-  }
+  const CartBottomBar({super.key, required this.cartItemDetailsList});
 
   @override
   Widget build(BuildContext context) {
@@ -191,13 +200,17 @@ class CartBottomBar extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const Text('Total:'),
-                Text('₹${calculateTotalPrice(cartItemDetails)}'),
+                Text('₹${calculateTotalPrice(cartItemDetailsList)}'),
               ],
             ),
           ),
           ElevatedButton(
-            onPressed: () {
+            onPressed: () async {
               // Handle checkout
+              // await makePayment();
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+                return CheckoutScreen(cartItemDetailst: cartItemDetailsList);
+              }));
             },
             child: const Text('Checkout'),
           ),
@@ -205,4 +218,14 @@ class CartBottomBar extends StatelessWidget {
       ),
     );
   }
+}
+
+double calculateTotalPrice(List<CartItemDetails> cartItemDetails) {
+  double totalPrice = 0.0;
+
+  for (var cartItemDetails in cartItemDetails) {
+    totalPrice += cartItemDetails.product.price * cartItemDetails.quantity;
+  }
+
+  return totalPrice;
 }

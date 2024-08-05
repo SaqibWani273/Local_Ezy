@@ -33,3 +33,20 @@ class CustomerDataFetchCartItemDetailsEvent extends CustomerDataEvent {
   final List<CartItem> cartItems;
   CustomerDataFetchCartItemDetailsEvent({required this.cartItems});
 }
+
+class CustomerDataSearchProductEvent extends CustomerDataEvent {
+  final String keyword;
+
+  CustomerDataSearchProductEvent({required this.keyword});
+}
+
+final class CustomerDataLoadProductsEvent extends CustomerDataEvent {
+  final int pageKey;
+  // final PagingController<int, Product> pagingController;
+
+  CustomerDataLoadProductsEvent({
+    required this.pageKey,
+
+    // required this.pagingController
+  });
+}

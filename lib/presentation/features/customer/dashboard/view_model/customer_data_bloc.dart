@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:mca_project/data/models/shop_model/shop_model1.dart';
 import '/utils/exceptions/custom_exception.dart';
 import '/utils/exceptions/customer_exception.dart';
@@ -21,6 +22,8 @@ class CustomerDataBloc extends Bloc<CustomerDataEvent, CustomerDataState> {
     on<CustomerDataIncreaseQuantityByOneEvent>(_increaseQuantityByOne);
     on<CustomerDataDecreaseQuantityByOneEvent>(_decreaseQuantityByOne);
     on<CustomerDataFetchCartItemDetailsEvent>(_fetchMultipleCartItemDetails);
+    on<CustomerDataSearchProductEvent>(_searchProduct);
+    on<CustomerDataLoadProductsEvent>(_loadProducts);
   }
   Future<void> _handleEvent(
       CustomerDataEvent event, Emitter<CustomerDataState> emit) async {
@@ -32,28 +35,37 @@ class CustomerDataBloc extends Bloc<CustomerDataEvent, CustomerDataState> {
       } else if (event is CustomerDataIncreaseQuantityByOneEvent ||
           event is CustomerDataDecreaseQuantityByOneEvent ||
           event is CustomerDataAddProductToCartEvent ||
-          event is CustomerDataRemoveProductFromCartEvent) {
+          event is CustomerDataRemoveProductFromCartEvent ||
+          event is CustomerDataSearchProductEvent ||
+          event is CustomerDataLoadProductsEvent) {
         //do nothing
       } else {
         emit(CustomerDataLoadingState());
       }
       switch (event) {
         case LoadCustomerDataEvent _:
-          await customerDataRepository.fetchLocation('current');
-          emit(CustomerDataLoadedState(loadingProducts: true));
-          await customerDataRepository.fetchProducts();
+          // await customerDataRepository.fetchLocation('current');
+          // // emit(CustomerDataLoadedState(loadingProducts: true));
+          // // await customerDataRepository.fetchProducts(0);
           emit(CustomerDataLoadedState());
 
           break;
         case ChangeCustomerCurrentLocationEvent _:
           await customerDataRepository.fetchLocation(event.currentLocation);
           emit(CustomerDataLoadedState(loadingProducts: true));
-          await customerDataRepository.fetchProducts();
+          await customerDataRepository.fetchProducts(0);
+          customerDataRepository.globalPagingController.refresh();
+          emit(CustomerDataLoadedState());
+          break;
+        case CustomerDataLoadProductsEvent _:
+          await customerDataRepository.fetchProducts(event.pageKey);
           emit(CustomerDataLoadedState());
           break;
         case CustomerDataAddProductToCartEvent _:
-          await customerDataRepository.addToCart(event.product);
-          emit(CustomerDataLoadedState());
+          final isAddable =
+              await customerDataRepository.addToCart(event.product);
+          emit(CustomerDataLoadedState(canAddToCart: isAddable));
+
           break;
         case CustomerDataRemoveProductFromCartEvent _:
           await customerDataRepository.removeFromCart(event.product);
@@ -73,6 +85,11 @@ class CustomerDataBloc extends Bloc<CustomerDataEvent, CustomerDataState> {
           // emit(CustomerDataCartFetchedCartItemDetailsState());
           emit(CustomerDataLoadedState());
           break;
+        case CustomerDataSearchProductEvent _:
+          final products =
+              await customerDataRepository.searchProduct(event.keyword);
+          emit(CustomerDataLoadedState(searchProducts: products));
+          break;
       }
     } on CustomException catch (e) {
       if (e.errorType.name.toLowerCase().contains("location")) {
@@ -81,8 +98,10 @@ class CustomerDataBloc extends Bloc<CustomerDataEvent, CustomerDataState> {
       if (e.errorType == ErrorType.cartError) {
         emit(CustomerDataCartErrorState(error: e));
       }
-    } catch (e) {
+
       emit(CustomerDataErrorState(error: e.toString()));
+    } catch (e) {
+      emit(CustomerDataErrorState(error: "unknown error occurred"));
     }
   }
 
@@ -113,6 +132,14 @@ class CustomerDataBloc extends Bloc<CustomerDataEvent, CustomerDataState> {
 
   Future<void> _fetchMultipleCartItemDetails(
           CustomerDataFetchCartItemDetailsEvent event,
+          Emitter<CustomerDataState> emit) async =>
+      await _handleEvent(event, emit);
+
+  Future<void> _searchProduct(CustomerDataSearchProductEvent event,
+          Emitter<CustomerDataState> emit) async =>
+      await _handleEvent(event, emit);
+
+  Future<void> _loadProducts(CustomerDataLoadProductsEvent event,
           Emitter<CustomerDataState> emit) async =>
       await _handleEvent(event, emit);
 }

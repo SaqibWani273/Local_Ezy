@@ -1,5 +1,6 @@
-
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import '/services/api_service.dart';
 
 import '../data/models/customer.dart';
@@ -9,6 +10,9 @@ class NoInternetModel extends UserModel {}
 Future<UserModel?> mainAsyncTasks() async {
   // await Future.delayed(const Duration(seconds: 3));
   //check internet
+  await dotenv.load(fileName: "assets/.env");
+  Stripe.publishableKey = dotenv.env["STRIPE_PUBLISH_KEY"]!;
+  await Stripe.instance.applySettings();
   if (await hasInternet()) {
     final userModel = await ApiService.getUserModel();
 

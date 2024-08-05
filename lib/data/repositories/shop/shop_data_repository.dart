@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:geocoding/geocoding.dart' as geocoding;
+import 'package:mca_project/data/models/Order.dart';
 import '/data/models/shop_model/shop_model1.dart';
 
 import '../../../services/geo_locator_service.dart';
@@ -16,7 +17,8 @@ class ShopDataRepository {
   // ShopModel1? shopModel1;
   LocationInfo? locationInfo;
   List<CategoryData> categoriesData = [];
-  // List<ProductCategory> productCategories = [];
+  List<Product> myUploadedProducts = [];
+  List<Order> myOrders = [];
 
   ShopDataRepository({this.shopModel});
 
@@ -102,6 +104,49 @@ class ShopDataRepository {
       locationInfo =
           await GeoLocatorService.fetchLocationInfo(userEnteredLocation);
       return locationInfo!.shortAddress;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<void> fetchMyUploadedProducts() async {
+    try {
+      myUploadedProducts =
+          await ApiService.fetchMyUploadedProducts(shopModel!.id!);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  List<Product> searchProducts(String searchText) {
+    log("searching for $searchText");
+    List<Product> searchedProducts = [];
+    for (var product in myUploadedProducts) {
+      if (product.name.toLowerCase().contains(searchText.toLowerCase()) ||
+          product.sku.toLowerCase().contains(searchText.toLowerCase())) {
+        searchedProducts.add(product);
+      }
+    }
+    log("found ${searchedProducts.length} products");
+    return searchedProducts;
+  }
+
+  Future<void> fetchMyOrders() async {
+    try {
+      myOrders =
+          await ApiService.fetchMyOrders(shopModel!.id!, Roles.ROLE_SHOP);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<void> updateOrderStatus(String orderId, String status) async {
+    try {
+      // await ApiService.updateOrderStatus(orderId: orderId, status: status);
+      Order order = myOrders.firstWhere((x) => x.id == orderId);
+      int index = myOrders.indexOf(order);
+      order = order.copyWith(status: status);
+      myOrders[index] = order;
     } catch (e) {
       rethrow;
     }

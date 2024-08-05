@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 
 class ApiConst {
   static String baseApiUrl = 'http://${getHostname()}:8080';
-  // static final String baseApiUrl = 'http://3.111.169.191';
+  // static final String baseApiUrl = 'http://3.110.148.117';
   static final String baseCustomerUrl = '$baseApiUrl/customer';
   static final String customerLoginUrl = '$baseCustomerUrl/login';
   static final String customerRegisterUrl = '$baseCustomerUrl/register';
@@ -23,6 +23,17 @@ class ApiConst {
   static final myIpAddress = '192.168.1.5'; //use ipconfig in cmd
   static final String getProductsByLocation =
       '$baseApiUrl/customer/get-products-by-location';
+  static final String getShopsByLocation =
+      '$baseApiUrl/customer/get-shops-by-location';
+  static final String getProductsByShop = '$baseApiUrl/shop/get-my-products';
+
+  static final String getOrdersByShop = '$baseApiUrl/shop/get-my-orders';
+
+  static final String getOrdersByCustomer =
+      '$baseApiUrl/customer/get-my-orders';
+  static final String updateOrderStatusUrl =
+      '$baseApiUrl/shop/update-order-status';
+  static const int pageSize = 10;
 }
 
 class CloudinaryApiConst {

@@ -2,11 +2,16 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:mca_project/constants/rest_api_const.dart';
 import 'package:mca_project/data/models/shop_model/shop_model1.dart';
 import 'package:mca_project/presentation/common/screens/error_screen.dart';
+import '../../../../../data/models/product.dart';
+import '../../../../../services/api_service.dart';
 import '/presentation/common/widgets/loading_widgets.dart';
 import '/presentation/common/widgets/show_cupertino_alert_dialog.dart';
 import '/presentation/features/customer/dashboard/view/widgets/shop_loading_screen.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import '/presentation/features/customer/product/view/product_details_screen.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../../../common/widgets/my_text_field_widget.dart';
@@ -22,16 +27,30 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
   TextEditingController locationController = TextEditingController();
+  final _pagingController = PagingController<int, Product>(firstPageKey: 0);
+
   LocationInfo? locationInfo;
   @override
   void initState() {
-    if (context.read<CustomerDataRepository>().products.isEmpty) {
-      //to load Customer data from db using auht token from secure storage
-      // context.read<CustomerAuthBloc>().add(CustomerAuthVerificationEvent());
+    context.read<CustomerDataBloc>().add(LoadCustomerDataEvent());
 
-      context.read<CustomerDataBloc>().add(LoadCustomerDataEvent());
-    }
+    context.read<CustomerDataRepository>().globalPagingController =
+        _pagingController;
+    _pagingController.addPageRequestListener((int pageKey) {
+      context
+          .read<CustomerDataBloc>()
+          .add(CustomerDataLoadProductsEvent(pageKey: pageKey));
+    });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _pagingController.dispose();
+    // context.read<CustomerDataRepository>().globalPagingController.dispose();
+    locationController.dispose();
+
+    super.dispose();
   }
 
   Widget AddressWidget(double height) {
@@ -116,14 +135,21 @@ class _DashboardState extends State<Dashboard> {
               });
         }
         if (state is CustomerDataLoadedState) {
-          final products = context.read<CustomerDataRepository>().products;
+          // final products = state.searchProducts ??
+          //     context.read<CustomerDataRepository>().products;
 
           return CustomScrollView(slivers: [
             // const SliverAppBar(),
             SliverList(
               delegate: SliverChildListDelegate([
                 //search bar here
-                const MyTextFieldWidget(
+                MyTextFieldWidget(
+                  onChanged: (fieldVal) {
+                    context
+                        .read<CustomerDataBloc>()
+                        .add(CustomerDataSearchProductEvent(keyword: fieldVal));
+                    // log(fieldVal);
+                  },
                   hintText: 'Search for everything,styles and brands',
                   prefixIcon: Icon(Icons.search),
                   suffixIcon: SizedBox(
@@ -136,6 +162,7 @@ class _DashboardState extends State<Dashboard> {
                 ),
                 //address here
                 if (state.isChangingLocation == true)
+                  //placeholder while changing location
                   Shimmer.fromColors(
                     baseColor: Colors.grey[300]!,
                     highlightColor: Colors.grey[100]!,
@@ -145,8 +172,9 @@ class _DashboardState extends State<Dashboard> {
                   AddressWidget(deviceHeight * 0.15),
               ]),
             ),
-            SliverList(delegate: SliverChildListDelegate([])),
+            // SliverList(delegate: SliverChildListDelegate([])),
             if (state.loadingProducts == true)
+              //progress indicator while loading products
               SliverPadding(
                   padding: EdgeInsets.all(8.0),
                   sliver: SliverToBoxAdapter(
@@ -155,17 +183,11 @@ class _DashboardState extends State<Dashboard> {
                         child: LoadingWidgets.SpinKitFading(deviceWidth)),
                   )),
 
-            if (state.loadingProducts == null && products.isEmpty)
-              SliverToBoxAdapter(
-                child: Container(
-                    margin: EdgeInsets.only(top: deviceHeight * 0.2),
-                    child: Center(child: Text("No Products Found"))),
-              ),
-            // if (products.isEmpty) Center(child: Text("No Products Found")),
-            if (state.loadingProducts == null && products.isNotEmpty)
+            if (state.loadingProducts == null)
               SliverPadding(
-                padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 16.0),
-                sliver: SliverGrid.builder(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 8.0, vertical: 16.0),
+                  sliver: PagedSliverGrid<int, Product>(
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
                       mainAxisExtent: deviceHeight * 0.3,
@@ -173,59 +195,82 @@ class _DashboardState extends State<Dashboard> {
                       mainAxisSpacing: 10,
                       childAspectRatio: 0.8,
                     ),
-                    itemCount: products.length,
-                    itemBuilder: (context, index) {
-                      return InkWell(
-                        onTap: () => Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                ProductDetailsScreen(product: products[index]),
+                    pagingController: context
+                        .read<CustomerDataRepository>()
+                        .globalPagingController,
+                    builderDelegate: PagedChildBuilderDelegate<Product>(
+                      animateTransitions: true,
+                      firstPageProgressIndicatorBuilder: (context) =>
+                          LoadingWidgets.SpinKitFading(deviceWidth),
+                      newPageProgressIndicatorBuilder: (context) =>
+                          LoadingWidgets.SpinKitFading(deviceWidth),
+                      noItemsFoundIndicatorBuilder: (_) => Container(
+                        margin: EdgeInsets.only(top: deviceHeight * 0.2),
+                        child: Center(
+                            child: Column(
+                          children: [
+                            Icon(Icons.inventory_2_outlined),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Text("No Products Found"),
+                          ],
+                        )),
+                      ),
+                      itemBuilder: (context, item, index) {
+                        return InkWell(
+                          onTap: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  ProductDetailsScreen(product: item),
+                            ),
                           ),
-                        ),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.grey.shade100,
-                            borderRadius: BorderRadius.circular(30.0),
-                          ),
-                          child: Column(
-                            children: [
-                              Expanded(
-                                flex: deviceHeight < 550 ? 1 : 0,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(30.0),
-                                      topRight: Radius.circular(30.0)),
-                                  child: Hero(
-                                    tag: products[index].id!,
-                                    child: Image.network(
-                                        fit: BoxFit.fill,
-                                        height: deviceHeight * 0.2,
-                                        // width: deviceWidth * 0.4,
-                                        products[index].images.first),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.grey.shade100,
+                              borderRadius: BorderRadius.circular(30.0),
+                            ),
+                            child: Column(
+                              children: [
+                                Expanded(
+                                  flex: deviceHeight < 550 ? 1 : 0,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(30.0),
+                                        topRight: Radius.circular(30.0)),
+                                    child: Hero(
+                                      tag: item.id!,
+                                      child: Image.network(
+                                          fit: BoxFit.fill,
+                                          height: deviceHeight * 0.2,
+                                          // width: deviceWidth * 0.4,
+                                          item.images.first),
+                                    ),
                                   ),
                                 ),
-                              ),
-                              Spacer(),
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 10.0, right: 10.0, bottom: 20.0),
-                                child: Row(
-                                  children: [
-                                    Expanded(child: Text(products[index].name)),
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 8.0),
-                                      child: Text("₹" +
-                                          products[index].price.toString()),
-                                    ),
-                                  ],
+                                Spacer(),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 10.0, right: 10.0, bottom: 20.0),
+                                  child: Row(
+                                    children: [
+                                      Expanded(child: Text(item.name)),
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(left: 8.0),
+                                        child:
+                                            Text("₹" + item.price.toString()),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                      );
-                    }),
-              )
+                        );
+                      },
+                    ),
+                  ))
           ]);
         }
         return LoadingWidgets.SpinKitFading(deviceWidth);

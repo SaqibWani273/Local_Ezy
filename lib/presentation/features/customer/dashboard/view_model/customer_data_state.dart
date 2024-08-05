@@ -11,7 +11,13 @@ class CustomerDataChangingCurrentLocationState extends CustomerDataState {}
 class CustomerDataLoadedState extends CustomerDataState {
   bool? isChangingLocation;
   bool? loadingProducts;
-  CustomerDataLoadedState({this.isChangingLocation, this.loadingProducts});
+  bool? canAddToCart;
+  List<Product>? searchProducts;
+  CustomerDataLoadedState(
+      {this.canAddToCart,
+      this.isChangingLocation,
+      this.loadingProducts,
+      this.searchProducts});
 }
 
 class CustomerDataErrorState extends CustomerDataState {
@@ -32,4 +38,10 @@ class CustomerDataCartFetchedCartItemDetailsState extends CustomerDataState {}
 class CustomerDataLocationErrorState extends CustomerDataState {
   final CustomException error;
   CustomerDataLocationErrorState({required this.error});
+}
+
+class CustomerDataSearchProductState extends CustomerDataState {
+  final List<Product> products;
+
+  CustomerDataSearchProductState({required this.products});
 }
